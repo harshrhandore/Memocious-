@@ -1,0 +1,69 @@
+
+> memocious@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.4.2 (webpack)
+- Environments: .env.local
+✓ Running next.config.ts took 37ms
+- Experiments (use with caution):
+  ⨯ useTypeScriptCli
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.7s
+  Running TypeScript ...
+  Finished TypeScript in 4.2s ...
+  Collecting page data using 2 workers ...
+  Generating static pages using 2 workers (0/28) ...
+  Generating static pages using 2 workers (7/28) 
+  Generating static pages using 2 workers (14/28) 
+  Generating static pages using 2 workers (21/28) 
+✓ Generating static pages using 2 workers (28/28) in 383ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /[admin]
+├ ƒ /about
+├ ƒ /account
+├ ƒ /api/admin/auth
+├ ƒ /api/admin/delete
+├ ƒ /api/admin/media
+├ ƒ /api/admin/media/[id]
+├ ƒ /api/admin/mfa
+├ ƒ /api/admin/number
+├ ƒ /api/admin/products
+├ ƒ /api/admin/settings
+├ ƒ /api/admin/taxonomy
+├ ƒ /api/admin/workspace
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/start
+├ ƒ /api/enquiries
+├ ƒ /api/profile
+├ ƒ /api/search
+├ ƒ /api/session
+├ ƒ /auth/callback
+├ ƒ /auth/confirm
+├ ƒ /contact
+├ ƒ /enterprise
+├ ƒ /faq
+├ ƒ /login
+├ ○ /manifest.webmanifest
+├ ƒ /media/[asset]
+├ ƒ /privacy
+├ ƒ /product/[slug]
+├ ○ /robots.txt
+├ ƒ /shipping-returns
+├ ƒ /shop
+├ ƒ /shop/category/[slug]
+├ ƒ /shop/occasion/[slug]
+├ ○ /sitemap.xml
+└ ƒ /terms
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

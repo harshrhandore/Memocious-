@@ -1,0 +1,2 @@
+create function public.memocious_media_public(image uuid) returns text language sql stable security invoker set search_path='' as $$ select i.private_path from memocious.product_images i join public.memocious_catalogue_products p on p.id=i.product_id where i.id=image and i.sanitized_at is not null and i.published_at is not null; $$;
+revoke execute on function public.memocious_media_public(uuid) from public,anon,authenticated;grant execute on function public.memocious_media_public(uuid) to service_role;

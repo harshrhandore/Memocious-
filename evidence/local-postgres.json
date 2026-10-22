@@ -1,0 +1,10 @@
+{
+  "runtime": "PGlite embedded PostgreSQL; auth.users fixture is a minimal stub, not Supabase Auth",
+  "adminSuite": "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
+  "date": "2026-10-21T14:41:29.444Z",
+  "result": [
+    {
+      "result": "PASS: grants, denied bypass, guest admin denial, zero-price snapshot, replay, changed-payload conflict, negative quantity, visibility, history, revocation; fixtures rolled back"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+[build]
+command = "npm run build"
+publish = ".next"
+
+[build.environment]
+NODE_VERSION = "24.19.0"
+NEXT_DISABLE_NETLIFY_EDGE = "true"
+NEXT_PRIVATE_TARGET = "server"
+
+[dev]
+command = "npm run dev"
+targetPort = 3000
+framework = "#custom"

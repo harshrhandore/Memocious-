@@ -1,0 +1,334 @@
+{
+  "categories": [
+    {
+      "id": "806ae7bc-bbec-521e-9ed5-0c7ef30bddeb",
+      "slug": "gift-hampers",
+      "label": "Gift Hampers",
+      "parentSlug": null,
+      "icon": "gift",
+      "sortOrder": 0
+    },
+    {
+      "id": "8d143380-979d-5008-8655-9568ab296066",
+      "slug": "festive-hampers",
+      "label": "Festive Hampers",
+      "parentSlug": "gift-hampers",
+      "icon": "sparkles",
+      "sortOrder": 1
+    },
+    {
+      "id": "9eb41e2e-af45-5f64-9b33-8e6f375d83b8",
+      "slug": "bouquets",
+      "label": "Bouquets",
+      "parentSlug": null,
+      "icon": "flower",
+      "sortOrder": 2
+    },
+    {
+      "id": "c703996a-80d2-50ce-bcfe-9c1d00ff4688",
+      "slug": "flower-bouquets",
+      "label": "Flower Bouquets",
+      "parentSlug": "bouquets",
+      "icon": "flower",
+      "sortOrder": 3
+    },
+    {
+      "id": "6167ea22-3f84-5c63-9753-b279e28f2198",
+      "slug": "chocolate-bouquets",
+      "label": "Chocolate Bouquets",
+      "parentSlug": "bouquets",
+      "icon": "heart",
+      "sortOrder": 4
+    },
+    {
+      "id": "0b2b3332-3691-5181-ab5e-fd60725d4c24",
+      "slug": "cosmetic-bouquets",
+      "label": "Cosmetic Bouquets",
+      "parentSlug": "bouquets",
+      "icon": "sparkles",
+      "sortOrder": 5
+    },
+    {
+      "id": "38adf00a-3d26-5692-b6ac-32086b06f8cb",
+      "slug": "pipe-cleaner-bouquets",
+      "label": "Pipe-Cleaner Bouquets",
+      "parentSlug": "bouquets",
+      "icon": "flower",
+      "sortOrder": 6
+    },
+    {
+      "id": "d7563a20-1b28-58c9-b19c-d75918b29d9a",
+      "slug": "teddy-bouquets",
+      "label": "Teddy Bouquets",
+      "parentSlug": "bouquets",
+      "icon": "heart",
+      "sortOrder": 7
+    },
+    {
+      "id": "76587dc6-5031-5c84-b336-76ad4c02e550",
+      "slug": "resin-articles",
+      "label": "Resin Articles",
+      "parentSlug": null,
+      "icon": "gem",
+      "sortOrder": 8
+    },
+    {
+      "id": "72ecbe1e-0ae4-5e20-84d0-d841426b2870",
+      "slug": "keychains",
+      "label": "Keychains",
+      "parentSlug": null,
+      "icon": "key",
+      "sortOrder": 9
+    },
+    {
+      "id": "3b20d767-3087-5f21-8c3b-e8dfa58cdf78",
+      "slug": "photo-frames",
+      "label": "Photo Frames",
+      "parentSlug": null,
+      "icon": "frame",
+      "sortOrder": 10
+    },
+    {
+      "id": "3c13a130-aefd-5986-8d9d-38487754c115",
+      "slug": "name-plates",
+      "label": "Name Plates",
+      "parentSlug": null,
+      "icon": "frame",
+      "sortOrder": 11
+    },
+    {
+      "id": "09a00716-8d19-5b97-b0a5-b885e2028f96",
+      "slug": "varmala-preservation-plates",
+      "label": "Varmala Preservation Plates",
+      "parentSlug": null,
+      "icon": "flower",
+      "sortOrder": 12
+    },
+    {
+      "id": "6b7aca81-a586-5aa9-9481-9b612c3d3c70",
+      "slug": "puja-thalis",
+      "label": "Puja Thalis",
+      "parentSlug": null,
+      "icon": "sun",
+      "sortOrder": 13
+    },
+    {
+      "id": "fa5d2e0c-91eb-5c8a-805c-ab4fb304bf4b",
+      "slug": "navkar-mantra-frames",
+      "label": "Navkar Mantra Frames",
+      "parentSlug": null,
+      "icon": "sun",
+      "sortOrder": 14
+    },
+    {
+      "id": "ad36f3bc-7f0f-5c9f-ad12-f8407c18ace1",
+      "slug": "bookmarks",
+      "label": "Bookmarks",
+      "parentSlug": null,
+      "icon": "book",
+      "sortOrder": 15
+    },
+    {
+      "id": "a7064152-aa74-5640-b3c8-b7793bc77092",
+      "slug": "jewellery",
+      "label": "Jewellery",
+      "parentSlug": null,
+      "icon": "gem",
+      "sortOrder": 16
+    },
+    {
+      "id": "84342e15-c1c1-5edb-8946-d718c5868d90",
+      "slug": "pipe-cleaner-articles",
+      "label": "Pipe-Cleaner Articles",
+      "parentSlug": null,
+      "icon": "flower",
+      "sortOrder": 17
+    },
+    {
+      "id": "f7f2021b-15e9-5756-84c1-b039bab39680",
+      "slug": "flowers",
+      "label": "Flowers",
+      "parentSlug": null,
+      "icon": "flower",
+      "sortOrder": 18
+    },
+    {
+      "id": "f2d15949-ed2f-5288-b472-4895198cb6f7",
+      "slug": "mini-flower-pots",
+      "label": "Mini Flower Pots",
+      "parentSlug": "flowers",
+      "icon": "flower",
+      "sortOrder": 19
+    },
+    {
+      "id": "b8b28ae9-7f65-57f7-a366-6b5f22eea720",
+      "slug": "lamps",
+      "label": "Lamps",
+      "parentSlug": null,
+      "icon": "sun",
+      "sortOrder": 20
+    },
+    {
+      "id": "e25a8539-71b6-5d63-9fd8-29c5b4f3d3d0",
+      "slug": "curtain-holders",
+      "label": "Curtain Holders",
+      "parentSlug": null,
+      "icon": "gem",
+      "sortOrder": 21
+    },
+    {
+      "id": "c7f4582a-4ce7-5db9-b216-94a4a54fcd97",
+      "slug": "combos",
+      "label": "Combos",
+      "parentSlug": null,
+      "icon": "gift",
+      "sortOrder": 22
+    },
+    {
+      "id": "34ae223f-13e3-51fd-a9b7-e060cea19486",
+      "slug": "corporate-bulk-items",
+      "label": "Corporate/Bulk Items",
+      "parentSlug": null,
+      "icon": "briefcase",
+      "sortOrder": 23
+    }
+  ],
+  "occasions": [
+    {
+      "id": "81d3d184-9362-5f6c-8c1a-08a2d909c10d",
+      "slug": "birthday",
+      "label": "Birthday",
+      "parentSlug": null,
+      "icon": "cake",
+      "sortOrder": 0
+    },
+    {
+      "id": "ac38e47a-cea0-5c33-9226-04e438fa0815",
+      "slug": "anniversary-couples",
+      "label": "Anniversary & Couples",
+      "parentSlug": null,
+      "icon": "heart",
+      "sortOrder": 1
+    },
+    {
+      "id": "f7dcdfec-687a-5854-808a-ae06279b957b",
+      "slug": "wedding",
+      "label": "Wedding",
+      "parentSlug": null,
+      "icon": "rings",
+      "sortOrder": 2
+    },
+    {
+      "id": "749e4857-f095-5c6c-bf46-7da7a5b657f9",
+      "slug": "custom-wedding-packaging",
+      "label": "Custom Wedding Packaging",
+      "parentSlug": "wedding",
+      "icon": "gift",
+      "sortOrder": 3
+    },
+    {
+      "id": "d86e73e2-159a-57c5-820c-25ca535f6a5e",
+      "slug": "friendship",
+      "label": "Friendship",
+      "parentSlug": null,
+      "icon": "heart",
+      "sortOrder": 4
+    },
+    {
+      "id": "63663ead-4d7c-5217-8a3f-24c3c9525acf",
+      "slug": "graduation-farewell",
+      "label": "Graduation & Farewell",
+      "parentSlug": null,
+      "icon": "graduation",
+      "sortOrder": 5
+    },
+    {
+      "id": "928ddeb9-b822-5dcd-8eb5-312ef3826f6e",
+      "slug": "baby-shower-return-gifts",
+      "label": "Baby Shower Return Gifts",
+      "parentSlug": null,
+      "icon": "baby",
+      "sortOrder": 6
+    },
+    {
+      "id": "6851f889-9f38-5bce-84df-42189078c833",
+      "slug": "naming-ceremony-gifts",
+      "label": "Naming Ceremony Gifts",
+      "parentSlug": null,
+      "icon": "baby",
+      "sortOrder": 7
+    },
+    {
+      "id": "42879ca3-4051-5f27-a596-fa527512ee5f",
+      "slug": "return-gifts",
+      "label": "Return Gifts",
+      "parentSlug": null,
+      "icon": "gift",
+      "sortOrder": 8
+    },
+    {
+      "id": "c10fb84c-38c2-5049-bdca-98723ba8e111",
+      "slug": "just-because",
+      "label": "Just Because",
+      "parentSlug": null,
+      "icon": "flower",
+      "sortOrder": 9
+    },
+    {
+      "id": "faa3e5a2-1132-58d2-8d07-a700bcc63468",
+      "slug": "festive-gifting",
+      "label": "Festive Gifting",
+      "parentSlug": null,
+      "icon": "sparkles",
+      "sortOrder": 10
+    },
+    {
+      "id": "7d5c3d06-f7b2-5e54-980c-150f143f2846",
+      "slug": "rakhi",
+      "label": "Rakhi",
+      "parentSlug": "festive-gifting",
+      "icon": "heart",
+      "sortOrder": 11
+    },
+    {
+      "id": "f3b443de-1693-5864-a9e0-11a6ca149588",
+      "slug": "diwali",
+      "label": "Diwali",
+      "parentSlug": "festive-gifting",
+      "icon": "sun",
+      "sortOrder": 12
+    },
+    {
+      "id": "6d80a949-df0a-55eb-b984-faca41d4a44d",
+      "slug": "dussehra",
+      "label": "Dussehra",
+      "parentSlug": "festive-gifting",
+      "icon": "sun",
+      "sortOrder": 13
+    },
+    {
+      "id": "043b7255-a3c9-5513-b28b-d8af59d765c1",
+      "slug": "new-year",
+      "label": "New Year",
+      "parentSlug": "festive-gifting",
+      "icon": "sparkles",
+      "sortOrder": 14
+    },
+    {
+      "id": "4d387d2d-cc39-58bc-b5ca-84802162b808",
+      "slug": "christmas",
+      "label": "Christmas",
+      "parentSlug": "festive-gifting",
+      "icon": "gift",
+      "sortOrder": 15
+    },
+    {
+      "id": "6d65cf91-df98-585b-8790-efcd37e518c7",
+      "slug": "corporate",
+      "label": "Corporate",
+      "parentSlug": null,
+      "icon": "briefcase",
+      "sortOrder": 16
+    }
+  ]
+}

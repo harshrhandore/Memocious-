@@ -1,0 +1,25 @@
+
+> memocious@0.1.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ review no-selection stays distinct from intentional zero (2.220281ms)
+✔ enquiry boundary rejects mass assignment, price tampering and excessive Unicode (4.73182ms)
+✔ URL filters bound server workload and reject invalid ranges and sorts (3.026561ms)
+✔ return path cannot cross origins or enter admin (0.402363ms)
+✔ admin limits reject expired idle, stale MFA, wrong audience and revoked role (1.082344ms)
+✔ CSV and structured JSON do not activate formula or closing script content (0.390736ms)
+✔ WhatsApp uses country-aware destination and encodes intentional text only (3.877037ms)
+✔ primary login cannot add a new factor around an existing verified factor (0.143455ms)
+✔ uploaded EXIF image becomes a bounded, metadata-free WebP (270.085427ms)
+✔ active, disguised, corrupt and oversized uploads fail decoding (363.511852ms)
+✔ personalization admin fields cannot smuggle publication or roles (1.888714ms)
+✔ ingress ignores client-controlled forwarded chains and rejects unsupported hosts (41.202022ms)
+✔ encrypted provider credentials support explicit key rotation and reject tampering (9.5307ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1349.357276

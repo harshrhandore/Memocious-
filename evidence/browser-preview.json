@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-21T14:45:47.439Z",
+  "browser": "154.0.8037.57",
+  "widths": [
+    {
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "overflow": false
+    },
+    {
+      "width": 1536,
+      "overflow": false
+    }
+  ],
+  "errors": [],
+  "serviceWorkerCache": {
+    "memocious-static-v1": [
+      "/offline.html",
+      "/icons/icon-192.png",
+      "/icons/icon-512.png"
+    ]
+  },
+  "offlineFallback": "A little pause.\n\nYou’re offline. Reconnect to explore the collection.\n\nNo enquiry, personal message or photo has been queued or submitted.\n\nTry the collection again"
+}

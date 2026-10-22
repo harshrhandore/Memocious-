@@ -1,0 +1,422 @@
+
+> memocious@0.1.0 lint
+> biome lint src tests
+
+src/app/api/admin/mfa/route.ts:117:13 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    115 │     const jar = await cookies();
+    116 │     jar.set(cookieName, opaque, { ...cookieOptions, maxAge: 8 * 3600 });
+  > 117 │     jar.set(cookieName + ".csrf", csrfValue, {
+        │             ^^^^^^^^^^^^^^^^^^^^
+    118 │       ...cookieOptions,
+    119 │       maxAge: 3600,
+  
+  i Unsafe fix: Use a template literal.
+  
+    115 115 │       const jar = await cookies();
+    116 116 │       jar.set(cookieName, opaque, { ...cookieOptions, maxAge: 8 * 3600 });
+    117     │ - ····jar.set(cookieName·+·".csrf",·csrfValue,·{
+        117 │ + ····jar.set(`${cookieName}.csrf`,·csrfValue,·{
+    118 118 │         ...cookieOptions,
+    119 119 │         maxAge: 3600,
+  
+
+src/app/api/auth/logout/route.ts:29:16 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    27 │     const jar = await cookies();
+    28 │     jar.delete(cookieName);
+  > 29 │     jar.delete(cookieName + ".csrf");
+       │                ^^^^^^^^^^^^^^^^^^^^
+    30 │     return safeJson({ signedOut: true });
+    31 │   } catch (e) {
+  
+  i Unsafe fix: Use a template literal.
+  
+    27 27 │       const jar = await cookies();
+    28 28 │       jar.delete(cookieName);
+    29    │ - ····jar.delete(cookieName·+·".csrf");
+       29 │ + ····jar.delete(`${cookieName}.csrf`);
+    30 30 │       return safeJson({ signedOut: true });
+    31 31 │     } catch (e) {
+  
+
+src/app/api/auth/start/route.ts:46:7 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    44 │     const returnPath = safeReturnPath(b.next);
+    45 │     const redirectTo =
+  > 46 │       config.APP_ORIGIN + "/auth/callback?state=" + encodeURIComponent(state);
+       │       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    47 │     let url: string | undefined;
+    48 │     if (b.method === "google") {
+  
+  i Unsafe fix: Use a template literal.
+  
+    44 44 │       const returnPath = safeReturnPath(b.next);
+    45 45 │       const redirectTo =
+    46    │ - ······config.APP_ORIGIN·+·"/auth/callback?state="·+·encodeURIComponent(state);
+       46 │ + ······`${config.APP_ORIGIN}/auth/callback?state=${encodeURIComponent(state)}`;
+    47 47 │       let url: string | undefined;
+    48 48 │       if (b.method === "google") {
+  
+
+src/app/api/auth/start/route.ts:67:7 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    65 │     );
+    66 │     (await cookies()).set(
+  > 67 │       cookieName + ".pkce",
+       │       ^^^^^^^^^^^^^^^^^^^^
+    68 │       await encrypt({
+    69 │         values: verifier,
+  
+  i Unsafe fix: Use a template literal.
+  
+    65 65 │       );
+    66 66 │       (await cookies()).set(
+    67    │ - ······cookieName·+·".pkce",
+       67 │ + ······`${cookieName}.pkce`,
+    68 68 │         await encrypt({
+    69 69 │           values: verifier,
+  
+
+src/app/auth/callback/route.ts:10:23 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+     8 │ export async function GET(req: NextRequest) {
+     9 │   const jar = await cookies();
+  > 10 │   const raw = jar.get(cookieName + ".pkce")?.value;
+       │                       ^^^^^^^^^^^^^^^^^^^^
+    11 │   jar.delete(cookieName + ".pkce");
+    12 │   let target = "/login?error=expired";
+  
+  i Unsafe fix: Use a template literal.
+  
+     8  8 │   export async function GET(req: NextRequest) {
+     9  9 │     const jar = await cookies();
+    10    │ - ··const·raw·=·jar.get(cookieName·+·".pkce")?.value;
+       10 │ + ··const·raw·=·jar.get(`${cookieName}.pkce`)?.value;
+    11 11 │     jar.delete(cookieName + ".pkce");
+    12 12 │     let target = "/login?error=expired";
+  
+
+src/app/auth/callback/route.ts:11:14 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+     9 │   const jar = await cookies();
+    10 │   const raw = jar.get(cookieName + ".pkce")?.value;
+  > 11 │   jar.delete(cookieName + ".pkce");
+       │              ^^^^^^^^^^^^^^^^^^^^
+    12 │   let target = "/login?error=expired";
+    13 │   try {
+  
+  i Unsafe fix: Use a template literal.
+  
+     9  9 │     const jar = await cookies();
+    10 10 │     const raw = jar.get(cookieName + ".pkce")?.value;
+    11    │ - ··jar.delete(cookieName·+·".pkce");
+       11 │ + ··jar.delete(`${cookieName}.pkce`);
+    12 12 │     let target = "/login?error=expired";
+    13 13 │     try {
+  
+
+src/components/shop.tsx:63:12 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    61 │     });
+    62 │     p.set("page", String(page));
+  > 63 │     return "/shop?" + p.toString();
+       │            ^^^^^^^^^^^^^^^^^^^^^^^
+    64 │   }
+    65 │   return (
+  
+  i Unsafe fix: Use a template literal.
+  
+     61  61 │       });
+     62  62 │       p.set("page", String(page));
+     63     │ - ····return·"/shop?"·+·p.toString();
+         63 │ + ····return·`/shop?${p.toString()}`;
+     64  64 │     }
+     65  65 │     return (
+  
+
+src/components/sort.tsx:16:23 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    14 │           next.set("sort", e.target.value);
+    15 │           next.delete("page");
+  > 16 │           router.push("?" + next.toString());
+       │                       ^^^^^^^^^^^^^^^^^^^^^
+    17 │         }}
+    18 │       >
+  
+  i Unsafe fix: Use a template literal.
+  
+    14 14 │             next.set("sort", e.target.value);
+    15 15 │             next.delete("page");
+    16    │ - ··········router.push("?"·+·next.toString());
+       16 │ + ··········router.push(`?${next.toString()}`);
+    17 17 │           }}
+    18 18 │         >
+  
+
+src/components/ui.tsx:70:51 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    68 │         <Link
+    69 │           className="save-product"
+  > 70 │           href={`/login?next=${encodeURIComponent("/product/" + p.slug)}`}
+       │                                                   ^^^^^^^^^^^^^^^^^^^^
+    71 │           aria-label={`Sign in to save ${p.name}`}
+    72 │         >
+  
+  i Unsafe fix: Use a template literal.
+  
+     68  68 │           <Link
+     69  69 │             className="save-product"
+     70     │ - ··········href={`/login?next=${encodeURIComponent("/product/"·+·p.slug)}`}
+         70 │ + ··········href={`/login?next=${encodeURIComponent(`/product/${p.slug}`)}`}
+     71  71 │             aria-label={`Sign in to save ${p.name}`}
+     72  72 │           >
+  
+
+src/lib/catalogue.ts:58:10 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    56 │     (p) =>
+    57 │       (!f.q ||
+  > 58 │         (p.name + " " + p.description)
+       │          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    59 │           .toLowerCase()
+    60 │           .includes(f.q.toLowerCase())) &&
+  
+  i Unsafe fix: Use a template literal.
+  
+     56  56 │       (p) =>
+     57  57 │         (!f.q ||
+     58     │ - ········(p.name·+·"·"·+·p.description)
+         58 │ + ········(`${p.name}·${p.description}`)
+     59  59 │             .toLowerCase()
+     60  60 │             .includes(f.q.toLowerCase())) &&
+  
+
+src/lib/security.ts:62:23 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    60 │ export async function csrf() {
+    61 │   const jar = await cookies();
+  > 62 │   let value = jar.get(cookieName + ".csrf")?.value;
+       │                       ^^^^^^^^^^^^^^^^^^^^
+    63 │   if (!value) {
+    64 │     value = randomToken();
+  
+  i Unsafe fix: Use a template literal.
+  
+     60  60 │   export async function csrf() {
+     61  61 │     const jar = await cookies();
+     62     │ - ··let·value·=·jar.get(cookieName·+·".csrf")?.value;
+         62 │ + ··let·value·=·jar.get(`${cookieName}.csrf`)?.value;
+     63  63 │     if (!value) {
+     64  64 │       value = randomToken();
+  
+
+src/lib/security.ts:65:13 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    63 │   if (!value) {
+    64 │     value = randomToken();
+  > 65 │     jar.set(cookieName + ".csrf", value, { ...cookieOptions, maxAge: 3600 });
+       │             ^^^^^^^^^^^^^^^^^^^^
+    66 │   }
+    67 │   return value;
+  
+  i Unsafe fix: Use a template literal.
+  
+     63  63 │     if (!value) {
+     64  64 │       value = randomToken();
+     65     │ - ····jar.set(cookieName·+·".csrf",·value,·{·...cookieOptions,·maxAge:·3600·});
+         65 │ + ····jar.set(`${cookieName}.csrf`,·value,·{·...cookieOptions,·maxAge:·3600·});
+     66  66 │     }
+     67  67 │     return value;
+  
+
+src/lib/security.ts:79:39 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    77 │   const length = Number(req.headers.get("content-length") ?? 0);
+    78 │   if (length > 16384) throw new HttpError(413, "Request too large.");
+  > 79 │   const token = (await cookies()).get(cookieName + ".csrf")?.value;
+       │                                       ^^^^^^^^^^^^^^^^^^^^
+    80 │   const submitted = req.headers.get("x-csrf-token");
+    81 │   if (!token || !submitted || !equal(hash(token), hash(submitted)))
+  
+  i Unsafe fix: Use a template literal.
+  
+     77  77 │     const length = Number(req.headers.get("content-length") ?? 0);
+     78  78 │     if (length > 16384) throw new HttpError(413, "Request too large.");
+     79     │ - ··const·token·=·(await·cookies()).get(cookieName·+·".csrf")?.value;
+         79 │ + ··const·token·=·(await·cookies()).get(`${cookieName}.csrf`)?.value;
+     80  80 │     const submitted = req.headers.get("x-csrf-token");
+     81  81 │     if (!token || !submitted || !equal(hash(token), hash(submitted)))
+  
+
+src/lib/whatsapp.ts:4:44 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    2 │ export function whatsappNumber(value: string) {
+    3 │   if (!/^[1-9][0-9]{6,14}$/.test(value)) return null;
+  > 4 │   const phone = parsePhoneNumberFromString("+" + value);
+      │                                            ^^^^^^^^^^^
+    5 │   return phone?.isValid() && phone.number.slice(1) === value ? value : null;
+    6 │ }
+  
+  i Unsafe fix: Use a template literal.
+  
+     2  2 │   export function whatsappNumber(value: string) {
+     3  3 │     if (!/^[1-9][0-9]{6,14}$/.test(value)) return null;
+     4    │ - ··const·phone·=·parsePhoneNumberFromString("+"·+·value);
+        4 │ + ··const·phone·=·parsePhoneNumberFromString(`+${value}`);
+     5  5 │     return phone?.isValid() && phone.number.slice(1) === value ? value : null;
+     6  6 │   }
+  
+
+src/lib/whatsapp.ts:23:30 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+  
+    21 │   const dest = whatsappNumber(r.number);
+    22 │   if (!dest) throw new Error("WhatsApp ordering is temporarily unavailable.");
+  > 23 │   const productUrl = new URL("/product/" + encodeURIComponent(r.slug), origin)
+       │                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    24 │     .href;
+    25 │   const full = [
+  
+  i Unsafe fix: Use a template literal.
+  
+    21 21 │     const dest = whatsappNumber(r.number);
+    22 22 │     if (!dest) throw new Error("WhatsApp ordering is temporarily unavailable.");
+    23    │ - ··const·productUrl·=·new·URL("/product/"·+·encodeURIComponent(r.slug),·origin)
+       23 │ + ··const·productUrl·=·new·URL(`/product/${encodeURIComponent(r.slug)}`,·origin)
+    24 24 │       .href;
+    25 25 │     const full = [
+  
+
+src/app/[admin]/page.tsx:39:11 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+  
+    37 │         available={authReady}
+    38 │         stage={
+  > 39 │           !s || s.audience !== "admin"
+       │           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    40 │             ? "primary"
+    41 │             : s.assurance === "aal2"
+  
+  i Unsafe fix: Change to an optional chain.
+  
+    37 37 │           available={authReady}
+    38 38 │           stage={
+    39    │ - ··········!s·||·s.audience·!==·"admin"
+       39 │ + ··········s?.audience·!==·"admin"
+    40 40 │               ? "primary"
+    41 41 │               : s.assurance === "aal2"
+  
+
+src/app/globals.css:2039:27 lint/complexity/noImportantStyles  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Avoid the use of the !important style.
+  
+    2037 │   *:before,
+    2038 │   *:after {
+  > 2039 │     scroll-behavior: auto !important;
+         │                           ^^^^^^^^^^
+    2040 │     animation: none !important;
+    2041 │     transition: none !important;
+  
+  i This style reverses the cascade logic, and precedence is reversed. This could lead to having styles with higher specificity being overridden by styles with lower specificity.
+  
+  i Unsafe fix: Remove the style.
+  
+    2039 │ ····scroll-behavior:·auto·!important;
+         │                          ----------- 
+
+src/app/globals.css:2040:21 lint/complexity/noImportantStyles  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Avoid the use of the !important style.
+  
+    2038 │   *:after {
+    2039 │     scroll-behavior: auto !important;
+  > 2040 │     animation: none !important;
+         │                     ^^^^^^^^^^
+    2041 │     transition: none !important;
+    2042 │   }
+  
+  i This style reverses the cascade logic, and precedence is reversed. This could lead to having styles with higher specificity being overridden by styles with lower specificity.
+  
+  i Unsafe fix: Remove the style.
+  
+    2040 │ ····animation:·none·!important;
+         │                    ----------- 
+
+src/app/globals.css:2041:22 lint/complexity/noImportantStyles  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Avoid the use of the !important style.
+  
+    2039 │     scroll-behavior: auto !important;
+    2040 │     animation: none !important;
+  > 2041 │     transition: none !important;
+         │                      ^^^^^^^^^^
+    2042 │   }
+    2043 │ }
+  
+  i This style reverses the cascade logic, and precedence is reversed. This could lead to having styles with higher specificity being overridden by styles with lower specificity.
+  
+  i Unsafe fix: Remove the style.
+  
+    2041 │ ····transition:·none·!important;
+         │                     ----------- 
+
+src/app/globals.css:1034:1 lint/style/noDescendingSpecificity ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Descending specificity selector found. This selector specificity is (0, 1, 1)
+  
+    1032 │   padding-top: 35px;
+    1033 │ }
+  > 1034 │ .pagination a,
+         │ ^^^^^^^^^^^^^
+    1035 │ .pagination span {
+    1036 │   width: 44px;
+  
+  i This selector specificity is (0, 1, 2)
+  
+    900 │   flex-direction: column;
+    901 │ }
+  > 902 │ .mobile-nav nav a {
+        │ ^^^^^^^^^^^^^^^^^
+    903 │   padding: 17px 0;
+    904 │   border-bottom: 1px solid var(--border);
+  
+  i Descending specificity selector may not be applied. Consider rearranging the order of the selectors. See MDN web docs for more details.
+  
+
+The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
+Diagnostics not shown: 13.
+Checked 61 files in 210ms. No fixes applied.
+Found 17 warnings.
+Found 16 infos.

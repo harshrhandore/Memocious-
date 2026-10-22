@@ -1,0 +1,158 @@
+[
+  {
+    "version": "20261021083848",
+    "name": "memocious_foundation"
+  },
+  {
+    "version": "20261021085741",
+    "name": "memocious_sessions"
+  },
+  {
+    "version": "20261021090221",
+    "name": "memocious_publication"
+  },
+  {
+    "version": "20261021090253",
+    "name": "memocious_public_reads"
+  },
+  {
+    "version": "20261021090315",
+    "name": "memocious_enquiries"
+  },
+  {
+    "version": "20261021090414",
+    "name": "memocious_admin_catalogue"
+  },
+  {
+    "version": "20261021090808",
+    "name": "memocious_admin_assurance"
+  },
+  {
+    "version": "20261021092051",
+    "name": "memocious_safe_settings"
+  },
+  {
+    "version": "20261021092143",
+    "name": "memocious_authorized_replay"
+  },
+  {
+    "version": "20261021092250",
+    "name": "memocious_replay_transaction"
+  },
+  {
+    "version": "20261021092728",
+    "name": "memocious_stable_guest_scope"
+  },
+  {
+    "version": "20261021092837",
+    "name": "memocious_filter_bounds"
+  },
+  {
+    "version": "20261021103106",
+    "name": "memocious_admin_editor_1_contracts"
+  },
+  {
+    "version": "20261021103547",
+    "name": "memocious_admin_editor_2_base"
+  },
+  {
+    "version": "20261021103603",
+    "name": "memocious_admin_editor_2_fields"
+  },
+  {
+    "version": "20261021103615",
+    "name": "memocious_admin_editor_2_options"
+  },
+  {
+    "version": "20261021104524",
+    "name": "memocious_admin_editor_2_taxonomy"
+  },
+  {
+    "version": "20261021104620",
+    "name": "memocious_admin_editor_3_actions"
+  },
+  {
+    "version": "20261021104629",
+    "name": "memocious_admin_workspace_list"
+  },
+  {
+    "version": "20261021104638",
+    "name": "memocious_admin_workspace_settings"
+  },
+  {
+    "version": "20261021104717",
+    "name": "memocious_admin_workspace_taxonomy"
+  },
+  {
+    "version": "20261021104726",
+    "name": "memocious_bulk_guard"
+  },
+  {
+    "version": "20261021104736",
+    "name": "memocious_media_0_contracts"
+  },
+  {
+    "version": "20261021104837",
+    "name": "memocious_media_1_begin"
+  },
+  {
+    "version": "20261021104846",
+    "name": "memocious_media_2_ready"
+  },
+  {
+    "version": "20261021104855",
+    "name": "memocious_media_3_read"
+  },
+  {
+    "version": "20261021105103",
+    "name": "memocious_media_4_update"
+  },
+  {
+    "version": "20261021105112",
+    "name": "memocious_media_5_public"
+  },
+  {
+    "version": "20261021105121",
+    "name": "memocious_media_6_claim"
+  },
+  {
+    "version": "20261021105350",
+    "name": "memocious_media_7_cleanup"
+  },
+  {
+    "version": "20261021105359",
+    "name": "memocious_option_limits"
+  },
+  {
+    "version": "20261021105507",
+    "name": "memocious_publication_fields"
+  },
+  {
+    "version": "20261021105516",
+    "name": "memocious_storage"
+  },
+  {
+    "version": "20261021111321",
+    "name": "memocious_distributed_limits"
+  },
+  {
+    "version": "20261021111330",
+    "name": "memocious_admin_revocation"
+  },
+  {
+    "version": "20261021112423",
+    "name": "memocious_sample_drafts"
+  },
+  {
+    "version": "20261021112558",
+    "name": "memocious_operator_bootstrap"
+  },
+  {
+    "version": "20261021113014",
+    "name": "memocious_signin_consent"
+  },
+  {
+    "version": "20261021113212",
+    "name": "memocious_relevance"
+  }
+]

@@ -1,0 +1,5 @@
+Phase1 source7cf9f3c: 11 passed, 1 skipped (desktop mobile-only case).
+Chromium desktop/mobile emulation; two Studio UI cases use isolated API fixtures.
+Actual managed Auth/MFA/BFF/Storage integration remains blocked.
+Studio fixture starts fresh for each run to use current editor and build CSS.
+See e2e-font-priority-phase1.txt and playwright.json.

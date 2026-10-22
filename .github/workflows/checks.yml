@@ -1,0 +1,24 @@
+name: Memocious checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:db
+      - run: npm run scan:secrets
+      - run: npm audit --audit-level=high
+      - run: npm run build
+# Hosted E2E/Semgrep/ZAP and actual Supabase identity/storage checks remain release gates.

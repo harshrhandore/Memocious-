@@ -1,0 +1,3 @@
+create function memocious_private.save_product_fields(sid uuid,pid uuid,fields jsonb) returns memocious.products language plpgsql security invoker set search_path='' as $$
+declare p memocious.products;begin p:=memocious_private.product_fields_base(sid,pid,fields);perform memocious_private.product_fields_taxonomy(sid,pid,fields);perform memocious_private.product_fields_options(sid,pid,fields);return p;end $$;
+revoke execute on function memocious_private.save_product_fields(uuid,uuid,jsonb) from public,anon,authenticated;grant execute on function memocious_private.save_product_fields(uuid,uuid,jsonb) to service_role;

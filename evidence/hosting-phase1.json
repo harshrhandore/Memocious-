@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-21",
+  "siteId": "3085b325-fb79-4e87-9c6e-c1b6f54059ae",
+  "site": "memocious-staging",
+  "deployment": "absent",
+  "verifiedEnvironmentMetadata": [
+    {
+      "key": "SESSION_KEY_VERSION",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    },
+    {
+      "key": "SUPABASE_PUBLISHABLE_KEY",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    },
+    {
+      "key": "SUPABASE_URL",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    },
+    {
+      "key": "TRUSTED_INGRESS",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    },
+    {
+      "key": "APP_MODE",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    },
+    {
+      "key": "APP_ORIGIN",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    },
+    {
+      "key": "POLICIES_APPROVED",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    },
+    {
+      "key": "RATE_LIMIT_STORE",
+      "secret": false,
+      "scopes": [
+        "builds",
+        "functions",
+        "post_processing",
+        "runtime"
+      ],
+      "contexts": [
+        "all"
+      ]
+    }
+  ],
+  "secretBindingsVerified": false,
+  "supabaseExtension": "installed with explicit user approval; selected project/credential bindings not verified",
+  "cloudNetwork": {
+    "revision": 36,
+    "observationsCurrent": true,
+    "state": "enforced",
+    "customAllowedHosts": [],
+    "apiNetlifyAllowed": false,
+    "sourceConfigVersion": "a11d86b9-b631-4f60-b3ea-13da9f09ee45~cecfgver_6ad83f251cb88190bea0715a3fa25b56",
+    "userConfirmedSavedAndPublishedDomain": "api.netlify.com",
+    "savedConfigurationScreenshot": "Shows one additional allowed domain: api.netlify.com",
+    "configurationMismatch": "Published setting is confirmed by user; running worker still reports the earlier source configuration version and no added hosts. No restart/update tool is available."
+  },
+  "latestApiProbe": "2026-10-21T15:10:03Z: proxy CONNECT 403 before Netlify",
+  "limitations": "Native connection is separate from CLI authorization and application runtime setup. No environment values or credentials are included."
+}
