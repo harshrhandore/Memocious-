@@ -75,10 +75,18 @@ export async function csrf() {
     const opaque = jar.get(cookieName)?.value;
     if (authReady && opaque) {
       const { rpc } = await import("./server-db");
-      await rpc("memocious_csrf_rotate", {
-        cookie_hash: hash(opaque),
-        new_csrf_hash: hash(value),
-      });
+      try {
+        await rpc("memocious_csrf_rotate", {
+          cookie_hash: hash(opaque),
+          new_csrf_hash: hash(value),
+        });
+      } catch (error) {
+        // An expired/revoked database session can outlive its browser cookie.
+        // Treat that as a signed-out visitor so /api/session can issue a fresh
+        // CSRF token instead of failing before it can return JSON.
+        if (!(error instanceof HttpError) || error.status !== 401) throw error;
+        jar.delete(cookieName);
+      }
     }
     jar.set(cookieName + ".csrf", value, { ...cookieOptions, maxAge: 3600 });
   }
