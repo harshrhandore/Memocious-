@@ -59,7 +59,7 @@ export function LoginForm({
       }
       if (!r.ok) throw new Error(data.message ?? `Request failed (${r.status}).`);
       if (data.url) location.assign(data.url);
-      else setStatus(data.message);
+      else setStatus(data.message ?? "Please try again shortly.");
     } catch (e) {
       setStatus(e instanceof Error ? e.message : "Please try again shortly.");
     } finally {

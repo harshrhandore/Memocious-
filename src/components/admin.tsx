@@ -138,7 +138,15 @@ export function AdminPanel({
             disabled={busy}
             onClick={async () => {
               const d = await send("/api/admin/mfa", { action: "list" });
-              if (d) setFactors(d.factors);
+              if (d && Array.isArray(d.factors)) {
+                setFactors(
+                  d.factors.filter(
+                    (factor): factor is { id: string; label: string } =>
+                      typeof factor?.id === "string" &&
+                      typeof factor?.label === "string",
+                  ),
+                );
+              }
             }}
           >
             Find my authenticator
@@ -149,7 +157,13 @@ export function AdminPanel({
             disabled={busy}
             onClick={async () => {
               const d = await send("/api/admin/mfa", { action: "enroll" });
-              if (d) setEnrollment(d);
+              if (
+                d &&
+                typeof d.factorId === "string" &&
+                typeof d.secret === "string"
+              ) {
+                setEnrollment({ factorId: d.factorId, secret: d.secret });
+              }
             }}
           >
             Add an authenticator
