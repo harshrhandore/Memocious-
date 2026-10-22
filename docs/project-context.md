@@ -8,7 +8,7 @@ Memocious is a Next.js/React/TypeScript storefront for thoughtful gifts, backed 
 
 Primary staging site: https://memocious-staging.netlify.app
 
-Admin/studio route: https://memocious-staging.netlify.app/studio-84ed0ab9be272e30cd4a2a30c75fe8c2
+Admin/studio route: use the value configured in Netlify's `ADMIN_ROUTE` environment variable; do not commit or document its literal value.
 
 GitHub repository: https://github.com/harshrhandore/Memocious-
 
