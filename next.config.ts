@@ -3,7 +3,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: { useTypeScriptCli: false },
   productionBrowserSourceMaps: false,
-  images: { remotePatterns: [] },
+  // Netlify's generated image function is returning 502s for the local
+  // catalogue assets on this staging deploy. Serve the bundled assets
+  // directly until the image optimizer is re-enabled and verified.
+  images: { remotePatterns: [], unoptimized: true },
   async redirects() {
     return [{ source: "/home", destination: "/", permanent: true }];
   },

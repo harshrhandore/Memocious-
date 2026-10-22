@@ -1677,6 +1677,8 @@ dialog::backdrop {
     width: 60%;
     left: 8px;
     top: 98px;
+    transform: none;
+    box-shadow: none;
   }
   .photo-back {
     width: 53%;

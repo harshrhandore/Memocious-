@@ -8,6 +8,7 @@
 | Full product/taxonomy/settings Studio and count/version-bound bulk deletion | Implemented; localSQL and desktop/mobile isolatedUI pass |
 | Quarantine/decode/metadata strip/private preview/approval/reorder/proxy/cleanup | Implemented; local decoder/SQL pass; hosted objects/scheduler blocked |
 | Managed identity, opaque sessions, refresh lease, consent/CSRF, TOTP and operator bootstrap | Implemented; actual managed owner/provider flows blocked |
+| Owner password-recovery route and password-reset form (Supabase recovery callback, redirect allow-list, expiry/error handling) | TODO; current recovery link falls back to the homepage and cannot complete owner recovery |
 | Atomic distributed limits, trusted ingress and distinct challenge tokens | Implemented; native counter boundary passes; hosted spoof/concurrency/outage tests blocked |
 | Business number and existing policy-text approval | Supplied and recorded; registration/legal/retention operational review remains |
 | Netlify project and approved Supabase extension | Created/installed; public env readback verified; no deployment/secret verification |

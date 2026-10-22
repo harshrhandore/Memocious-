@@ -14,7 +14,7 @@ Source: specification.md v2, 21 October 2026. No phase is declared complete. Evi
 | 5.2 Responsibilities | Strict server schemas, derived actor/prices, no browser provider SDK/tokens | Local boundary tests PASS; provider integration BLOCKED |
 | 5.3 Database access |37 privateRLS tables, zero browser private grants/business RPC exposure;3 safe projections;39 applied migrations | Managed grants/role checks PASS; actual signedA/B/owner/editor JWT matrix BLOCKED |
 | 5.4 Transactions/outbox | Enquiry order/item/event/consent/counter/idempotency commit atomically | Local PostgreSQL tests PASS; real concurrent sessions/outbox workers BLOCKED / unbuilt |
-| 6.1 Public identity | Google/magic-link PKCE/state flow and verified nonanonymous guard coded | BLOCKED provider callbacks/SMTP/challenge compatibility/real user tests |
+| 6.1 Public identity | Google/magic-link PKCE/state flow and verified nonanonymous guard coded | BLOCKED provider callbacks/SMTP/challenge compatibility/real user tests; owner password-recovery callback/form remains TODO (current link falls back to homepage) |
 | 6.2 Session contract | Opaque registry, encrypted tokens, refresh lease, revocation, bound CSRF, explicit current/previous keyring | Local registry/crypto tests PASS; real refresh/logout/revocation/rotation BLOCKED |
 | 6.3 Admin | Operator-only verified-account bootstrap, aal1 quarantine, SDK TOTP, active role/recent-MFA checks; full product/taxonomy/settings/media/bulk UI | LocalSQL and desktop/mobile isolatedUI PASS; actual owner enrollment/recovery/provider flows BLOCKED |
 | 7.1 Visual/reusable UI | Warm palette, licensed optimized fonts, grids, native dialogs, focus/reduced motion, swipe/zoom/thumbnails | Chromium/axe checks PASS in named flows; physical devices/screen reader BLOCKED |
@@ -50,7 +50,7 @@ Source: specification.md v2, 21 October 2026. No phase is declared complete. Evi
 | 16.4 Backup/retention/incidents | Operator runbooks and reserved jobs only | BLOCKED: no DB+blob backup/restore/RPO/RTO/cleanup drill |
 | 16.5 Privacy/legal | Existing policy texts approved by user, consent enforced before sign-in/enquiry; demo collects noPII | PARTIAL: legal/retention/security-contact and export/erasure workflows remain |
 | 16.6 Release gate | Named results/limitations, missing checks explicit | BLOCKED; no production release |
-| 17.1 Phase1 | Full catalogue, protected editor/media/settings/bulk code;39 applied migrations and local evidence | INCOMPLETE: hosted deploy, actual Auth/TOTP/BFF/Storage/directJWT matrix, recovery/release checks andLCP goal |
+| 17.1 Phase1 | Full catalogue, protected editor/media/settings/bulk code;39 applied migrations and local evidence | INCOMPLETE: hosted deploy, actual Auth/TOTP/BFF/Storage/directJWT matrix, owner password-recovery UI/callback, recovery/release checks andLCP goal |
 | 17.2 Phase2 | Independent public home/about/FAQ/enterprise brochure | BLOCKED dependent features; reviews/wishlist/addresses/proof manager/enterprise form/PDF not active |
 | 17.3 Phase3 | Denied schema contracts | BLOCKED builder/private uploads/retention |
 | 17.4 Phase4 | Denied schema contracts | BLOCKED tracking/state/guest claim/export/deletion |
