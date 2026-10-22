@@ -52,8 +52,16 @@ export function AdminPanel({
             : {}),
         }),
       });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.message);
+      const raw = await r.text();
+      let d: { message?: string; [key: string]: unknown } = {};
+      if (raw.trim()) {
+        try {
+          d = JSON.parse(raw) as typeof d;
+        } catch {
+          throw new Error(`Server returned an invalid response (${r.status}).`);
+        }
+      }
+      if (!r.ok) throw new Error(d.message ?? `Request failed (${r.status}).`);
       return d;
     } catch (e) {
       setStatus(e instanceof Error ? e.message : "Please try again.");

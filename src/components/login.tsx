@@ -48,8 +48,16 @@ export function LoginForm({
             : {}),
         }),
       });
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.message);
+      const raw = await r.text();
+      let data: { message?: string; url?: string } = {};
+      if (raw.trim()) {
+        try {
+          data = JSON.parse(raw) as typeof data;
+        } catch {
+          throw new Error(`Server returned an invalid response (${r.status}).`);
+        }
+      }
+      if (!r.ok) throw new Error(data.message ?? `Request failed (${r.status}).`);
       if (data.url) location.assign(data.url);
       else setStatus(data.message);
     } catch (e) {
