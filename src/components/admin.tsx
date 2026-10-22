@@ -27,9 +27,26 @@ export function AdminPanel({
     setBusy(true);
     setStatus("");
     try {
-      const s = await fetch("/api/session", { cache: "no-store" }).then((r) =>
-        r.json(),
-      );
+      const sessionResponse = await fetch("/api/session", {
+        cache: "no-store",
+      });
+      const sessionRaw = await sessionResponse.text();
+      let s: { csrf?: string; message?: string } = {};
+      if (sessionRaw.trim()) {
+        try {
+          s = JSON.parse(sessionRaw) as typeof s;
+        } catch {
+          throw new Error(
+            `Session service returned an invalid response (${sessionResponse.status}).`,
+          );
+        }
+      }
+      if (!sessionResponse.ok)
+        throw new Error(
+          s.message ?? `Session request failed (${sessionResponse.status}).`,
+        );
+      if (typeof s.csrf !== "string" || !s.csrf)
+        throw new Error("Session service did not provide a security token.");
       const challenge =
         document.querySelector<HTMLInputElement>(
           '[name="cf-turnstile-response"]',
