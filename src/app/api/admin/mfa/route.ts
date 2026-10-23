@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { z } from "zod";
 import { canEnrollInitialFactor } from "@/lib/session-policy";
+import { clearPendingOwnerEnrollment } from "@/lib/mfa-enrollment";
 import {
   guardMutation,
   readBody,
@@ -82,12 +83,31 @@ export async function POST(req: NextRequest) {
           403,
           "Use the audited operator procedure for factor changes.",
         );
+      try {
+        await clearPendingOwnerEnrollment(factors.data.all, (factorId) =>
+          client.auth.mfa.unenroll({ factorId }),
+        );
+      } catch {
+        throw new HttpError(503, "An unfinished authenticator setup could not be restarted. Please try again shortly.");
+      }
       const { data, error } = await client.auth.mfa.enroll({
         factorType: "totp",
-        friendlyName: "Memocious owner",
+        friendlyName: freshOwner
+          ? `Memocious backup ${crypto.randomUUID()}`
+          : "Memocious owner",
+        issuer: "Memocious",
       });
-      if (error)
+      if (error) {
+        // Log only the provider code, never factors, secrets, tokens or codes.
+        console.error("MFA enrollment failed", { code: error.code, status: error.status });
+        if (error.code === "mfa_factor_name_conflict")
+          throw new HttpError(409, "Another authenticator setup is in progress. Close other admin tabs and try again.");
+        if (error.code === "mfa_totp_enroll_not_enabled")
+          throw new HttpError(503, "Authenticator enrollment is disabled in the authentication provider settings.");
+        if (error.code === "too_many_enrolled_mfa_factors")
+          throw new HttpError(409, "The account has reached its authenticator limit.");
         throw new HttpError(503, "Authenticator setup could not be completed.");
+      }
       return safeJson({
         factorId: data.id,
         secret: data.totp.secret,
