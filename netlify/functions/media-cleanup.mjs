@@ -1,3 +1,4 @@
+import { cleanupPhase2 } from "../../src/lib/phase2-cleanup.mjs";
 import { createClient } from "@supabase/supabase-js";
 import { cleanupMedia } from "../../src/lib/media-cleanup.mjs";
 export default async () => {
@@ -18,6 +19,11 @@ export default async () => {
   const result = await cleanupMedia(db);
   console.log(JSON.stringify(result));
   if (result.failed) throw new Error("Media cleanup requires retry");
+  if (Netlify.env.get("PHASE_2_ENABLED") === "true") {
+    const phase2 = await cleanupPhase2(db);
+    console.log(JSON.stringify(phase2));
+    if (phase2.failed) throw new Error("Phase 2 cleanup requires retry");
+  }
   return Response.json(result);
 };
 // Every hour at minute 17 UTC; no customer-local-time dependency. Scheduled invocations only.

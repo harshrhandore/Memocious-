@@ -1,3 +1,5 @@
+import { Reviews, type PublicReview } from "@/components/reviews";
+import { rpc } from "@/lib/server-db";
 import { Wishlist } from "@/components/wishlist";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,6 +35,14 @@ export default async function Page({
     getProducts(filtersSchema.parse({ limit: 4 })),
     getPublicSettings(),
   ]);
+  const reviews = phase2Ready
+    ? await rpc<{
+        items: PublicReview[];
+        count: number;
+        average: number | null;
+        distribution: Record<string, number>;
+      }>("memocious_reviews", { product_slug: p.slug })
+    : null;
   return (
     <>
       <div className="container page-header">
@@ -110,6 +120,7 @@ export default async function Page({
           </div>
         </div>
       </div>
+      {reviews && <Reviews product={p.id} slug={p.slug} {...reviews} />}
       <section className="container section">
         <SectionHeading
           eyebrow="MORE LITTLE POSSIBILITIES"

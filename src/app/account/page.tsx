@@ -1,3 +1,4 @@
+import { AccountPhase2 } from "@/components/account-phase2";
 import { Wishlist } from "@/components/wishlist";
 import { redirect } from "next/navigation";
 import { authReady, phase2Ready } from "@/lib/config";
@@ -30,7 +31,7 @@ export default async function Account() {
     <div className="center-page">
       <h1>Your little corner.</h1>
       <AccountForm fullName={profile.fullName} />
-      {phase2Ready && <Wishlist />}
+      {phase2Ready && <><Wishlist /><AccountPhase2 /></>}
       <p className="quiet-note">
         Reviews, private drafts and tracking will appear here after
         their verification gates are complete.

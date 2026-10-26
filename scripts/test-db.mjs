@@ -12,6 +12,7 @@ let result;
 try {
   await db.exec(await readFile("tests/admin-database.sql", "utf8"));
   console.log(JSON.stringify((await db.exec(await readFile("tests/wishlist-database.sql", "utf8"))).at(-1).rows));
+  console.log(JSON.stringify((await db.exec(await readFile("tests/phase2-database.sql", "utf8"))).at(-1).rows));
   result = await db.exec(await readFile("tests/database.sql", "utf8"));
 } catch (e) {
   console.error(

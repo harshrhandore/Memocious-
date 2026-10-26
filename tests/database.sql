@@ -6,7 +6,7 @@ begin
  for x in select n.nspname,c.relname,c.relrowsecurity from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('memocious','memocious_private') and c.relkind='r' loop
  if not x.relrowsecurity then raise exception 'RLS missing';end if;
  if has_table_privilege('anon',format('%I.%I',x.nspname,x.relname),'SELECT,INSERT,UPDATE,DELETE') or has_table_privilege('authenticated',format('%I.%I',x.nspname,x.relname),'SELECT,INSERT,UPDATE,DELETE') then raise exception 'Private grants exposed';end if;end loop;
- for x in select p.oid,p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname like 'memocious_%' and p.proname not in ('memocious_catalogue','memocious_product','memocious_taxonomy','memocious_public_settings') loop
+ for x in select p.oid,p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname like 'memocious_%' and p.proname not in ('memocious_catalogue','memocious_product','memocious_taxonomy','memocious_public_settings','memocious_reviews') loop
  if has_function_privilege('anon',x.oid,'EXECUTE') or has_function_privilege('authenticated',x.oid,'EXECUTE') then raise exception 'Mutation execution exposed';end if;end loop;
  execute 'set local role anon';
  perform public.memocious_taxonomy(); perform public.memocious_catalogue('{}');
