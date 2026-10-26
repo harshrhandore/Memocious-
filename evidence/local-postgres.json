@@ -6,8 +6,13 @@
       "result": "PASS: Phase 2 zero/mixed ratings, edit/moderation versions, restore uniqueness, self approval denial, report dedup, address/export isolation, privacy requests, private media ownership/tickets/publication/revocation, ENT/contact replay/MOQ/date, quote history/order conversion/outbox, counter zero and PDF draft/public boundaries"
     }
   ],
+  "builderSuite": [
+    {
+      "result": "PASS: owned draft create/retry/read/save, A/B/guest isolation, stale version/schema/step/payload/type/budget rejection, export isolation, expiry/cleanup, delete retry and revocation"
+    }
+  ],
   "adminSuite": "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
-  "date": "2026-10-26T19:51:21.290Z",
+  "date": "2026-10-26T20:01:35.788Z",
   "result": [
     {
       "result": "PASS: grants, denied bypass, guest admin denial, zero-price snapshot, replay, changed-payload conflict, negative quantity, visibility, history, revocation; fixtures rolled back"

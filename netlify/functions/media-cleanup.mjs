@@ -24,6 +24,11 @@ export default async () => {
     console.log(JSON.stringify(phase2));
     if (phase2.failed) throw new Error("Phase 2 cleanup requires retry");
   }
+  if (Netlify.env.get("PHASE_3_ENABLED") === "true" && Netlify.env.get("PHASE_2_ENABLED") === "true") {
+    const draftCleanup = await db.rpc("memocious_builder_cleanup");
+    if (draftCleanup.error) throw new Error("Builder draft cleanup requires retry");
+    console.log(JSON.stringify(draftCleanup.data));
+  }
   return Response.json(result);
 };
 // Every hour at minute 17 UTC; no customer-local-time dependency. Scheduled invocations only.

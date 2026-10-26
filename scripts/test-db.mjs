@@ -21,11 +21,14 @@ if (process.argv.includes("--generate-types")) {
 }
 let result;
 let phase2Result;
+let builderResult;
 try {
   await db.exec(await readFile("tests/admin-database.sql", "utf8"));
   console.log(JSON.stringify((await db.exec(await readFile("tests/wishlist-database.sql", "utf8"))).at(-1).rows));
   phase2Result=(await db.exec(await readFile("tests/phase2-database.sql", "utf8"))).at(-1).rows;
   console.log(JSON.stringify(phase2Result));
+  builderResult=(await db.exec(await readFile("tests/builder-database.sql","utf8"))).at(-1).rows;
+  console.log(JSON.stringify(builderResult));
   result = await db.exec(await readFile("tests/database.sql", "utf8"));
 } catch (e) {
   console.error(
@@ -43,6 +46,7 @@ await writeFile(
         "PGlite embedded PostgreSQL; auth.users fixture is a minimal stub, not Supabase Auth",
       node: process.version,
       phase2Suite:phase2Result,
+      builderSuite:builderResult,
       adminSuite:
         "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
       date: new Date().toISOString(),

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AccountPhase2 } from "@/components/account-phase2";
 import { Wishlist } from "@/components/wishlist";
 import { redirect } from "next/navigation";
@@ -30,11 +31,19 @@ export default async function Account() {
   return (
     <div className="center-page">
       <h1>Your little corner.</h1>
+      <p>
+        <Link href="/build-a-gift">Explore the custom gift draft editor</Link>
+      </p>
       <AccountForm fullName={profile.fullName} />
-      {phase2Ready && <><Wishlist /><AccountPhase2 /></>}
+      {phase2Ready && (
+        <>
+          <Wishlist />
+          <AccountPhase2 />
+        </>
+      )}
       <p className="quiet-note">
-        Reviews, private drafts and tracking will appear here after
-        their verification gates are complete.
+        Reviews, private drafts and tracking will appear here after their
+        verification gates are complete.
       </p>
     </div>
   );

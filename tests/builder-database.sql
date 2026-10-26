@@ -1,0 +1,41 @@
+begin;
+do $$
+declare sa2 uuid;i int;a uuid:=gen_random_uuid();b uuid:=gen_random_uuid();sa uuid;sb uuid;guest uuid;did uuid:=gen_random_uuid();r jsonb;f jsonb:='{"budgetMinPaise":50000,"budgetMaxPaise":99999,"giftTypeId":null,"occasionId":null,"recipient":"Nickname","message":"<script>inert</script>"}';failed boolean;
+begin
+ insert into auth.users(id,email_confirmed_at) values(a,now()),(b,now());
+ sa:=public.memocious_session_open(repeat('4',64),repeat('5',64),a,'customer','fixture','1');
+ sa2:=public.memocious_session_open(repeat('a',64),repeat('b',64),a,'customer','fixture','1');
+ sb:=public.memocious_session_open(repeat('6',64),repeat('7',64),b,'customer','fixture','1');
+ guest:=public.memocious_session_open(repeat('8',64),repeat('9',64),null,'guest',null,'1');
+ execute 'set local role service_role';
+ r:=public.memocious_builder_draft(sa,'create',did,0,1,1,f);
+ if r<>public.memocious_builder_draft(sa,'create',did,0,1,1,f) then raise exception 'Creation retry duplicated';end if;
+ if public.memocious_builder_draft(sb)<>'[]' then raise exception 'Other draft listed';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sb,'read',did);exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Other draft read';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sb,'save',did,1,1,2,f);exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Other draft updated';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sb,'delete',did,1);exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Other draft deleted';end if;
+ failed:=false;begin perform public.memocious_builder_draft(guest);exception when invalid_authorization_specification then failed:=true;end;if not failed then raise exception 'Guest persistence accepted';end if;
+ r:=public.memocious_builder_draft(sa,'save',did,1,1,2,f);
+ if public.memocious_builder_draft(sa2,'read',did)->>'version'<>'2' then raise exception 'Same-owner resume failed';end if;
+ if r->>'version'<>'2' or r->>'step'<>'2' then raise exception 'Version/progress not saved';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'save',did,1,1,3,jsonb_set(f,'{message}','"stale"'));exception when serialization_failure then failed:=true;end;if not failed then raise exception 'Stale save overwrote';end if;
+ if public.memocious_builder_draft(sa,'read',did)->'payload'->>'message'<>'<script>inert</script>' then raise exception 'Stored edits lost';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'save',did,2,2,3,f);exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Unknown schema accepted';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'save',did,2,1,5,f);exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Unbuilt step accepted';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'save',did,2,1,2,f||'{"userId":"attacker"}');exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Mass assignment accepted';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'save',did,2,1,2,jsonb_set(f,'{budgetMaxPaise}','49999'));exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Inverted range accepted';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'save',did,2,1,2,jsonb_set(f,'{giftTypeId}',to_jsonb(gen_random_uuid())));exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Unknown type accepted';end if;
+ if jsonb_array_length(public.memocious_privacy(sa,'export')->'builderDrafts')<>1 or jsonb_array_length(public.memocious_privacy(sb,'export')->'builderDrafts')<>0 then raise exception 'Draft export ownership';end if;
+ execute 'reset role';update memocious.builder_drafts set expires_at=now()-interval '1 second' where id=did;execute 'set local role service_role';
+ if public.memocious_builder_draft(sa)<>'[]' then raise exception 'Expired draft listed';end if;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'read',did);exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Expired draft read';end if;
+ if (public.memocious_builder_cleanup()->>'processed')::int<>1 then raise exception 'Expired draft not cleaned';end if;
+ perform public.memocious_builder_draft(sa,'delete',did,2); -- response-loss retry is harmless.
+ for i in 1..10 loop perform public.memocious_builder_draft(sa,'create',gen_random_uuid(),0,1,1,f);end loop;
+ failed:=false;begin perform public.memocious_builder_draft(sa,'create',gen_random_uuid(),0,1,1,f);exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Active draft cap ignored';end if;
+ perform public.memocious_session_revoke(sa,false);
+ failed:=false;begin perform public.memocious_builder_draft(sa);exception when invalid_authorization_specification then failed:=true;end;if not failed then raise exception 'Revoked session read';end if;
+ execute 'reset role';
+end $$;
+rollback;
+select 'PASS: owned draft create/retry/read/save, A/B/guest isolation, stale version/schema/step/payload/type/budget rejection, export isolation, expiry/cleanup, delete retry and revocation' as result;

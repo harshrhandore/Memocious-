@@ -1,3 +1,11 @@
+export class RequestError extends Error {
+  constructor(
+    public status: number,
+    message: string,
+  ) {
+    super(message);
+  }
+}
 export async function privateRequest<T>(
   path: string,
   body?: unknown,
@@ -18,6 +26,10 @@ export async function privateRequest<T>(
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.message || "Please try again.");
+  if (!response.ok)
+    throw new RequestError(
+      response.status,
+      data.message || "Please try again.",
+    );
   return data as T;
 }

@@ -34,7 +34,7 @@ Source: specification.md v2, 21 October 2026. No phase is declared complete. Evi
 | 11.2 WhatsApp privacy | Managed destination918446572382, bounded encoded message/copy/manual anchor, no private links or automatic-send claim | Unit checks PASS; actual registration/Android/iOS/desktop handoff BLOCKED |
 | 11.3 Quotes/payment | Estimates only; no payment capture or automatic state inference | PASS preview; quote revision/conversion/offline payment workflow later/unbuilt |
 | 12 Reviews/trust | Pending/approved 0-5 reviews, reports, own restore/delete, owner moderation, safe public projection/aggregates and consented sanitized photos implemented | Local DB/UI/unit PASS; hosted A/B/provider/storage/concurrency acceptance BLOCKED; see phase-2-results.md |
-| 13.1 Builder | Owned draft/request schema only | BLOCKED Phase1 auth/media; no draft UI or fake persistence |
+| 13.1 Builder | Four-step draft preview, private schema/versioned create/read/save/delete, autosave/conflict comparison, export and expired-empty-draft cleanup | Local foundation implemented; media/estimates/CUS/remaining steps unbuilt and dependent tests BLOCKED; see phase-3-progress.md |
 | 13.2 Enterprise | Protected ENT/contact transactions, field/MOQ/date validation, pipeline/quote history and conversion, static owner-previewed PDF implemented | Local DB/UI PASS; hosted flows BLOCKED; optional email disabled, uploaded PDF publication replaced by allowed server-owned static generation |
 | 13.3 Upload lifecycle | Product media: one-use quota reservation, private quarantine/full decoder/normalized private attachment/approval/cleanup;2MiB cap | Unit/localSQL PASS; hostedStorage/scheduler BLOCKED. Later customer/PDF upload lifecycle UNBUILT |
 | 13.4 Private delivery | Checked no-store admin preview and approved catalogue proxy; private buckets/browser-deny | Local contracts PASS; actual storage/token/cache matrix BLOCKED. Customer grants remain unbuilt |
@@ -54,7 +54,7 @@ Source: specification.md v2, 21 October 2026. No phase is declared complete. Evi
 | 16.6 Release gate | Named results/limitations, missing checks explicit | BLOCKED; no production release |
 | 17.1 Phase1 | Staging owner/MFA/edit/media/publication/enquiry/revocation verified; lab LCP 1.8s; backup authenticator owner-tested | Remaining manual credential-reset and physical-phone checks; both restore rehearsals deferred to preproduction; see current status |
 | 17.2 Phase2 | Home/carousel/trust, reviews/reports/moderation/photos, wishlist/addresses/privacy baseline, ENT/contact/pipeline/proof/PDF implemented | Local build/type/unit/DB/UI verification PASS under Node 24; default-off rollout; hosted Definition of Done BLOCKED, see phase-2-results.md |
-| 17.3 Phase3 | Denied schema contracts | BLOCKED builder/private uploads/retention |
+| 17.3 Phase3 | Started owned draft foundation; default-off saving gate | IN PROGRESS: local foundation tests, full builder and hosted prerequisites remain; see phase-3-progress.md |
 | 17.4 Phase4 | Denied schema contracts | BLOCKED tracking/state/guest claim/export/deletion |
 | 17.5 Phase5 | Denied schema contracts | BLOCKED scoped editor/full CRUD/CSV/metrics/themes/session tooling/backup |
 | 17.6 Phase6 | Independent SEO/PWA/cache foundations | PARTIAL; production performance/translation/consent tooling optional and off |
@@ -79,7 +79,7 @@ Source: specification.md v2, 21 October 2026. No phase is declared complete. Evi
 11. Review: moderation/aggregate/zero/restore/private-photo contracts and isolated UI checks PASS locally; hosted provider/storage/concurrency tests BLOCKED pending rollout.
 12. Upload: product-media decoder/ticket/quota/publication code implemented and locally tested; actual hosted Storage lifecycle blocked. Customer uploads remain later scope.
 13. Private media/grants: checked no-store product image delivery implemented; hosted token/cache tests pending; later customer grants unbuilt.
-14. Builder: not implemented; no browser PII persistence or offline queue in current preview.
+14. Builder: four-step owned-draft foundation implemented; no browser PII storage/offline queue. Remaining media/estimate/CUS and full hosted tests BLOCKED.
 15. Enterprise: ENT/contact/pipeline/static-PDF implemented and locally tested; default-off until hosted migrations and acceptance.
 16. Tracking: not implemented; no weak phone-based rich grant exists.
 17. State/notifications: initial event only; remaining operational workflow not implemented.

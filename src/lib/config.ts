@@ -36,3 +36,6 @@ export const writesReady = authReady && config.POLICIES_APPROVED === "true";
 
 // Enable only after all Phase 2 migrations have been applied and verified.
 export const phase2Ready = !demo && process.env.PHASE_2_ENABLED === "true";
+
+// Phase 3 requires all earlier migrations plus its own, and stays off by default.
+export const phase3Ready = phase2Ready && authReady && process.env.PHASE_3_ENABLED === "true";
