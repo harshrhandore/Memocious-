@@ -1,3 +1,4 @@
+import { Wishlist } from "@/components/wishlist";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct, getProducts, getPublicSettings } from "@/lib/catalogue";
@@ -6,7 +7,7 @@ import { Gallery } from "@/components/gallery";
 import { Enquiry } from "@/components/enquiry";
 import { ProductCard, SectionHeading } from "@/components/ui";
 import { BrowseGate } from "@/components/browse-gate";
-import { writesReady, demo } from "@/lib/config";
+import { writesReady, demo, phase2Ready } from "@/lib/config";
 export async function generateMetadata({
   params,
 }: {
@@ -77,6 +78,7 @@ export default async function Page({
             sitekey={process.env.TURNSTILE_SITE_KEY ?? ""}
             available={!demo && writesReady && !!settings.whatsappNumber}
           />
+          {phase2Ready && <Wishlist product={p.id} />}
           <div className="details-accordion">
             <details>
               <summary>The thoughtful details</summary>

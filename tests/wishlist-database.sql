@@ -1,0 +1,30 @@
+begin;
+do $$
+declare a uuid:=gen_random_uuid();b uuid:=gen_random_uuid();sa uuid;sb uuid;g uuid;p uuid:=gen_random_uuid();failed boolean;
+begin
+ insert into auth.users(id,email_confirmed_at) values(a,now()),(b,now());
+ sa:=public.memocious_session_open(repeat('1',64),repeat('2',64),a,'customer','fixture','1');
+ sb:=public.memocious_session_open(repeat('3',64),repeat('4',64),b,'customer','fixture','1');
+ g:=public.memocious_session_open(repeat('5',64),repeat('6',64),null,'guest',null,'1');
+ insert into memocious.products(id,slug,name,active,publication_state) values(p,'wishlist-fixture','Wishlist fixture',true,'published');
+ insert into public.memocious_catalogue_products(id,slug,data,search_vector,featured,created_at) values(p,'wishlist-fixture','{"name":"Wishlist fixture"}',''::tsvector,false,now());
+ execute 'set local role service_role';
+ perform public.memocious_wishlist(sa,p,true);perform public.memocious_wishlist(sa,p,true);
+ if jsonb_array_length(public.memocious_wishlist(sa))<>1 or public.memocious_wishlist(sb)<>'[]'::jsonb then raise exception 'Duplicate or cross-user read';end if;
+ perform public.memocious_wishlist(sb,p,false);
+ if jsonb_array_length(public.memocious_wishlist(sa))<>1 then raise exception 'Cross-user delete';end if;
+ failed:=false;begin perform public.memocious_wishlist(g,p,true);exception when invalid_authorization_specification then failed:=true;end;
+ if not failed then raise exception 'Guest accepted';end if;
+ execute 'reset role';
+ delete from public.memocious_catalogue_products where id=p;
+ if public.memocious_wishlist(sa)<>'[]'::jsonb then raise exception 'Hidden metadata leaked';end if;
+ failed:=false;begin perform public.memocious_wishlist(sa,p,true);exception when invalid_parameter_value then failed:=true;end;
+ if not failed then raise exception 'Hidden save accepted';end if;
+ perform public.memocious_wishlist(sa,p,false);perform public.memocious_wishlist(sa,p,false);
+ if exists(select 1 from memocious.wishlist_items where user_id=a) then raise exception 'Removal failed';end if;
+ perform public.memocious_session_revoke(sa,false);
+ failed:=false;begin perform public.memocious_wishlist(sa);exception when invalid_authorization_specification then failed:=true;end;
+ if not failed then raise exception 'Revoked read accepted';end if;
+end $$;
+rollback;
+select 'PASS: wishlist retry, customer isolation, guest denial, hidden projection/save denial, removal and revocation; fixtures rolled back' as result;

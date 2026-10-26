@@ -1,3 +1,18 @@
+# Current status - 27 October 2026
+
+This update supersedes older no-deployment/no-owner and outstanding-work statements below and in the requirements ledger. Current staging: https://memocious-staging-v2.netlify.app ; Supabase: bpvtdehesnlgwccmrlhz.
+
+Hosted evidence establishes owner login/MFA, edit persistence, sanitized media upload/preview, publication/hiding, guest enquiry persistence and public media revocation. Mobile Lighthouse performance was 95, LCP 1.8 seconds (lab evidence). Owner reports backup authenticator tested.
+
+Remaining manual checks: password reset followed by new-password success and old-password denial; physical-phone navigation and WhatsApp handoff. Do not infer these from ordinary login or browser simulation.
+
+Owner explicitly deferred BOTH database and image-file backup/restore rehearsal. This remains required before production release and does not block Phase 2 development. Studio appearance/usability redesign remains deferred to Phase 5.
+
+Phase 2 local wishlist implementation and its precise verification limits are recorded in phase-2-wishlist.md. Phase 2 is not complete. No production release is asserted.
+
+---
+Historical status follows; its outstanding list is superseded by the update above.
+
 # Phase 1 status — 26 October 2026
 
 This note supersedes older deployment and owner-access statements in checkpoint.md.

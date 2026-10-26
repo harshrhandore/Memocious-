@@ -33,3 +33,6 @@ export const authReady =
     "TURNSTILE_SITE_KEY",
   ].every((k) => !!process.env[k]);
 export const writesReady = authReady && config.POLICIES_APPROVED === "true";
+
+// Enable only after all Phase 2 migrations have been applied and verified.
+export const phase2Ready = !demo && process.env.PHASE_2_ENABLED === "true";

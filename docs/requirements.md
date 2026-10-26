@@ -1,3 +1,5 @@
+> Current evidence override (27 October 2026): use phase-1-current-status.md and phase-2-wishlist.md before historical rows below. Staging and owner/MFA exist; hosted owner/media/enquiry workflows passed, Lighthouse 95 / LCP 1.8s, backup authenticator owner-tested. Password-reset credential replacement and physical-phone navigation/WhatsApp remain manual. DB AND image-file restore rehearsal is owner-deferred, required before production, and does not block Phase 2. Admin appearance redesign is Phase 5.
+
 # Requirements ledger
 
 Source: specification.md v2, 21 October 2026. No phase is declared complete. Evidence is described in evidence.md; exact revision is recorded at handoff. Original requirements remain authoritative even when a feature is blocked or unbuilt. PASS applies to a named observed check, not to an entire aspirational feature.

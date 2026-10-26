@@ -240,6 +240,10 @@ export type Database = {
         Returns: undefined
       }
       memocious_product: { Args: { product_slug: string }; Returns: Json }
+      memocious_wishlist: {
+        Args: { sid: string; product?: string; saved?: boolean }
+        Returns: Json
+      }
       memocious_profile: {
         Args: { new_name?: string; sid: string }
         Returns: Json

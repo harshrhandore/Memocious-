@@ -30,7 +30,7 @@ export function PasswordReset() {
     <div className="form-field"><label htmlFor="password">New password</label><input id="password" name="password" type="password" autoComplete="new-password" minLength={12} maxLength={200} required disabled={busy || done} /></div>
     <div className="form-field"><label htmlFor="confirmation">Confirm password</label><input id="confirmation" name="confirmation" type="password" autoComplete="new-password" minLength={12} maxLength={200} required disabled={busy || done} /></div>
     <div className="form-field"><label htmlFor="code">Google Authenticator code (if enabled)</label><input id="code" name="code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" minLength={6} maxLength={6} disabled={busy || done} /><p>Use the current six-digit code from your first Memocious authenticator.</p></div>
-    <button className="button" disabled={busy || done}>{busy ? "Updating…" : "Change password"}</button>
+    <button type="submit" className="button" disabled={busy || done}>{busy ? "Updating…" : "Change password"}</button>
     {message && <p role="status" className="notice">{message}</p>}
   </form>;
 }

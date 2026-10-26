@@ -1,15 +1,15 @@
 // Isolated UI test harness; this never opens an authenticated application route or grants a role.
 import { build } from "esbuild";
 import { createServer } from "node:http";
-import { readFile, readdir } from "node:fs/promises";
-await build({
+import { readdir } from "node:fs/promises";
+const bundle = await build({
   stdin: {
     contents:
       'import React from "react";import{createRoot}from"react-dom/client";import{AdminWorkspace}from"./src/components/admin-workspace";createRoot(document.getElementById("root")).render(<AdminWorkspace/>);',
     resolveDir: process.cwd(),
     loader: "tsx",
   },
-  outfile: "/tmp/memocious-admin-ui.js",
+  write: false,
   bundle: true,
   platform: "browser",
   jsx: "automatic",
@@ -22,7 +22,7 @@ const html = `<!doctype html><html lang="en"><head><title>Isolated Studio UI tes
 createServer(async (req, res) => {
   if (req.url === "/ui.js") {
     res.setHeader("Content-Type", "text/javascript");
-    res.end(await readFile("/tmp/memocious-admin-ui.js"));
+    res.end(bundle.outputFiles[0].contents);
   } else {
     res.setHeader("Content-Type", "text/html");
     res.end(html);
