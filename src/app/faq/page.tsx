@@ -1,8 +1,9 @@
+import { demo } from "@/lib/config";
 export const metadata = { title: "FAQs" };
 const questions = [
   [
     "How will I order a gift?",
-    "Choose a gift and its available personalisation. Once ordering opens, the site will save an enquiry and offer a WhatsApp message. You must open WhatsApp and press Send yourself. The business confirms the final price, payment and delivery.",
+    "Choose a gift and its available personalisation. When enquiries are enabled, save an enquiry and open the prepared WhatsApp message. You must press Send yourself. Memocious confirms final price, payment and delivery.",
   ],
   [
     "Can I browse without signing in?",
@@ -10,7 +11,9 @@ const questions = [
   ],
   [
     "Are the designs and prices here available to order?",
-    "This preview contains clearly labelled illustrative sample designs and prices. Genuine products and current prices must be supplied by the business before ordering opens.",
+    demo
+      ? "This preview contains clearly labelled illustrative sample designs and prices."
+      : "Published gifts show current owner-supplied details. Prices are estimates unless agreed in a quotation; availability and shipping need confirmation.",
   ],
   [
     "Can I request delivery anywhere in India?",
@@ -18,11 +21,11 @@ const questions = [
   ],
   [
     "Can I personalise my gift?",
-    "The genuine catalogue will list the exact personalisation supported by each product, including its limits. The sample message preview demonstrates the idea and does not guarantee a final handmade layout.",
+    "Each product lists its available personalisation and limits. Message previews are illustrative and do not guarantee a final handmade layout.",
   ],
   [
     "Do you accept bulk or corporate enquiries?",
-    "The planned enterprise service includes hampers, pens, shirts, mugs and welcome kits. Product-specific minimum quantities, branding options, lead times and quotations will be confirmed by the business.",
+    "Enterprise gifting includes hampers, pens, shirts, mugs, trophies and welcome kits. The enabled enterprise form lists published products with their MOQ and lead time. Branding, quotation and delivery need owner confirmation.",
   ],
   [
     "Will photos be attached automatically to WhatsApp?",

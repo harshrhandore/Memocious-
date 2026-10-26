@@ -1,3 +1,9 @@
+import {
+  BusinessInquiry,
+  type EnterpriseChoice,
+} from "@/components/business-inquiry";
+import { phase2Ready, writesReady } from "@/lib/config";
+import { rpc } from "@/lib/server-db";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -7,7 +13,13 @@ import {
   Gift,
 } from "lucide-react";
 export const metadata = { title: "Enterprise & bulk gifting" };
-export default function Enterprise() {
+export default async function Enterprise() {
+  const products = phase2Ready
+    ? await rpc<EnterpriseChoice[]>("memocious_enterprise_choices", {})
+    : [];
+  const content = phase2Ready
+    ? await rpc<{ catalogue: string | null }>("memocious_phase2_public", {})
+    : null;
   return (
     <>
       <section className="container enterprise-hero">
@@ -24,7 +36,7 @@ export default function Enterprise() {
           </p>
           <p className="mt-4">
             Explore the possibilities for custom hampers, pens, shirts, mugs and
-            welcome kits, made to feel like you.
+            trophies and welcome kits, made to feel like you.
           </p>
           <Link className="button" href="#bulk-details">
             Plan your gifting <ArrowUpRight size={18} />
@@ -74,17 +86,24 @@ export default function Enterprise() {
         <span className="eyebrow">LET’S MAKE IT PERSONAL</span>
         <h2>A few details make all the difference.</h2>
         <p>
-          When enterprise enquiries open, tell us about your organisation, gift
-          choices, quantities, branding, budget, city and requested date.
-          Minimum quantities and lead times will be confirmed for the selected
-          products.
+          Choose published enterprise gifts and quantities below. MOQ and
+          preparation time come from each product; requested dates remain
+          subject to confirmation.
         </p>
-        <div className="notice">
-          Enterprise enquiries are temporarily unavailable while the business
-          sets up its contact details. No contact information is being
-          collected. A catalogue PDF will appear here once an owner-approved
-          version is available.
-        </div>
+        {content?.catalogue && (
+          <a
+            className="button secondary"
+            href={`/catalogue/${content.catalogue}`}
+          >
+            Download enterprise catalogue PDF
+          </a>
+        )}
+        <BusinessInquiry
+          kind="enterprise"
+          products={products}
+          available={phase2Ready && writesReady}
+          sitekey={process.env.TURNSTILE_SITE_KEY ?? ""}
+        />
         <h2>From your idea to their little surprise</h2>
         <ol>
           <li>Choose the gifts and tell us about your occasion.</li>

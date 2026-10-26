@@ -1,3 +1,5 @@
+import { BusinessInquiry } from "@/components/business-inquiry";
+import { phase2Ready, writesReady } from "@/lib/config";
 import Link from "next/link";
 import { getPublicSettings } from "@/lib/catalogue";
 export const metadata = { title: "A little help" };
@@ -35,10 +37,6 @@ export default async function Contact() {
               </a>
             </p>
           )}
-          <p className="notice">
-            The catalogue is still a preview. Product enquiries open after
-            sign-in, security and provider verification are complete.
-          </p>
         </>
       ) : (
         <p className="notice">
@@ -46,6 +44,11 @@ export default async function Contact() {
           unavailable in this preview.
         </p>
       )}
+      <BusinessInquiry
+        kind="contact"
+        available={phase2Ready && writesReady}
+        sitekey={process.env.TURNSTILE_SITE_KEY ?? ""}
+      />
       <p>
         For answers about the planned gifting experience, visit our{" "}
         <Link href="/faq">frequently asked questions</Link>.

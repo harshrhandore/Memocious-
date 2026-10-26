@@ -1,3 +1,4 @@
+import { demo } from "@/lib/config";
 import Link from "next/link";
 export const metadata = { title: "Our story" };
 export default function About() {
@@ -20,16 +21,15 @@ export default function About() {
       </p>
       <h2>A thoughtful beginning</h2>
       <p>
-        This is a preview of the Memocious collection and experience. The sample
-        designs are original illustrations. Actual product photography,
-        contents, prices and business details will be added by the owner before
-        ordering opens.
+        {demo
+          ? "This preview uses clearly labelled illustrative designs. Actual products and availability are supplied by the owner."
+          : "Browse the published collection for current gifts and personalisation options. Availability, handmade details and delivery are confirmed by Memocious."}
       </p>
       <h2>Your personal touch, from idea to gift</h2>
       <p>
-        The planned ordering experience starts here and continues in a
-        conversation with the business. Final customisation, price, payment and
-        delivery arrangements are confirmed on WhatsApp.
+        The gifting experience starts here and continues in a conversation with
+        Memocious. Final customisation, price, payment and delivery arrangements
+        are confirmed on WhatsApp.
       </p>
       <Link className="button" href="/shop">
         Explore the collection
