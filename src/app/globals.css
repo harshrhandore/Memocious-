@@ -2332,3 +2332,10 @@ fieldset.gallery-main {
   color: white;
   box-shadow: 0 4px 16px #27392733;
 }
+
+.review-card { border: 1px solid var(--line, #e7d9cd); padding: 1rem; margin-block: 1rem; border-radius: 12px; }
+.safe-json { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; }
+.hero-carousel { min-width: 0; padding: 1rem; }
+.hero-carousel img { width: 100%; height: auto; max-height: 540px; object-fit: contain; border-radius: 18px; }
+.hero-carousel .inline-actions { flex-wrap: wrap; align-items: center; }
+.review-card img { max-width: 100%; object-fit: contain; }

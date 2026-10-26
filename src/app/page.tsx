@@ -1,3 +1,14 @@
+import { HeroCarousel } from "@/components/hero-carousel";
+import { phase2Ready, demo } from "@/lib/config";
+import { rpc } from "@/lib/server-db";
+import type { Product } from "@/lib/domain";
+import type { PublicReview } from "@/components/reviews";
+type HomeContent = {
+  proof: { photo: string; caption: string; firstName: string; city: string }[];
+  counters: { label: string; value: number }[];
+  testimonials: PublicReview[];
+  bestsellers: Product[];
+};
 import Link from "next/link";
 import { BrowseGate } from "@/components/browse-gate";
 import Image from "next/image";
@@ -22,6 +33,13 @@ export default async function Home() {
     getProducts(filtersSchema.parse({ limit: 4 })),
     getTaxonomy(),
   ]);
+  const content = phase2Ready
+    ? await rpc<HomeContent>("memocious_phase2_public", {})
+    : null;
+  const newest = phase2Ready
+    ? (await getProducts(filtersSchema.parse({ sort: "newest", limit: 4 })))
+        .products
+    : [];
   return (
     <>
       <section className="hero container">
@@ -56,68 +74,74 @@ export default async function Home() {
             </span>
           </div>
         </div>
-        <div className="hero-art">
-          <div className="hero-orbit" />
-          <span className="hero-spark s1">✻</span>
-          <span className="hero-spark s2">✧</span>
-          <div className="hero-photo photo-back">
-            <Image
-              src="/media/gift-1.webp"
-              width={640}
-              height={640}
-              alt="Illustrative sample flower bouquet in cream wrapping"
-              priority
-              fetchPriority="high"
-              sizes="(max-width:767px) 55vw,28vw"
-            />
-          </div>
-          <div className="hero-photo photo-front">
-            <Image
-              src="/media/gift-0.webp"
-              width={640}
-              height={640}
-              alt="Illustrative sample hamper with a rose ribbon and a personal note"
-              priority
-              fetchPriority="high"
-              decoding="sync"
-              sizes="(max-width:767px) 70vw,34vw"
-            />
-            <span className="photo-caption">
-              a little box of joy <Heart size={12} />
+        {phase2Ready && products.length ? (
+          <HeroCarousel products={products} />
+        ) : (
+          <div className="hero-art">
+            <div className="hero-orbit" />
+            <span className="hero-spark s1">✻</span>
+            <span className="hero-spark s2">✧</span>
+            <div className="hero-photo photo-back">
+              <Image
+                src="/media/gift-1.webp"
+                width={640}
+                height={640}
+                alt="Illustrative sample flower bouquet in cream wrapping"
+                priority
+                fetchPriority="high"
+                sizes="(max-width:767px) 55vw,28vw"
+              />
+            </div>
+            <div className="hero-photo photo-front">
+              <Image
+                src="/media/gift-0.webp"
+                width={640}
+                height={640}
+                alt="Illustrative sample hamper with a rose ribbon and a personal note"
+                priority
+                fetchPriority="high"
+                decoding="sync"
+                sizes="(max-width:767px) 70vw,34vw"
+              />
+              <span className="photo-caption">
+                a little box of joy <Heart size={12} />
+              </span>
+            </div>
+            <div className="floating-note">
+              <span>not just a gift,</span>
+              <strong>a feeling, wrapped.</strong>
+              <svg viewBox="0 0 90 45" aria-hidden="true">
+                <path
+                  d="M6 7Q65 1 69 37M58 29 69 39 79 27"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </div>
+            <span className="art-caption">
+              CONCEPT COLLECTION · ILLUSTRATED WITH LOVE
             </span>
           </div>
-          <div className="floating-note">
-            <span>not just a gift,</span>
-            <strong>a feeling, wrapped.</strong>
-            <svg viewBox="0 0 90 45" aria-hidden="true">
-              <path
-                d="M6 7Q65 1 69 37M58 29 69 39 79 27"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </div>
-          <span className="art-caption">
-            CONCEPT COLLECTION · ILLUSTRATED WITH LOVE
-          </span>
-        </div>
+        )}
       </section>
-      <div className="promise-bar">
-        <div className="container">
-          <span>
-            <Sparkles size={17} /> A personal touch
-          </span>
-          <i />
-          <span>
-            <Heart size={17} /> Thoughtfully put together
-          </span>
-          <i />
-          <span>
-            <MessageCircle size={17} /> Let’s make it yours
-          </span>
+      {!phase2Ready && (
+        <div className="promise-bar">
+          <div className="container">
+            <span>
+              <Sparkles size={17} /> A personal touch
+            </span>
+            <i />
+            <span>
+              <Heart size={17} /> Thoughtfully put together
+            </span>
+            <i />
+            <span>
+              <MessageCircle size={17} /> Let’s make it yours
+            </span>
+          </div>
         </div>
-      </div>
+      )}
       <section className="section container">
         <SectionHeading
           eyebrow="TWO WAYS TO MAKE SOMEONE’S DAY"
@@ -201,39 +225,77 @@ export default async function Home() {
           </nav>
         </div>
       </section>
+      {content && (content.proof.length > 0 || content.counters.length > 0) && (
+        <section
+          className="section container"
+          aria-label="From our gifting community"
+        >
+          <h2>Moments shared with us</h2>
+          <div className="product-grid">
+            {content.proof.map((p) => (
+              <figure key={p.photo}>
+                <img
+                  src={p.photo}
+                  alt={p.caption}
+                  width={360}
+                  height={270}
+                  loading="lazy"
+                />
+                <figcaption>
+                  {p.caption}
+                  {p.firstName ? ` - ${p.firstName}` : ""}
+                  {p.city ? `, ${p.city}` : ""}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          {content.counters.map((c) => (
+            <p key={c.label}>
+              <strong>{c.value}</strong> {c.label}
+            </p>
+          ))}
+        </section>
+      )}
       <section className="section container">
         <SectionHeading
           eyebrow="SMALL GESTURES, BEAUTIFUL POSSIBILITIES"
-          title="Find a little inspiration."
-          description="A few personal favourites from our illustrative collection."
+          title={phase2Ready ? "Featured gifts" : "Find a little inspiration."}
+          description={
+            demo
+              ? "A few personal favourites from our illustrative collection."
+              : "Published gifts, chosen by Memocious."
+          }
           link="/shop"
         />
         <div className="product-grid">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+          {products
+            .filter((p) => !phase2Ready || p.featured)
+            .map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
         </div>
       </section>
-      <section className="story-banner container">
-        <span className="story-flower">✻</span>
-        <div>
-          <span className="eyebrow">THE MEMOCIOUS WAY</span>
-          <h2>
-            Because “I thought of you”
-            <br />
-            is a gift in itself.
-          </h2>
-          <p>
-            A name. A favourite colour. Words only you would say.
-            <br />
-            It’s the little details that make a gift feel like theirs.
-          </p>
-          <Link className="text-link" href="/about">
-            A little about us <ArrowUpRight size={17} />
-          </Link>
-        </div>
-        <span className="story-flower right">✻</span>
-      </section>
+      {content?.bestsellers.length ? (
+        <section className="container section">
+          <h2>Customer favourites</h2>
+          <p>Based on delivered quantities in the last 90 days.</p>
+          <div className="product-grid">
+            {content.bestsellers.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+      {newest.length > 0 && (
+        <section className="container section">
+          <h2>New to the collection</h2>
+          <div className="product-grid">
+            {newest.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
       <section className="section container how-section">
         <SectionHeading
           eyebrow="FROM A LITTLE IDEA TO A LOVELY SURPRISE"
@@ -274,10 +336,28 @@ export default async function Home() {
           ))}
         </div>
         <p className="quiet-note">
-          Collection preview: WhatsApp ordering will open once the business is
-          ready.
+          {demo
+            ? "Collection preview: WhatsApp ordering will open once the business is ready."
+            : "Save an enquiry, then continue on WhatsApp to confirm the details with Memocious."}
         </p>
       </section>
+      {content && content.testimonials.length > 0 && (
+        <section className="container section">
+          <h2>Thoughts from our community</h2>
+          {content.testimonials.slice(0, 4).map((r) => (
+            <blockquote key={r.key}>
+              <p>{r.body}</p>
+              <footer>
+                {r.firstName} - {r.rating}/5,{" "}
+                <time dateTime={r.date}>{r.date}</time>.{" "}
+                <Link href={`/product/${r.slug}#reviews-heading`}>
+                  View gift and reviews
+                </Link>
+              </footer>
+            </blockquote>
+          ))}
+        </section>
+      )}
     </>
   );
 }
