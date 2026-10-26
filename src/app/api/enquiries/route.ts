@@ -40,6 +40,11 @@ export async function POST(req: NextRequest) {
     } catch (e) {
       if (!(e instanceof HttpError) || e.status !== 401) throw e;
     }
+    if (s?.audience === "admin")
+      throw new HttpError(
+        403,
+        "You are signed in to Studio. Open this product in a private browser window to submit a customer enquiry, or sign out of Studio first.",
+      );
     if (s) await bindSessionCsrf(s);
     const args = {
       request_key: b.idempotencyKey,
