@@ -66,7 +66,8 @@ export default async function Home() {
               width={640}
               height={640}
               alt="Illustrative sample flower bouquet in cream wrapping"
-              loading="lazy"
+              priority
+              fetchPriority="high"
               sizes="(max-width:767px) 55vw,28vw"
             />
           </div>
