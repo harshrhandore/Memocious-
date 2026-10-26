@@ -10,11 +10,21 @@ import {
   failure,
 } from "@/lib/security";
 import { rpc } from "@/lib/server-db";
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     requirePhase2();
     const s = await requireAdminSession(true);
-    return safeJson(await rpc("memocious_admin_proof", { sid: s.id }));
+    return safeJson(
+      await rpc("memocious_admin_proof", {
+        sid: s.id,
+        page_num: z.coerce
+          .number()
+          .int()
+          .min(1)
+          .max(10000)
+          .parse(req.nextUrl.searchParams.get("page") ?? 1),
+      }),
+    );
   } catch (e) {
     return failure(e);
   }

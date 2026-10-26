@@ -8,7 +8,7 @@ Remaining manual checks: password reset followed by new-password success and old
 
 Owner explicitly deferred BOTH database and image-file backup/restore rehearsal. This remains required before production release and does not block Phase 2 development. Studio appearance/usability redesign remains deferred to Phase 5.
 
-Phase 2 local wishlist implementation and its precise verification limits are recorded in phase-2-wishlist.md. Phase 2 is not complete. No production release is asserted.
+Phase 2 local feature implementation and precise verification limits are recorded in phase-2-results.md. Hosted Phase 2 acceptance remains blocked pending migrations/enablement and provider/device tests. No production release is asserted.
 
 ---
 Historical status follows; its outstanding list is superseded by the update above.

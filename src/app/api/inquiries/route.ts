@@ -1,3 +1,4 @@
+import { getPublicSettings } from "@/lib/catalogue";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { contactFields, enterpriseFields } from "@/lib/phase2-domain";
@@ -67,13 +68,15 @@ export async function POST(req: NextRequest) {
       kind: b.kind,
       fields: b.fields,
     });
+    const currentNumber = (await getPublicSettings()).whatsappNumber;
     return safeJson({
       ...receipt,
+      number: currentNumber,
       url:
         b.kind === "enterprise" &&
-        receipt.number &&
-        /^[1-9][0-9]{6,14}$/.test(receipt.number)
-          ? `https://wa.me/${receipt.number}?text=${encodeURIComponent(receipt.message)}`
+        currentNumber &&
+        /^[1-9][0-9]{6,14}$/.test(currentNumber)
+          ? `https://wa.me/${currentNumber}?text=${encodeURIComponent(receipt.message)}`
           : null,
     });
   } catch (e) {
@@ -81,4 +84,13 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET(){try{requirePhase2();const {requireCustomerSession}=await import("@/lib/session");const s=await requireCustomerSession();return safeJson(await rpc("memocious_my_enterprise",{sid:s.id}));}catch(e){return failure(e);}}
+export async function GET() {
+  try {
+    requirePhase2();
+    const { requireCustomerSession } = await import("@/lib/session");
+    const s = await requireCustomerSession();
+    return safeJson(await rpc("memocious_my_enterprise", { sid: s.id }));
+  } catch (e) {
+    return failure(e);
+  }
+}

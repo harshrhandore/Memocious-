@@ -54,6 +54,23 @@ begin
  if public.memocious_asset(null,asset,'public')->>'path' is null then raise exception 'Approved copy missing';end if;
  perform public.memocious_review(sa,p,7,'save',0,'Changed after photo approval','Test');
  failed:=false;begin perform public.memocious_asset(null,asset,'public');exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Edited photo still public';end if;
+
+ -- Expired/stale uploads, consent and reserved per-parent quota.
+ failed:=false;begin perform public.memocious_asset_begin(sa,'review',rv,100,'image/png',false);exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Missing photo consent accepted';end if;
+ asset:=public.memocious_asset_begin(sa,'review',rv,100,'image/png',true);perform public.memocious_asset(sa,asset,'claim');perform public.memocious_review(sa,p,8,'save',0,'Concurrent edit','Test');
+ failed:=false;begin perform public.memocious_asset(sa,asset,'ready',jsonb_build_object('width',100,'height',100,'bytes',100,'digest',repeat('b',64)));exception when serialization_failure then failed:=true;end;if not failed then raise exception 'Stale parent attachment accepted';end if;
+ perform public.memocious_asset(sa,asset,'reject');
+ asset:=public.memocious_asset_begin(sa,'review',rv,100,'image/png',true);
+ execute 'reset role';update memocious.phase2_assets set expires_at=now()-interval '2 days' where id=asset;execute 'set local role service_role';
+ failed:=false;begin perform public.memocious_asset(sa,asset,'claim');exception when serialization_failure then failed:=true;end;if not failed then raise exception 'Expired upload accepted';end if;
+ if not exists(select 1 from jsonb_array_elements(public.memocious_phase2_cleanup()) x where x->>'id'=asset::text) then raise exception 'Expired upload not reconciled';end if;
+ perform public.memocious_phase2_cleanup(asset,true);
+ -- Same-owner sessions retain one wishlist and the 200-entry cap includes hidden gifts.
+ execute 'reset role';
+ insert into memocious.products(slug,name) select 'wish-cap-'||n,'Cap fixture' from generate_series(1,200)n;
+ insert into memocious.wishlist_items(user_id,product_id) select a,id from memocious.products where slug like 'wish-cap-%';
+ execute 'set local role service_role';
+ failed:=false;begin perform public.memocious_wishlist(sa,p,true);exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Wishlist cap ignored';end if;
  -- Idempotent guest enterprise and contact, consent, snapshots and pipeline.
  execute 'reset role';update memocious.site_settings set value='true' where key='policies_approved';execute 'set local role service_role';
  f:=jsonb_build_object('contactName','Synthetic','email','fixture@example.invalid','notes','Synthetic fixture','consent',true,'organization','Test','organizationType','company','role','Test','phone','447700900123','gstin','','items',jsonb_build_array(jsonb_build_object('product',p,'quantity',10)),'branding',jsonb_build_object('colours','cream','text','Test'),'deadline',current_date+10,'city','Test','pincode','400001','budgetMinPaise',0,'budgetMaxPaise',1000000);
@@ -64,9 +81,9 @@ begin
  failed:=false;begin perform public.memocious_inquiry(guest,gen_random_uuid(),'enterprise',jsonb_set(f,'{deadline}',to_jsonb((current_date+1)::text)));exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Lead time ignored';end if;
  failed:=false;begin perform public.memocious_asset_begin(sb,'enterprise',eid,100,'image/png',false);exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Guest logo claimed by customer';end if;
  perform public.memocious_admin_inquiries(so,eid,1,'update','{"pipeline":"contacted","reason":"Contacted","quotePaise":null,"terms":"","agreement":false}');
- perform public.memocious_admin_inquiries(so,eid,2,'update','{"pipeline":"quote_sent","reason":"Quoted","quotePaise":100000,"terms":"Fixture terms","agreement":false}');
+ perform public.memocious_admin_inquiries(so,eid,2,'update','{"pipeline":"quote_sent","reason":"Quoted","quotePaise":100000,"terms":"Fixture terms","validUntil":"2099-01-01","agreement":false}');
  failed:=false;begin perform public.memocious_admin_inquiries(so,eid,3,'update','{"pipeline":"won","reason":"Clicked","quotePaise":100000,"agreement":false}');exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Click won accepted';end if;
- perform public.memocious_admin_inquiries(so,eid,3,'update','{"pipeline":"won","reason":"Real agreement fixture","quotePaise":100000,"terms":"Agreed","agreement":true}');
+ perform public.memocious_admin_inquiries(so,eid,3,'update','{"pipeline":"won","reason":"Real agreement fixture","quotePaise":100000,"terms":"Agreed","validUntil":"2099-01-01","agreement":true}');
  perform public.memocious_admin_inquiries(so,eid,4,'convert');perform public.memocious_admin_inquiries(so,eid,4,'convert');
  if (select count(*) from memocious.orders where code=receipt->>'code')<>1 or (select payment_received_paise from memocious.orders where code=receipt->>'code')<>0 then raise exception 'Conversion duplicate/payment';end if;
  if (select count(*) from memocious.phase2_events where entity_id=eid)<>5 or (select count(*) from memocious.phase2_outbox b join memocious.phase2_events e on e.id=b.event_id where e.entity_id=eid)<>5 then raise exception 'Atomic events missing';end if;
@@ -76,7 +93,17 @@ begin
  perform public.memocious_admin_proof(so,'catalogue-create');
  select id into doc from memocious.catalogue_documents order by created_at desc limit 1;
  failed:=false;begin perform public.memocious_catalogue_document(null,doc);exception when invalid_authorization_specification then failed:=true;end;if not failed then raise exception 'Draft PDF public';end if;
+ failed:=false;begin perform public.memocious_admin_proof(so,'catalogue-publish',doc,1);exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Unpreviewed PDF published';end if;
+ perform public.memocious_catalogue_preview(so,doc);
  perform public.memocious_admin_proof(so,'catalogue-publish',doc,1);if public.memocious_catalogue_document(null,doc) is null then raise exception 'Published PDF missing';end if;
+
+ -- Product purge retains owned review history and revokes public review metadata.
+ execute 'reset role';delete from memocious.products where id=p;execute 'set local role service_role';
+ if not exists(select 1 from memocious.reviews where id=rv and product_id is null and source_product_id=p and product_name_snapshot='Phase 2 fixture') then raise exception 'Review history lost on purge';end if;
+ if jsonb_array_length(public.memocious_my_review(sa,p))<>1 then raise exception 'Archived own review lost';end if;
+ if public.memocious_reviews('phase2-fixture')->>'count'<>'0' then raise exception 'Purged review still public';end if;
+ execute 'reset role';update memocious_private.app_sessions set created_at=now()-interval '1 hour' where id=sa;execute 'set local role service_role';
+ failed:=false;begin perform public.memocious_privacy(sa,'export');exception when invalid_authorization_specification then failed:=true;end;if not failed then raise exception 'Export without reauthentication accepted';end if;
  execute 'reset role';
 end $$;
 rollback;

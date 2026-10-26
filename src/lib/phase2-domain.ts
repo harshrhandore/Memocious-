@@ -13,7 +13,7 @@ export const reviewSchema = z
   .strictObject({
     product: z.uuid(),
     expectedVersion: z.number().int().min(0),
-    action: z.enum(["save", "delete"]),
+    action: z.enum(["save", "delete", "remove-photo"]),
     stars: z.number().int().min(0).max(5).nullable(),
     body: z.string().trim().max(2000),
     firstName: z.string().trim().max(60),

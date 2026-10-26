@@ -15,17 +15,26 @@ const bundle = await build({
   jsx: "automatic",
   define: { "process.env.NODE_ENV": '"production"', "process.env": "{}" },
 });
+const phase2 = await build({
+ stdin:{contents:`import React from "react";import{createRoot}from"react-dom/client";import{Reviews}from"./src/components/reviews";import{BusinessInquiry}from"./src/components/business-inquiry";import{AccountPhase2}from"./src/components/account-phase2";import{AdminPhase2}from"./src/components/admin-phase2";import{HeroCarousel}from"./src/components/hero-carousel";
+ const id="12345678-1234-4234-8234-123456789012";const path=location.pathname;
+ const p={id,slug:"fixture",name:"Fixture gift",image:"http://localhost:3000/media/gift-0.webp"};
+ const element=path.includes("enterprise")?<BusinessInquiry kind="enterprise" products={[{id,name:"Fixture gift",moq:10,leadDays:3}]} available={true} sitekey="fixture"/>:path.includes("contact")?<BusinessInquiry kind="contact" available={true} sitekey="fixture"/>:path.includes("account")?<AccountPhase2/>:path.includes("owner")?<AdminPhase2/>:path.includes("carousel")?<HeroCarousel products={[p,{...p,id:"other",name:"Another gift"}]}/>:<Reviews product={id} slug="fixture" items={[]} count={0} average={null} distribution={{}}/>;
+ createRoot(document.getElementById("root")).render(element);`,resolveDir:process.cwd(),loader:"tsx"},write:false,bundle:true,platform:"browser",jsx:"automatic",define:{"process.env.NODE_ENV":'"production"',"process.env":"{}"}
+});
 const css = (await readdir(".next/static/css")).filter((n) =>
   n.endsWith(".css"),
 );
 const html = `<!doctype html><html lang="en"><head><title>Isolated Studio UI test</title><meta name="viewport" content="width=device-width,initial-scale=1">${css.map((n) => `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/${n}">`).join("")}</head><body><main class="container prose"><h1>Studio UI fixture</h1><div id="root"></div></main><script src="/ui.js"></script></body></html>`;
 createServer(async (req, res) => {
-  if (req.url === "/ui.js") {
+  if (req.url === "/phase2.js") {
+    res.setHeader("Content-Type", "text/javascript");res.end(phase2.outputFiles[0].contents);
+  } else if (req.url === "/ui.js") {
     res.setHeader("Content-Type", "text/javascript");
     res.end(bundle.outputFiles[0].contents);
   } else {
     res.setHeader("Content-Type", "text/html");
-    res.end(html);
+    res.end(req.url.startsWith("/phase2-") ? html.replace("/ui.js", "/phase2.js").replace("Studio UI fixture", "Phase 2 UI fixture") : html);
   }
 }).listen(4174, "127.0.0.1", () =>
   console.log(

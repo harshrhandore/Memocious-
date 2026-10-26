@@ -1,8 +1,10 @@
 # Memocious
 
-Responsive Next.js storefront and protected Studio implementation for the attached brief. **Phase 1 remains incomplete until the managed identity, hosted BFF/media and release checks pass. No staging deployment is live.**
+Responsive Next.js storefront and protected Studio. Staging is live at https://memocious-staging-v2.netlify.app. Owner login/MFA, product editing/media/publication, guest enquiries and public media revocation have hosted evidence; Phase 1 mobile Lighthouse scored 95 with LCP 1.8s. The owner tested the backup authenticator.
 
-The catalogue supports server pagination, URL filters and stable sorts, taxonomy, swipe/zoom/thumbnails, product options and an in-memory message preview. Studio implements private product creation/editing/duplication/publication, media upload/approval/alt/order, taxonomy editing, typed settings and count-aware bulk deletion. Server-only SQL functions independently enforce sessions, membership, assurance, versions and history retention. These workflows have local database/UI evidence; real managed owner flows remain unverified.
+Phase 2 feature implementation is present: home/trust carousel, reviews/moderation, wishlist/addresses/privacy baseline, enterprise/contact transactions, quotes/proof/catalogue management and consented media. It is behind the default-off `PHASE_2_ENABLED` rollout flag. **Apply the new migrations before enabling; GitHub main auto-deploys app code but does not migrate Supabase.** See [Phase 2 results and owner guide](docs/phase-2-results.md) and [current Phase 1 status](docs/phase-1-current-status.md). Hosted Phase 2 acceptance is not claimed complete.
+
+Password-reset credential replacement and physical-phone navigation/WhatsApp remain manual. The owner deferred both database and image-file restore rehearsal until before production; this does not block Phase 2. Studio visual redesign remains Phase 5. No production release is asserted.
 
 Ten illustrated sample products are local demo fixtures. Ten explicitly labelled sample drafts also exist privately in the dedicated managed project; none is published. Their images must go through the real upload/review workflow. Business WhatsApp 918446572382 and approval of the existing policy texts were supplied by the user. This does not establish WhatsApp registration, legal compliance or operational readiness. Demo mode collects no enquiries or sign-ins.
 

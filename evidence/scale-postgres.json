@@ -1,6 +1,6 @@
 {
   "runtime": "Embedded PostgreSQL, 10,000 synthetic local publication rows; not Supabase latency/load evidence",
-  "date": "2026-10-21T14:41:30.411Z",
+  "date": "2026-10-26T19:51:21.863Z",
   "matching": 101,
   "returned": 24,
   "plan": [
@@ -12,15 +12,15 @@
             "Parallel Aware": false,
             "Async Capable": false,
             "Startup Cost": 0.29,
-            "Total Cost": 192.25,
+            "Total Cost": 298.03,
             "Plan Rows": 24,
             "Plan Width": 24,
-            "Actual Startup Time": 0.247,
-            "Actual Total Time": 0.494,
+            "Actual Startup Time": 0.18,
+            "Actual Total Time": 0.43,
             "Actual Rows": 24,
             "Actual Loops": 1,
             "Disabled": false,
-            "Shared Hit Blocks": 16,
+            "Shared Hit Blocks": 471,
             "Shared Read Blocks": 0,
             "Shared Dirtied Blocks": 0,
             "Shared Written Blocks": 0,
@@ -41,11 +41,11 @@
                 "Relation Name": "memocious_catalogue_products",
                 "Alias": "memocious_catalogue_products",
                 "Startup Cost": 0.29,
-                "Total Cost": 800.12,
+                "Total Cost": 1240.87,
                 "Plan Rows": 100,
                 "Plan Width": 24,
-                "Actual Startup Time": 0.216,
-                "Actual Total Time": 0.391,
+                "Actual Startup Time": 0.156,
+                "Actual Total Time": 0.37,
                 "Actual Rows": 24,
                 "Actual Loops": 1,
                 "Disabled": false,
@@ -54,7 +54,7 @@
                 "Filter": "(search_vector @@ '''hamper'''::tsquery)",
                 "Rows Removed by Filter": 207,
                 "Index Searches": 1,
-                "Shared Hit Blocks": 16,
+                "Shared Hit Blocks": 471,
                 "Shared Read Blocks": 0,
                 "Shared Dirtied Blocks": 0,
                 "Shared Written Blocks": 0,
@@ -79,9 +79,9 @@
             "Temp Read Blocks": 0,
             "Temp Written Blocks": 0
           },
-          "Planning Time": 0.298,
+          "Planning Time": 0.216,
           "Triggers": [],
-          "Execution Time": 0.623
+          "Execution Time": 0.544
         }
       ]
     }

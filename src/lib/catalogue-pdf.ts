@@ -10,12 +10,23 @@ export type CatalogueDocument = {
     pricePaise: number | null;
   }[];
 };
-const plain = (s: string) =>
-  s
+const plain = (s: string) => {
+  const value = s
     .normalize("NFKD")
-    .replace(/[^\x20-\x7e]/g, " ")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\u20b9/g, "INR ")
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201c\u201d]/g, '"')
+    .replace(/[\u2013\u2014]/g, "-")
+    .replace(/\u2026/g, "...")
     .replace(/\s+/g, " ")
     .trim();
+  if (/[^\x20-\x7e]/.test(value))
+    throw new Error(
+      "Catalogue PDF currently supports Latin text. Please use Latin catalogue wording before publication.",
+    );
+  return value;
+};
 const literal = (s: string) => plain(s).replace(/[\\()]/g, "\\$&");
 export function cataloguePdf(doc: CatalogueDocument): Buffer {
   const lines = [

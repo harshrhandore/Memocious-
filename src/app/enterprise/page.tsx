@@ -18,7 +18,15 @@ export default async function Enterprise() {
     ? await rpc<EnterpriseChoice[]>("memocious_enterprise_choices", {})
     : [];
   const content = phase2Ready
-    ? await rpc<{ catalogue: string | null }>("memocious_phase2_public", {})
+    ? await rpc<{
+        catalogue: string | null;
+        proof: {
+          photo: string;
+          caption: string;
+          firstName: string;
+          city: string;
+        }[];
+      }>("memocious_phase2_public", {})
     : null;
   return (
     <>
@@ -82,6 +90,29 @@ export default async function Enterprise() {
           ))}
         </div>
       </section>
+      {content?.proof?.length ? (
+        <section className="container section">
+          <h2>Moments shared with us</h2>
+          <div className="product-grid">
+            {content.proof.map((p) => (
+              <figure key={p.photo}>
+                <img
+                  src={p.photo}
+                  alt={p.caption}
+                  width={360}
+                  height={270}
+                  loading="lazy"
+                />
+                <figcaption>
+                  {p.caption}
+                  {p.firstName ? ` - ${p.firstName}` : ""}
+                  {p.city ? `, ${p.city}` : ""}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <section id="bulk-details" className="container prose pt-0">
         <span className="eyebrow">LET’S MAKE IT PERSONAL</span>
         <h2>A few details make all the difference.</h2>

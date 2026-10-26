@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { requireCustomerSession, bindSessionCsrf } from "@/lib/session";
 import {
+  HttpError,
   guardMutation,
   rateLimit,
   readBody,
@@ -12,11 +13,18 @@ import { rpc } from "@/lib/server-db";
 import { requirePhase2 } from "@/lib/phase2";
 export const dynamic = "force-dynamic";
 import { reviewSchema } from "@/lib/phase2-domain";
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     requirePhase2();
     const s = await requireCustomerSession();
-    return safeJson(await rpc("memocious_my_reviews", { sid: s.id }));
+    const product = req.nextUrl.searchParams.get("product");
+    if (product && !z.uuid().safeParse(product).success)
+      throw new HttpError(422, "Invalid gift.");
+    return safeJson(
+      product
+        ? await rpc("memocious_my_review", { sid: s.id, product })
+        : await rpc("memocious_my_reviews", { sid: s.id }),
+    );
   } catch (e) {
     return failure(e);
   }

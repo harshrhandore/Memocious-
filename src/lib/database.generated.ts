@@ -112,173 +112,192 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      memocious_addresses: {
+        Args: { sid: string; action?: string; address_id?: string; expected_version?: number; fields?: Json }
+        Returns: Json
+      }
       memocious_admin_assert: {
-        Args: { owner_only?: boolean; recent?: boolean; sid: string }
+        Args: { sid: string; owner_only?: boolean; recent?: boolean }
         Returns: string
       }
       memocious_admin_delete: {
-        Args: {
-          confirmation?: string
-          expected_digest?: string
-          mode: string
-          scope_ids: string[]
-          sid: string
-        }
+        Args: { sid: string; scope_ids: string[]; mode: string; expected_digest?: string; confirmation?: string }
+        Returns: Json
+      }
+      memocious_admin_inquiries: {
+        Args: { sid: string; entity?: string; expected_version?: number; action?: string; fields?: Json; page_num?: number }
         Returns: Json
       }
       memocious_admin_list: {
-        Args: { page_num?: number; sid: string }
+        Args: { sid: string; page_num?: number }
         Returns: Json
       }
       memocious_admin_number: {
-        Args: { number_digits: string; sid: string }
+        Args: { sid: string; number_digits: string }
         Returns: undefined
       }
       memocious_admin_product: {
-        Args: {
-          action: string
-          expected_version: number
-          fields?: Json
-          product_id: string
-          sid: string
-        }
+        Args: { sid: string; product_id: string; expected_version: number; action: string; fields?: Json }
+        Returns: Json
+      }
+      memocious_admin_proof: {
+        Args: { sid: string; action?: string; entity?: string; expected_version?: number; fields?: Json; page_num?: number }
+        Returns: Json
+      }
+      memocious_admin_reviews: {
+        Args: { sid: string; review_id?: string; expected_version?: number; action?: string; note?: string; report_id?: string; page_num?: number }
         Returns: Json
       }
       memocious_admin_settings: {
-        Args: { fields: Json; sid: string }
+        Args: { sid: string; fields: Json }
         Returns: undefined
       }
       memocious_admin_taxonomy: {
-        Args: {
-          expected_version: number
-          fields: Json
-          item_id: string
-          kind: string
-          sid: string
-        }
+        Args: { sid: string; kind: string; item_id: string; expected_version: number; fields: Json }
         Returns: undefined
       }
       memocious_admin_workspace: {
-        Args: { page_num?: number; sid: string }
+        Args: { sid: string; page_num?: number }
         Returns: Json
       }
-      memocious_catalogue: { Args: { filters?: Json }; Returns: Json }
+      memocious_asset: {
+        Args: { sid: string; asset: string; action: string; details?: Json }
+        Returns: Json
+      }
+      memocious_asset_begin: {
+        Args: { sid: string; kind: string; parent: string; bytes: number; mime: string; consent: boolean }
+        Returns: string
+      }
+      memocious_catalogue: {
+        Args: { filters?: Json }
+        Returns: Json
+      }
+      memocious_catalogue_document: {
+        Args: { sid: string; document: string }
+        Returns: Json
+      }
+      memocious_catalogue_preview: {
+        Args: { sid: string; document: string }
+        Returns: undefined
+      }
       memocious_csrf_rotate: {
         Args: { cookie_hash: string; new_csrf_hash: string }
         Returns: undefined
       }
       memocious_enquiry: {
-        Args: {
-          budget_paise: number
-          occasion: string
-          personal_message: string
-          pincode: string
-          product: string
-          qty: number
-          request_key: string
-          selected: string[]
-          sid: string
-        }
+        Args: { sid: string; request_key: string; product: string; qty: number; selected: string[]; personal_message: string; budget_paise: number; occasion: string; pincode: string }
         Returns: Json
       }
       memocious_enquiry_replay: {
-        Args: {
-          budget_paise: number
-          occasion: string
-          personal_message: string
-          pincode: string
-          product: string
-          qty: number
-          request_key: string
-          selected: string[]
-          sid: string
-        }
+        Args: { sid: string; request_key: string; product: string; qty: number; selected: string[]; personal_message: string; budget_paise: number; occasion: string; pincode: string }
+        Returns: Json
+      }
+      memocious_enterprise_choices: {
+        Args: never
+        Returns: Json
+      }
+      memocious_inquiry: {
+        Args: { sid: string; request_key: string; kind: string; fields: Json }
         Returns: Json
       }
       memocious_media_begin: {
-        Args: { alt_text: string; bytes: number; product: string; sid: string }
+        Args: { sid: string; product: string; bytes: number; alt_text: string }
         Returns: string
       }
       memocious_media_claim: {
-        Args: { job_id: string; sid: string }
+        Args: { sid: string; job_id: string }
         Returns: Json
       }
       memocious_media_cleanup: {
         Args: { job_id?: string; quarantine_only?: boolean }
         Returns: Json
       }
-      memocious_media_public: { Args: { image: string }; Returns: string }
+      memocious_media_public: {
+        Args: { image: string }
+        Returns: string
+      }
       memocious_media_read: {
-        Args: { image: string; sid: string }
+        Args: { sid: string; image: string }
         Returns: Json
       }
       memocious_media_ready: {
-        Args: {
-          digest: string
-          failed?: boolean
-          job_id: string
-          output_size: number
-          pixel_height: number
-          pixel_width: number
-          sid: string
-        }
+        Args: { sid: string; job_id: string; pixel_width: number; pixel_height: number; output_size: number; digest: string; failed?: boolean }
         Returns: string
       }
       memocious_media_update: {
-        Args: {
-          alt_text: string
-          image: string
-          operation: string
-          product_version: number
-          sid: string
-          sort_position: number
-        }
+        Args: { sid: string; image: string; product_version: number; operation: string; alt_text: string; sort_position: number }
         Returns: undefined
+      }
+      memocious_my_enterprise: {
+        Args: { sid: string }
+        Returns: Json
+      }
+      memocious_my_review: {
+        Args: { sid: string; product: string }
+        Returns: Json
+      }
+      memocious_my_reviews: {
+        Args: { sid: string }
+        Returns: Json
       }
       memocious_operator_bootstrap: {
-        Args: { approved_email_hash: string; provider_user: string }
+        Args: { provider_user: string; approved_email_hash: string }
         Returns: undefined
       }
-      memocious_product: { Args: { product_slug: string }; Returns: Json }
-      memocious_wishlist: {
-        Args: { sid: string; product?: string; saved?: boolean }
+      memocious_phase2_cleanup: {
+        Args: { asset?: string; finished?: boolean }
+        Returns: Json
+      }
+      memocious_phase2_public: {
+        Args: never
+        Returns: Json
+      }
+      memocious_privacy: {
+        Args: { sid: string; action: string }
+        Returns: Json
+      }
+      memocious_product: {
+        Args: { product_slug: string }
         Returns: Json
       }
       memocious_profile: {
-        Args: { new_name?: string; sid: string }
+        Args: { sid: string; new_name?: string }
         Returns: Json
       }
-      memocious_public_settings: { Args: never; Returns: Json }
+      memocious_public_settings: {
+        Args: never
+        Returns: Json
+      }
       memocious_rate_limit: {
-        Args: { actor_hash: string; ip_hash: string; operation_name: string }
+        Args: { operation_name: string; ip_hash: string; actor_hash: string }
         Returns: Json
       }
       memocious_refresh_claim: {
-        Args: { lease: string; sid: string }
+        Args: { sid: string; lease: string }
         Returns: boolean
       }
       memocious_refresh_commit: {
-        Args: { lease: string; sid: string; tokens: string }
+        Args: { sid: string; lease: string; tokens: string }
         Returns: undefined
       }
+      memocious_review: {
+        Args: { sid: string; product: string; expected_version: number; action: string; stars?: number; review_text?: string; first_name?: string }
+        Returns: Json
+      }
+      memocious_review_report: {
+        Args: { sid: string; review_key: string; report_reason: string }
+        Returns: undefined
+      }
+      memocious_reviews: {
+        Args: { product_slug?: string; page_num?: number }
+        Returns: Json
+      }
       memocious_session_mfa: {
-        Args: {
-          new_cookie_hash: string
-          new_csrf_hash: string
-          new_encrypted_tokens: string
-          sid: string
-        }
+        Args: { sid: string; new_cookie_hash: string; new_csrf_hash: string; new_encrypted_tokens: string }
         Returns: undefined
       }
       memocious_session_open: {
-        Args: {
-          audience: string
-          cookie_hash: string
-          csrf_hash: string
-          encrypted_tokens: string
-          key_version: string
-          provider_user: string
-        }
+        Args: { cookie_hash: string; csrf_hash: string; provider_user: string; audience: string; encrypted_tokens: string; key_version: string }
         Returns: string
       }
       memocious_session_read: {
@@ -286,10 +305,17 @@ export type Database = {
         Returns: Json
       }
       memocious_session_revoke: {
-        Args: { everywhere?: boolean; sid: string }
+        Args: { sid: string; everywhere?: boolean }
         Returns: undefined
       }
-      memocious_taxonomy: { Args: never; Returns: Json }
+      memocious_taxonomy: {
+        Args: never
+        Returns: Json
+      }
+      memocious_wishlist: {
+        Args: { sid: string; product?: string; saved?: boolean }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

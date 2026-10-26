@@ -147,9 +147,8 @@ export function BusinessInquiry({
           ) : (
             <p>
               Your guest enquiry is saved. Logo uploads are available for
-              enquiries created while signed in.{" "}
-              <Link href="/login?next=/account">Sign in</Link>, then return to
-              this open page. Your enquiry remains saved.
+              enquiries created while signed in. Discuss a logo directly with
+              Memocious for this guest enquiry.
             </p>
           ))}
         <p>{status}</p>
@@ -164,7 +163,10 @@ export function BusinessInquiry({
       </h3>
       {kind === "enterprise" && (
         <>
-          <p>For private logo upload, sign in before submitting, then reopen this form. Guest submission works without a logo.</p>
+          <p>
+            For private logo upload, sign in before submitting, then reopen this
+            form. Guest submission works without a logo.
+          </p>
           <label className="form-field">
             Organization
             <input name="organization" required maxLength={120} />

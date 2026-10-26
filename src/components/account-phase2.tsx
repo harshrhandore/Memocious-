@@ -77,6 +77,10 @@ export function AccountPhase2() {
       </section>
       <section>
         <h2>My reviews</h2>
+        <p>
+          Your latest 200 reviews. Older review data is included in your account
+          export.
+        </p>
         {reviews.length === 0 ? (
           <p>No reviews yet.</p>
         ) : (
@@ -87,6 +91,38 @@ export function AccountPhase2() {
                   {r.name}
                 </Link>
                 : {r.rating}/5 - {r.deleted ? "deleted" : r.status}. {r.body}
+                {!r.deleted && (
+                  <button
+                    type="button"
+                    className="button secondary"
+                    disabled={busy}
+                    onClick={async () => {
+                      setBusy(true);
+                      try {
+                        await privateRequest("/api/reviews", {
+                          product: r.product,
+                          expectedVersion: r.version,
+                          action: "delete",
+                          stars: null,
+                          body: "",
+                          firstName: "",
+                        });
+                        setReviews(
+                          await privateRequest<OwnReview[]>("/api/reviews"),
+                        );
+                        setStatus("Review removed from publication.");
+                      } catch (e) {
+                        setStatus(
+                          e instanceof Error ? e.message : "Try again.",
+                        );
+                      } finally {
+                        setBusy(false);
+                      }
+                    }}
+                  >
+                    Delete this review
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -206,6 +242,10 @@ export function AccountPhase2() {
       </section>
       <section>
         <h2>Your data</h2>
+        <p>
+          For export or deletion requests, sign out and sign in again within the
+          last 10 minutes.
+        </p>
         <p>
           Export your profile and current account records. A deletion request is
           reviewed by the owner; legally required enquiry and transaction

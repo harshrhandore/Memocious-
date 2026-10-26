@@ -27,6 +27,8 @@ type Enterprise = {
   pipeline: string;
   version: number;
   quote_paise: number | null;
+  quote_terms: string | null;
+  quote_valid_until: string | null;
   linked_order_id: string | null;
 };
 type Proof = {
@@ -49,10 +51,12 @@ type Counter = {
   version: number;
 };
 type State = {
+  hasMore?: boolean;
   reviews: Review[];
   reports: { id: string; reviewId: string; reason: string; status: string }[];
 };
 type Inquiries = {
+  hasMore?: boolean;
   enterprise: Enterprise[];
   contacts: {
     id: string;
@@ -72,6 +76,7 @@ type Inquiries = {
   }[];
 };
 type ProofState = {
+  hasMore?: boolean;
   proof: Proof[];
   counters: Counter[];
   documents: {
@@ -82,6 +87,7 @@ type ProofState = {
   }[];
 };
 export function AdminPhase2() {
+  const [page, setPage] = useState(1);
   const [reviews, setReviews] = useState<State | null>(null),
     [inquiries, setInquiries] = useState<Inquiries | null>(null),
     [proof, setProof] = useState<ProofState | null>(null),
@@ -89,14 +95,14 @@ export function AdminPhase2() {
     [busy, setBusy] = useState(false);
   const load = useCallback(async () => {
     const [r, i, p] = await Promise.all([
-      privateRequest<State>("/api/admin/reviews"),
-      privateRequest<Inquiries>("/api/admin/inquiries"),
-      privateRequest<ProofState>("/api/admin/proof"),
+      privateRequest<State>(`/api/admin/reviews?page=${page}`),
+      privateRequest<Inquiries>(`/api/admin/inquiries?page=${page}`),
+      privateRequest<ProofState>(`/api/admin/proof?page=${page}`),
     ]);
     setReviews(r);
     setInquiries(i);
     setProof(p);
-  }, []);
+  }, [page]);
   useEffect(() => {
     load().catch((e) => setStatus(e.message));
   }, [load]);
@@ -119,6 +125,27 @@ export function AdminPhase2() {
   return (
     <section className="section">
       <h2>Trust and enquiries</h2>
+      <nav aria-label="Owner queue pages">
+        <button
+          type="button"
+          className="button secondary"
+          disabled={busy || page === 1}
+          onClick={() => setPage((p) => p - 1)}
+        >
+          Previous queue page
+        </button>
+        <span> Page {page} </span>
+        <button
+          type="button"
+          className="button secondary"
+          disabled={
+            busy || !(reviews?.hasMore || inquiries?.hasMore || proof?.hasMore)
+          }
+          onClick={() => setPage((p) => p + 1)}
+        >
+          Next queue page
+        </button>
+      </nav>
       <p>
         New enterprise enquiries: {inquiries?.newCount ?? "Loading"}. Email
         notifications are not enabled. Publication and changes require a recent
@@ -262,6 +289,7 @@ export function AdminPhase2() {
                         ? Math.round(Number(f.get("quote")) * 100)
                         : null,
                     agreement: f.get("agreement") === "on",
+                    validUntil: f.get("validUntil") || null,
                   },
                 });
               }}
@@ -295,7 +323,19 @@ export function AdminPhase2() {
               </label>
               <label className="form-field">
                 Quotation terms / revision
-                <textarea name="terms" maxLength={4000} />
+                <textarea
+                  name="terms"
+                  maxLength={4000}
+                  defaultValue={e.quote_terms ?? ""}
+                />
+              </label>
+              <label className="form-field">
+                Quotation valid until
+                <input
+                  name="validUntil"
+                  type="date"
+                  defaultValue={e.quote_valid_until ?? ""}
+                />
               </label>
               <label className="form-field">
                 Internal note / transition reason

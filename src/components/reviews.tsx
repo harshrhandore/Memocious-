@@ -46,7 +46,7 @@ export function Reviews({
     [busy, setBusy] = useState(false);
   useEffect(() => {
     let active = true;
-    privateRequest<OwnReview[]>("/api/reviews")
+    privateRequest<OwnReview[]>(`/api/reviews?product=${product}`)
       .then((rows) => {
         if (active) {
           setSigned(true);
@@ -74,7 +74,9 @@ export function Reviews({
         firstName: f.get("firstName"),
       });
       setStatus("Review saved for moderation. It will appear after approval.");
-      const rows = await privateRequest<OwnReview[]>("/api/reviews");
+      const rows = await privateRequest<OwnReview[]>(
+        `/api/reviews?product=${product}`,
+      );
       setOwn(rows.find((r) => r.product === product) ?? null);
     } catch (e) {
       setStatus(e instanceof Error ? e.message : "Try again.");
@@ -238,12 +240,53 @@ export function Reviews({
               Delete my review
             </button>
           )}
+          {own?.photo && !own.deleted && (
+            <button
+              type="button"
+              className="button secondary"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                try {
+                  await privateRequest("/api/reviews", {
+                    product,
+                    expectedVersion: own.version,
+                    action: "remove-photo",
+                    stars: null,
+                    body: "",
+                    firstName: "",
+                  });
+                  const rows = await privateRequest<OwnReview[]>(
+                    `/api/reviews?product=${product}`,
+                  );
+                  setOwn(rows[0] ?? null);
+                  setStatus("Attachment removed. Review returned to pending.");
+                } catch (e) {
+                  setStatus(e instanceof Error ? e.message : "Try again.");
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            >
+              Remove review attachment
+            </button>
+          )}
+          {own?.photo && !own.deleted && (
+            <img
+              src={`/api/uploads/${own.photo}`}
+              alt="Your private review attachment"
+              width={240}
+              height={180}
+            />
+          )}
           {own && !own.deleted && (
             <PhotoUpload
               kind="review"
               parent={own.id}
               onReady={async () => {
-                const rows = await privateRequest<OwnReview[]>("/api/reviews");
+                const rows = await privateRequest<OwnReview[]>(
+                  `/api/reviews?product=${product}`,
+                );
                 setOwn(rows.find((r) => r.product === product) ?? null);
               }}
             />

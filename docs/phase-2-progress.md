@@ -1,3 +1,5 @@
+> Superseded by phase-2-results.md for final local implementation, Node 24 checks, 23 passing browser tests and exact remaining hosted blockers. Earlier counts below are historical runs.
+
 # Phase 2 development evidence - 27 October 2026
 
 Feature rollout is disabled unless PHASE_2_ENABLED=true in live mode. Apply all Phase 2 migrations before enabling. GitHub main auto-deploys to Netlify; source pushes do not apply Supabase migrations. No hosted database reset, migration or owner/MFA recreation performed.

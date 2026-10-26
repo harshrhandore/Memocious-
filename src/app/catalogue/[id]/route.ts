@@ -18,7 +18,10 @@ export async function GET(
       { sid: s?.id ?? null, document: id },
     );
     if (!doc) throw new Error("Unavailable");
-    return new Response(new Uint8Array(cataloguePdf(doc)), {
+    const pdf = cataloguePdf(doc);
+    if (preview && s)
+      await rpc("memocious_catalogue_preview", { sid: s.id, document: id });
+    return new Response(new Uint8Array(pdf), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="memocious-catalogue.pdf"`,
@@ -27,7 +30,16 @@ export async function GET(
         "Content-Security-Policy": "default-src 'none'; sandbox",
       },
     });
-  } catch {
+  } catch (e) {
+    if (e instanceof Error && e.message.startsWith("Catalogue PDF currently"))
+      return new Response(e.message, {
+        status: 422,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "private, no-store",
+          "X-Content-Type-Options": "nosniff",
+        },
+      });
     return new Response("Catalogue unavailable.", {
       status: 404,
       headers: { "Cache-Control": "private, no-store" },
