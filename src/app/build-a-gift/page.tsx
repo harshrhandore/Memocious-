@@ -17,6 +17,7 @@ export default async function Page() {
         categories={categories}
         occasions={occasions}
         available={phase3Ready}
+        sitekey={process.env.TURNSTILE_SITE_KEY ?? ""}
       />
     </article>
   );

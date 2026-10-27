@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import type { ProductSummary } from "@/app/[admin]/page";
+import { AdminCustomRequests } from "./admin-custom";
 import { AdminPhase2 } from "./admin-phase2";
 import { AdminWorkspace } from "./admin-workspace";
 export function AdminPanel({
@@ -11,12 +12,14 @@ export function AdminPanel({
   products: _products,
   sitekey,
   phase2 = false,
+  phase3 = false,
 }: {
   available: boolean;
   stage: "primary" | "mfa" | "verified";
   products: ProductSummary[];
   sitekey: string;
   phase2?: boolean;
+  phase3?: boolean;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState("");
@@ -253,6 +256,7 @@ export function AdminPanel({
         <>
           <AdminWorkspace />
           {phase2 && <AdminPhase2 />}
+          {phase3 && <AdminCustomRequests />}
           <details className="my-8">
             <summary>Authenticator verification and backup factor</summary>
             <AdminPanel

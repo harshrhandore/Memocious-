@@ -1,4 +1,4 @@
-import { phase2Ready } from "@/lib/config";
+import { phase2Ready, phase3Ready } from "@/lib/config";
 import { notFound } from "next/navigation";
 import { authReady } from "@/lib/config";
 import { readSession } from "@/lib/session";
@@ -25,7 +25,9 @@ export default async function Admin({
     <div className="container prose">
       <span className="eyebrow">MEMOCIOUS STUDIO</span>
       <h1>A little behind the scenes.</h1>
-      <AdminPanel phase2={phase2Ready}
+      <AdminPanel
+        phase2={phase2Ready}
+        phase3={phase3Ready}
         available={authReady}
         stage={
           !s || s.audience !== "admin"

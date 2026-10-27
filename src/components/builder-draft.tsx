@@ -1,4 +1,7 @@
 "use client";
+import { BuilderSubmit } from "./builder-submit";
+import { CustomReceiptView } from "./custom-requests";
+import type { CustomContinuation } from "@/lib/custom-request";
 import { BuilderFiles } from "./builder-files";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -28,10 +31,12 @@ export function BuilderDraftEditor({
   categories,
   occasions,
   available,
+  sitekey = "",
 }: {
   categories: Taxon[];
   occasions: Taxon[];
   available: boolean;
+  sitekey?: string;
 }) {
   const [payload, setPayload] = useState<BuilderPayload>({
       ...emptyBuilderPayload,
@@ -48,6 +53,7 @@ export function BuilderDraftEditor({
       "Not saved. Explore in this tab; signing in is required to save.",
     ),
     [confirmDelete, setConfirmDelete] = useState(false);
+  const [receipt, setReceipt] = useState<CustomContinuation | null>(null);
   const lastSaved = useRef(""),
     newId = useRef<string | null>(null),
     heading = useRef<HTMLHeadingElement>(null);
@@ -244,13 +250,14 @@ export function BuilderDraftEditor({
     payload.budgetMaxPaise !== null &&
     payload.budgetMinPaise <= payload.budgetMaxPaise &&
     builderPayload.safeParse(payload).success;
+  if (receipt) return <CustomReceiptView receipt={receipt} />;
   return (
     <section aria-label="Custom gift draft editor">
       <p className="notice">
         Builder development preview: plan a gift using published configurations.
         Saved estimates are provisional. Private reference uploads are available
-        for saved drafts; quote submission is not enabled yet. This draft
-        creates no enquiry or order.
+        for saved drafts and quote requests. Submitting the saved review creates
+        a quote request; no order or payment is recorded.
       </p>
       {!available && (
         <p>
@@ -273,7 +280,7 @@ export function BuilderDraftEditor({
                   <button
                     type="button"
                     className="button secondary"
-                    disabled={busy}
+                    disabled={busy || fileBusy}
                     onClick={() => load(d.id)}
                   >
                     Open draft
@@ -693,9 +700,24 @@ export function BuilderDraftEditor({
             Save this reviewed draft to validate contact, quantity, date and
             current options. This does not submit an enquiry.
           </p>
-          <button type="button" className="button" disabled>
-            Quote submission is not enabled yet
-          </button>
+          {record && (
+            <BuilderSubmit
+              key={record.id}
+              draft={record}
+              sitekey={sitekey}
+              eligible={
+                snapshot === lastSaved.current &&
+                !busy &&
+                !fileBusy &&
+                !conflict
+              }
+              onBusy={setFileBusy}
+              onSubmitted={(r) => {
+                lastSaved.current = snapshot;
+                setReceipt(r);
+              }}
+            />
+          )}
         </>
       )}
       {record?.estimate && (
@@ -798,7 +820,7 @@ export function BuilderDraftEditor({
         <button
           type="button"
           className="button secondary"
-          disabled={busy}
+          disabled={busy || fileBusy}
           onClick={() => load(record?.id ?? newId.current!)}
         >
           Load latest and keep my edits for comparison
@@ -853,7 +875,7 @@ export function BuilderDraftEditor({
             <button
               type="button"
               className="button secondary"
-              disabled={!confirmDelete || busy}
+              disabled={!confirmDelete || busy || fileBusy}
               onClick={async () => {
                 setBusy(true);
                 try {

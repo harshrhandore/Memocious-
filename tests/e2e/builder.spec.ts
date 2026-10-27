@@ -247,10 +247,13 @@ test("configured builder validates required options and saves a provisional zero
   await page.getByLabel("Pincode", { exact: true }).fill("400001");
   await page.getByRole("button", { name: "Next step" }).click();
   await expect(
-    page.getByRole("button", { name: "Quote submission is not enabled yet" }),
-  ).toBeDisabled();
+    page.getByRole("button", { name: "Submit quote request" }),
+  ).toHaveCount(0);
   await page.getByRole("button", { name: "Save to my account" }).click();
   await expect(page.getByRole("status")).toHaveText("Saved to your account.");
+  await expect(
+    page.getByRole("button", { name: "Submit quote request" }),
+  ).toBeEnabled();
   expect(sent?.schemaVersion).toBe(2);
   expect(sent?.payload).toMatchObject({ contact: { phone: "447700900123" } });
   await expect(

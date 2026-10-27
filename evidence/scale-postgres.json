@@ -1,6 +1,6 @@
 {
   "runtime": "Embedded PostgreSQL, 10,000 synthetic local publication rows; not Supabase latency/load evidence",
-  "date": "2026-10-27T02:17:39.740Z",
+  "date": "2026-10-27T02:36:46.499Z",
   "matching": 101,
   "returned": 24,
   "plan": [
@@ -15,8 +15,8 @@
             "Total Cost": 298.03,
             "Plan Rows": 24,
             "Plan Width": 24,
-            "Actual Startup Time": 0.176,
-            "Actual Total Time": 0.695,
+            "Actual Startup Time": 0.175,
+            "Actual Total Time": 0.415,
             "Actual Rows": 24,
             "Actual Loops": 1,
             "Disabled": false,
@@ -44,8 +44,8 @@
                 "Total Cost": 1240.87,
                 "Plan Rows": 100,
                 "Plan Width": 24,
-                "Actual Startup Time": 0.155,
-                "Actual Total Time": 0.361,
+                "Actual Startup Time": 0.156,
+                "Actual Total Time": 0.364,
                 "Actual Rows": 24,
                 "Actual Loops": 1,
                 "Disabled": false,
@@ -79,9 +79,9 @@
             "Temp Read Blocks": 0,
             "Temp Written Blocks": 0
           },
-          "Planning Time": 0.176,
+          "Planning Time": 0.191,
           "Triggers": [],
-          "Execution Time": 0.809
+          "Execution Time": 0.513
         }
       ]
     }

@@ -120,6 +120,10 @@ export type Database = {
         Args: { sid: string; owner_only?: boolean; recent?: boolean }
         Returns: string
       }
+      memocious_admin_custom: {
+        Args: { sid: string; action?: string; request_id?: string; expected_version?: number; fields?: Json; page_num?: number; search_code?: string; status_filter?: string }
+        Returns: Json
+      }
       memocious_admin_delete: {
         Args: { sid: string; scope_ids: string[]; mode: string; expected_digest?: string; confirmation?: string }
         Returns: Json
@@ -196,6 +200,10 @@ export type Database = {
         Args: { file_id?: string; finished?: boolean; quarantine_only?: boolean }
         Returns: Json
       }
+      memocious_builder_submit: {
+        Args: { sid: string; draft: string; expected_version: number; request_key: string; consent: boolean; accept_estimate: boolean; replay_only?: boolean }
+        Returns: Json
+      }
       memocious_catalogue: {
         Args: { filters?: Json }
         Returns: Json
@@ -211,6 +219,10 @@ export type Database = {
       memocious_csrf_rotate: {
         Args: { cookie_hash: string; new_csrf_hash: string }
         Returns: undefined
+      }
+      memocious_custom_requests: {
+        Args: { sid: string; page_num?: number }
+        Returns: Json
       }
       memocious_enquiry: {
         Args: { sid: string; request_key: string; product: string; qty: number; selected: string[]; personal_message: string; budget_paise: number; occasion: string; pincode: string }

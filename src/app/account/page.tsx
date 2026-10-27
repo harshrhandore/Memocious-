@@ -1,8 +1,9 @@
+import { CustomRequests } from "@/components/custom-requests";
 import Link from "next/link";
 import { AccountPhase2 } from "@/components/account-phase2";
 import { Wishlist } from "@/components/wishlist";
 import { redirect } from "next/navigation";
-import { authReady, phase2Ready } from "@/lib/config";
+import { authReady, phase2Ready, phase3Ready } from "@/lib/config";
 import { requireCustomerSession } from "@/lib/session";
 import { rpc } from "@/lib/server-db";
 import { EmptyState } from "@/components/ui";
@@ -34,6 +35,7 @@ export default async function Account() {
       <p>
         <Link href="/build-a-gift">Explore the custom gift draft editor</Link>
       </p>
+      {phase3Ready && <CustomRequests />}
       <AccountForm fullName={profile.fullName} />
       {phase2Ready && (
         <>
