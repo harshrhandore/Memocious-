@@ -1,4 +1,9 @@
-import { phase2Ready, phase3Ready, phase5Ready } from "@/lib/config";
+import {
+  phase2Ready,
+  phase3Ready,
+  phase4Ready,
+  phase5Ready,
+} from "@/lib/config";
 import { notFound } from "next/navigation";
 import { authReady } from "@/lib/config";
 import { readSession } from "@/lib/session";
@@ -32,6 +37,7 @@ export default async function Admin({
       <AdminPanel
         phase2={phase2Ready}
         phase3={phase3Ready}
+        phase4={phase4Ready}
         phase5={phase5Ready}
         available={authReady}
         stage={

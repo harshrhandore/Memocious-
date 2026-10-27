@@ -1,3 +1,5 @@
+> Phase 4 core continuation (28 October 2026): pre-dispatch owner actions and offline receipt/refund records are locally implemented behind the default-off Phase 4 gate. Its new migration remains unapplied remotely; dispatch/guest tracking/SLA/erasure and dependent tests remain unfinished. See phase-4-owner-workflow.md.
+
 > Phase 7 update (28 October 2026): independent redirect/request/provider-fetch/referrer hardening and Semgrep CI are implemented. See phase-7-progress.md for actual isolated evidence and release blockers. Unbuilt Phase 4-6 features remain unbuilt; postponed hosted/device and DB AND image-file restore checks remain deferred. Phase 8 has no selected integration.
 
 > Phase 6 update (27 October 2026): independent public canonical/social metadata, a static brand share card and conservative published-product structured-data helpers are implemented behind default-off PHASE_6_ENABLED. Staging remains noindex with an empty sitemap. No performance, hosted or integration acceptance is newly claimed; see phase-6-progress.md. Earlier incomplete phases and the owner's test deferral remain unchanged.

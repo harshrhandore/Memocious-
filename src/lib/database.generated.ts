@@ -292,6 +292,14 @@ export type Database = {
         Args: { sid: string; from_day?: string; to_day?: string; action_prefix?: string; entity_filter?: string; entity_key?: string; request_key?: string; cursor_at?: string; cursor_id?: string; as_of?: string }
         Returns: Json
       }
+      memocious_owner_order_action: {
+        Args: { sid: string; order_id: string; expected_version: number; request_key: string; action: string; fields: Json }
+        Returns: Json
+      }
+      memocious_owner_orders: {
+        Args: { sid: string; order_code?: string; page_num?: number; status_filter?: string; event_page?: number }
+        Returns: Json
+      }
       memocious_phase2_cleanup: {
         Args: { asset?: string; finished?: boolean }
         Returns: Json

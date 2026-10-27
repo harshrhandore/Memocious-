@@ -134,6 +134,13 @@ function OrderSummary({ order: o }: { order: CustomerOrder }) {
           ? `Owner-verified receipt recorded: ${money(o.paymentReceivedPaise)}. ${o.confirmedTotalPaise !== null && o.paymentReceivedPaise < o.confirmedTotalPaise ? "This is a partial payment, not payment in full." : ""}`
           : "No owner-verified payment receipt recorded."}
       </p>
+      {(o.refundRecordedPaise ?? 0) > 0 && (
+        <p>
+          Owner-recorded offline refunds: {money(o.refundRecordedPaise!)}.
+          Refunds are recorded here after verification; this website does not
+          send the money.
+        </p>
+      )}
       {o.eta && (
         <p>Estimated delivery date: {o.eta}. Subject to owner confirmation.</p>
       )}

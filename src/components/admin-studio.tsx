@@ -4,14 +4,17 @@ import { AdminWorkspace } from "./admin-workspace";
 import { AdminPhase2 } from "./admin-phase2";
 import { AdminCustomRequests } from "./admin-custom";
 import { AdminAudit } from "./admin-audit";
+import { AdminOrders } from "./admin-orders";
 import { privateRequest } from "@/lib/client-request";
 export function AdminStudio({
   phase2,
   phase3,
+  phase4 = false,
   security,
 }: {
   phase2: boolean;
   phase3: boolean;
+  phase4?: boolean;
   security: ReactNode;
 }) {
   const sections = [
@@ -50,6 +53,16 @@ export function AdminStudio({
       title: "Owner audit",
       description: "Search recorded actions without exposing private payloads.",
     },
+    ...(phase4
+      ? [
+          {
+            id: "orders",
+            title: "Orders",
+            description:
+              "Record verified order progress and offline payment facts.",
+          },
+        ]
+      : []),
     {
       id: "security",
       title: "Security",
@@ -123,6 +136,15 @@ export function AdminStudio({
           </h2>
           <p>{current.description}</p>
         </header>
+        {visited.includes("orders") && (
+          <section
+            id="studio-panel-orders"
+            aria-label="Studio orders"
+            hidden={active !== "orders"}
+          >
+            <AdminOrders />
+          </section>
+        )}
         <section
           id="studio-panel-home"
           aria-label="Studio overview"

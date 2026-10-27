@@ -1,5 +1,18 @@
 # Phase 4 progress - owned enquiry/order timelines
 
+## Owner workflow increment - 28 October 2026
+
+The default-off Phase 4 implementation now includes an owner queue, exact-code search/status filters, bounded detail/history and transactional pre-dispatch actions. It records agreed scope/total/contact, actual offline receipts/refunds, exact hold/resume, ready-made skip attestation, quality-check return, paid cancellation/refund due and controlled unpaid reopening. Customer summaries distinguish gross receipts and recorded refunds. Owner/fresh-MFA SQL and BFF guards, expected versions, persistent request receipts, unique per-order money references, immutable events/audits and pending in-app outbox entries protect the workflow. The website does not move money or automatically send messages.
+
+See [the exact workflow contract](phase-4-owner-workflow.md). This supersedes historical statements below that owner mutations are entirely unbuilt. It does not complete Phase 4: dispatch evidence/courier/photos remain unbuilt and new shipped/out-for-delivery transitions explicitly fail; coarse/guest tracking, safe tracking links, SLA and account erasure remain outstanding. Dependent acceptance is BLOCKED, not passed. Manual WhatsApp updates contain only code/status and are not delivery evidence.
+
+Migration `20261027183624_phase4_owner_order_workflow.sql` was created through the installed CLI and verified with embedded PostgreSQL. It and earlier Phase 4/5 migrations remain unapplied remotely. `PHASE_4_ENABLED` stays false. No hosted configuration, database reset, owner/MFA recreation or postponed provider/device/restore check occurred. The withdrawn local live-provider testing proposal remains ignored.
+
+Observed: Node 24.19.0 build/TypeScript and 42 unit tests pass; all embedded PostgreSQL suites pass, including owner actions and deliberate duplicate-reference failure/transaction rollback. Lint has zero errors with 33 warnings/20 infos. Semgrep OWASP passes with zero findings/errors over 138 application/job files. Full desktop/mobile Chromium regression: 63 passed, one intentional desktop skip. Four new owner UI cases cover uncertain-result retry, partial payment, authorization-loss clearing, no browser persistence and accessibility/overflow. Desktop/mobile screenshots were visually inspected and remain ignored development artifacts. See `evidence/phase-4-owner-playwright.json`, `evidence/phase-4-owner-semgrep.json` and `evidence/local-postgres.json`. These are isolated SQL/API/component fixtures, not real Auth/BFF/MFA/provider/concurrency/device evidence.
+
+---
+Historical reader foundation follows; its unbuilt-owner-action statements are superseded above.
+
 Phase 4 has started; it is not complete. Phase 3 acceptance remains incomplete and owner-deferred until the Netlify deployment issue is resolved. The suggestion to perform those integration checks locally has been withdrawn. This increment introduces independent customer read functionality and ordinary isolated development checks only. No hosted migrations, environment changes, provider tests or manual-device checks were performed.
 
 ## Implemented

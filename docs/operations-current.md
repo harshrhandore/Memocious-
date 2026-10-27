@@ -13,7 +13,7 @@ Use Node 24.19.0, the lockfile and ordinary isolated checks: build, unit, lint, 
 | Capability           | Recorded remote status                                                | Rollout boundary                                                  |
 | -------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | Phases 2/3           | Migrations applied; flags configured true, current code not published | SQL/flag state does not establish positive integration acceptance |
-| Phase 4 timelines    | Migration `20261027120000` not applied                                | Default-off flag; verify schema and prerequisites before enabling |
+| Phase 4 timelines and pre-dispatch owner actions | Migrations `20261027120000` and `20261027183624` not applied | Default-off flag; verify schema and prerequisites before enabling |
 | Phase 5 Studio/audit | Migration `20261027130000` not applied                                | Default-off flag; owner/fresh-MFA audit guard remains required    |
 | Phase 6 metadata     | No migration                                                          | Default-off flag; indexing remains disabled                       |
 
@@ -25,7 +25,7 @@ When capacity is restored AND the owner resumes postponed checks, deploy the rev
 
 Use the privately supplied Studio path and existing owner/TOTP. Products begin as drafts. Blank price means quote, zero is real zero; version conflicts need review. Upload still JPEG/PNG/WebP <=2 MiB and 20 megapixels, inspect sanitized private preview/alt/order, then deliberately publish genuine content. HEIC/animated inputs need conversion. Hide/removal revokes subsequent app access, not downloaded copies. Builder/reference files stay private.
 
-Deletion requires exact selection/count/confirmation and current authority; permanent deletion requires soft-deleted records and fresh MFA. Preserve order snapshots/audits. Phase 3 quote/conversion is implemented but hosted acceptance is deferred. Record genuine agreement; conversion/WhatsApp clicks do not prove payment. Phase 4's reader foundation cannot change fulfilment state. Consult phase ledgers before promising operational capabilities.
+Deletion requires exact selection/count/confirmation and current authority; permanent deletion requires soft-deleted records and fresh MFA. Preserve order snapshots/audits. Phase 3 quote/conversion is implemented but hosted acceptance is deferred. Record genuine agreement; conversion/WhatsApp clicks do not prove payment. Phase 4 pre-dispatch owner actions/offline receipt/refund records are locally implemented behind its default-off flag and unapplied migrations; dispatch remains blocked. Consult phase ledgers before promising operational capabilities.
 
 ## Containment and application rollback - not drilled
 

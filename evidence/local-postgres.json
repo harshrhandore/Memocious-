@@ -36,8 +36,13 @@
       "result": "PASS: owner-only recent-MFA audit, editor/customer/guest/aal1/revoked denial, safe zero/false metadata, unknown fields/session IDs withheld, cursor bounds/snapshot/no overlap, UUID filters and Kolkata date boundaries"
     }
   ],
+  "ownerOrders": [
+    {
+      "result": "PASS: owner recent-MFA actions, editor/customer/aal1/revoked denial, agreed zero, partial offline receipts, exact hold resume, ready-made/quality failure, dispatch prerequisite denial, paid cancellation/refund due, partial/full verified refunds, terminal state, persistent matching replay, stale/changed/mass-assignment denial and atomic event/audit/outbox counts"
+    }
+  ],
   "adminSuite": "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
-  "date": "2026-10-27T12:05:24.297Z",
+  "date": "2026-10-27T18:45:03.016Z",
   "result": [
     {
       "result": "PASS: grants, denied bypass, guest admin denial, zero-price snapshot, replay, changed-payload conflict, negative quantity, visibility, history, revocation; fixtures rolled back"

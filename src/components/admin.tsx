@@ -7,6 +7,7 @@ import { AdminCustomRequests } from "./admin-custom";
 import { AdminPhase2 } from "./admin-phase2";
 import { AdminStudio } from "./admin-studio";
 import { AdminWorkspace } from "./admin-workspace";
+import { AdminOrders } from "./admin-orders";
 export function AdminPanel({
   available,
   stage,
@@ -14,6 +15,7 @@ export function AdminPanel({
   sitekey,
   phase2 = false,
   phase3 = false,
+  phase4 = false,
   phase5 = false,
 }: {
   available: boolean;
@@ -22,6 +24,7 @@ export function AdminPanel({
   sitekey: string;
   phase2?: boolean;
   phase3?: boolean;
+  phase4?: boolean;
   phase5?: boolean;
 }) {
   const router = useRouter();
@@ -259,6 +262,7 @@ export function AdminPanel({
         <AdminStudio
           phase2={phase2}
           phase3={phase3}
+          phase4={phase4}
           security={
             <AdminPanel
               available={available}
@@ -273,6 +277,7 @@ export function AdminPanel({
           <AdminWorkspace />
           {phase2 && <AdminPhase2 />}
           {phase3 && <AdminCustomRequests />}
+          {phase4 && <AdminOrders />}
           <details className="my-8">
             <summary>Authenticator verification and backup factor</summary>
             <AdminPanel

@@ -34,6 +34,7 @@ export type CustomerOrder = {
   confirmedTotalPaise: number | null;
   paymentReceivedPaise: number;
   paymentVerified: boolean;
+  refundRecordedPaise?: number;
   eta: string | null;
 };
 export type OrderList = { orders: CustomerOrder[]; hasMore: boolean };
