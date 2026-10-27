@@ -1,3 +1,12 @@
+# Owner-directed test deferral - 27 October 2026
+
+The owner has postponed the remaining Phase 3 hosted/integration/provider/device acceptance checks until the Netlify deployment-capacity issue is resolved. The earlier proposal to run those integration checks locally is withdrawn and must be ignored. Do not set up a local live-provider integration environment or treat that proposal as authorization to resume the deferred checks. No credits/plan changes or alternative hosting are authorized by this deferral.
+
+Continue independent development, with ordinary isolated build/unit/SQL/component regression checks for new code. These do not certify deferred provider/hosted acceptance. Phase 3 remains implemented with acceptance incomplete. Keep its deferred checklist below and both restore rehearsals required before production. Phase 4 development has started; see phase-4-progress.md.
+
+---
+Earlier rollout evidence follows.
+
 # Hosted rollout update - 27 October 2026
 
 This update supersedes the earlier statements that migrations were unapplied. Phase 3 is PARTIAL / BLOCKED, not acceptance-complete.

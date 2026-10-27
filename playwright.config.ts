@@ -1,7 +1,16 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests/e2e",
-  reporter: [["list"], ["json", { outputFile: "evidence/playwright.json" }]],
+  reporter: [
+    ["list"],
+    [
+      "json",
+      {
+        outputFile:
+          process.env.PLAYWRIGHT_REPORT_FILE ?? "evidence/playwright.json",
+      },
+    ],
+  ],
   workers: 1,
   webServer: [
     {

@@ -26,8 +26,13 @@
       "result": "PASS: CUS ownership, consent, pending file/stale version denial, receipt zero, replay, atomic file transfer, customer isolation, submitted freeze, quote CAS, genuine agreement, single conversion and no payment inference"
     }
   ],
+  "ownedOrders": [
+    {
+      "result": "PASS: owned order list/detail, A/B/guest/revoked denial, safe notes/options/payment projection, zero versus missing price, bounded latest/older events, product history and no polling activity extension"
+    }
+  ],
   "adminSuite": "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
-  "date": "2026-10-27T02:36:45.914Z",
+  "date": "2026-10-27T08:03:21.620Z",
   "result": [
     {
       "result": "PASS: grants, denied bypass, guest admin denial, zero-price snapshot, replay, changed-payload conflict, negative quantity, visibility, history, revocation; fixtures rolled back"

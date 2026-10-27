@@ -1,0 +1,35 @@
+begin;
+do $$
+declare a uuid:=gen_random_uuid();b uuid:=gen_random_uuid();sa uuid;sb uuid;g uuid;oid uuid:=gen_random_uuid();pid uuid:=gen_random_uuid();r jsonb;failed boolean;activity timestamptz;ref text:='GFT-2610-000001-000000000001';
+begin
+ insert into auth.users(id,email_confirmed_at) values(a,now()),(b,now());
+ sa:=public.memocious_session_open(repeat('1',64),repeat('2',64),a,'customer','fixture','1');sb:=public.memocious_session_open(repeat('3',64),repeat('4',64),b,'customer','fixture','1');g:=public.memocious_session_open(repeat('5',64),repeat('6',64),null,'guest',null,'1');
+ insert into memocious.orders(id,code,user_id,actor_session_id,source,estimate_paise,confirmed_total_paise,contact_name,phone,address,cancellation_reason,refund_due,courier_name,courier_number,courier_link) values(oid,ref,a,sa,'product',0,0,'PRIVATE CONTACT','447700900123','{"secret":"PRIVATE ADDRESS"}','INTERNAL REASON',true,'PRIVATE COURIER','PRIVATE NUMBER','https://example.com/internal');
+ insert into memocious.orders(code,user_id,actor_session_id,source) select 'GFT-2610-'||lpad(n::text,6,'0')||'-000000000001',a,sa,'product' from generate_series(2,25)n;
+ insert into memocious.orders(code,user_id,actor_session_id,source) values('CUS-2610-000001-000000000001',b,sb,'builder'),('ENT-2610-000001-000000000001',null,g,'enterprise');
+ insert into memocious.products(id,slug,name) values(pid,'timeline-fixture','Historical gift');
+ insert into memocious.order_items(order_id,product_id,product_name,unit_price_paise,quantity,message,option_snapshot,immutable_snapshot) values(oid,pid,'Historical gift',0,1,'Customer words','[{"label":"Colour: cream","internalNote":"PRIVATE OPTION"}]','{"secret":"PRIVATE SNAPSHOT"}');
+ insert into memocious.order_events(order_id,actor_session_id,to_status,order_version,customer_note,internal_note,request_id) select oid,sa,'inquiry',n,case when n=55 then '<script>inert customer words</script>' end,'PRIVATE NOTE',gen_random_uuid() from generate_series(1,55)n;
+ update memocious_private.app_sessions set last_active_at=now()-interval '1 day' where id=sa;
+ select last_active_at into activity from memocious_private.app_sessions where id=sa;
+ execute 'set local role service_role';
+ r:=public.memocious_customer_orders(sa);if jsonb_array_length(r->'orders')<>24 or r->>'hasMore'<>'true' then raise exception 'List must be bounded';end if;
+ if jsonb_array_length(public.memocious_customer_orders(sa,null,2)->'orders')<>1 then raise exception 'Second page incorrect';end if;
+ r:=public.memocious_customer_orders(sa,ref);
+ if r->'order'->>'estimatePaise'<>'0' or r->'order'->>'confirmedTotalPaise'<>'0' or r->'order'->>'paymentVerified'<>'false' or r->'order'->>'paymentReceivedPaise'<>'0' then raise exception 'Payment/zero semantics';end if;
+ if r::text like '%PRIVATE%' or r->'order' ?| array['user_id','actor_session_id','phone','refund_due','hold_from'] or r->'events'->0 ? 'internal_note' then raise exception 'Private data leak';end if;
+ if jsonb_array_length(r->'events')<>50 or r->'events'->0->>'version'<>'6' or r->'events'->49->>'version'<>'55' or r->>'hasOlderEvents'<>'true' then raise exception 'Event page bounds';end if;
+ if public.memocious_customer_orders(sa,ref,1,2)->>'hasOlderEvents'<>'false' or jsonb_array_length(public.memocious_customer_orders(sa,ref,1,2)->'events')<>5 then raise exception 'Older event bounds';end if;
+ if (select last_active_at from memocious_private.app_sessions where id=sa)<>activity then raise exception 'Polling extended idle activity';end if;
+ failed:=false;begin perform public.memocious_customer_orders(sb,ref);exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Cross-account code read';end if;
+ failed:=false;begin perform public.memocious_customer_orders(sa,'GFT-2610-999999-000000000001');exception when insufficient_privilege then failed:=true;end;if not failed then raise exception 'Missing code did not deny';end if;
+ failed:=false;begin perform public.memocious_customer_orders(g);exception when invalid_authorization_specification then failed:=true;end;if not failed then raise exception 'Guest read';end if;
+ failed:=false;begin perform public.memocious_customer_orders(sa,null,0);exception when invalid_parameter_value then failed:=true;end;if not failed then raise exception 'Unbounded page';end if;
+ execute 'reset role';delete from memocious.products where id=pid;execute 'set local role service_role';
+ if public.memocious_customer_orders(sa,ref)->'items'->0->>'name'<>'Historical gift' then raise exception 'Deleted product lost historical name';end if;
+ perform public.memocious_session_revoke(sa,false);
+ failed:=false;begin perform public.memocious_customer_orders(sa,ref);exception when invalid_authorization_specification then failed:=true;end;if not failed then raise exception 'Revoked session read';end if;
+ execute 'reset role';
+end $$;
+rollback;
+select 'PASS: owned order list/detail, A/B/guest/revoked denial, safe notes/options/payment projection, zero versus missing price, bounded latest/older events, product history and no polling activity extension' result;

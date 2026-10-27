@@ -25,6 +25,7 @@ let builderResult;
 let builderConfiguration;
 let builderFiles;
 let builderSubmission;
+let ownedOrders;
 try {
   await db.exec(await readFile("tests/admin-database.sql", "utf8"));
   console.log(JSON.stringify((await db.exec(await readFile("tests/wishlist-database.sql", "utf8"))).at(-1).rows));
@@ -38,6 +39,8 @@ try {
   console.log(JSON.stringify(builderFiles));
   builderSubmission=(await db.exec(await readFile("tests/builder-submission.sql","utf8"))).at(-1).rows;
   console.log(JSON.stringify(builderSubmission));
+  ownedOrders=(await db.exec(await readFile("tests/order-timeline.sql","utf8"))).at(-1).rows;
+  console.log(JSON.stringify(ownedOrders));
   result = await db.exec(await readFile("tests/database.sql", "utf8"));
 } catch (e) {
   console.error(
@@ -59,6 +62,7 @@ await writeFile(
       builderConfiguration,
       builderFiles,
       builderSubmission,
+      ownedOrders,
       adminSuite:
         "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
       date: new Date().toISOString(),

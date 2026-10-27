@@ -224,6 +224,10 @@ export type Database = {
         Args: { sid: string; page_num?: number }
         Returns: Json
       }
+      memocious_customer_orders: {
+        Args: { sid: string; order_code?: string; page_num?: number; event_page?: number }
+        Returns: Json
+      }
       memocious_enquiry: {
         Args: { sid: string; request_key: string; product: string; qty: number; selected: string[]; personal_message: string; budget_paise: number; occasion: string; pincode: string }
         Returns: Json
