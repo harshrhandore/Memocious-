@@ -4,7 +4,7 @@ Responsive Next.js storefront and protected Studio. Staging is live at https://m
 
 Phase 2 feature implementation is present: home/trust carousel, reviews/moderation, wishlist/addresses/privacy baseline, enterprise/contact transactions, quotes/proof/catalogue management and consented media. It is behind the default-off `PHASE_2_ENABLED` rollout flag. **Apply the new migrations before enabling; GitHub main auto-deploys app code but does not migrate Supabase.** See [Phase 2 results and owner guide](docs/phase-2-results.md) and [current Phase 1 status](docs/phase-1-current-status.md). Hosted Phase 2 acceptance is not claimed complete.
 
-Phase 3 has started with a four-step custom-gift draft editor and default-off `PHASE_3_ENABLED` saving gate. [Draft foundation and blocked prerequisites](docs/phase-3-progress.md) distinguish this increment from the unfinished full builder.
+Phase 3 has started with a custom-gift configuration draft editor (product options, provisional estimates and contact/review planning) and default-off `PHASE_3_ENABLED` saving gate. [Draft foundation and blocked prerequisites](docs/phase-3-progress.md) distinguish this increment from the unfinished full builder.
 
 Password-reset credential replacement and physical-phone navigation/WhatsApp remain manual. The owner deferred both database and image-file restore rehearsal until before production; this does not block Phase 2. Studio visual redesign remains Phase 5. No production release is asserted.
 

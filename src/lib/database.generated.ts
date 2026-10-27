@@ -168,11 +168,19 @@ export type Database = {
         Args: { sid: string; kind: string; parent: string; bytes: number; mime: string; consent: boolean }
         Returns: string
       }
+      memocious_builder_choices: {
+        Args: { gift_type: string; selected_product?: string }
+        Returns: Json
+      }
       memocious_builder_cleanup: {
         Args: never
         Returns: Json
       }
       memocious_builder_draft: {
+        Args: { sid: string; action?: string; draft_id?: string; expected_version?: number; draft_schema?: number; step_num?: number; fields?: Json }
+        Returns: Json
+      }
+      memocious_builder_draft_v1: {
         Args: { sid: string; action?: string; draft_id?: string; expected_version?: number; draft_schema?: number; step_num?: number; fields?: Json }
         Returns: Json
       }

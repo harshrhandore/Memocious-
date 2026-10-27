@@ -22,6 +22,7 @@ if (process.argv.includes("--generate-types")) {
 let result;
 let phase2Result;
 let builderResult;
+let builderConfiguration;
 try {
   await db.exec(await readFile("tests/admin-database.sql", "utf8"));
   console.log(JSON.stringify((await db.exec(await readFile("tests/wishlist-database.sql", "utf8"))).at(-1).rows));
@@ -29,6 +30,8 @@ try {
   console.log(JSON.stringify(phase2Result));
   builderResult=(await db.exec(await readFile("tests/builder-database.sql","utf8"))).at(-1).rows;
   console.log(JSON.stringify(builderResult));
+  builderConfiguration=(await db.exec(await readFile("tests/builder-configuration.sql","utf8"))).at(-1).rows;
+  console.log(JSON.stringify(builderConfiguration));
   result = await db.exec(await readFile("tests/database.sql", "utf8"));
 } catch (e) {
   console.error(
@@ -47,6 +50,7 @@ await writeFile(
       node: process.version,
       phase2Suite:phase2Result,
       builderSuite:builderResult,
+      builderConfiguration,
       adminSuite:
         "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
       date: new Date().toISOString(),

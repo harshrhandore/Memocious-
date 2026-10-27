@@ -11,8 +11,13 @@
       "result": "PASS: owned draft create/retry/read/save, A/B/guest isolation, stale version/schema/step/payload/type/budget rejection, export isolation, expiry/cleanup, delete retry and revocation"
     }
   ],
+  "builderConfiguration": [
+    {
+      "result": "PASS: compatible descendant choices, option/quantity price arithmetic, retry, required/duplicate/cross-type/MOQ/date/contact/price-injection denial, schema upgrade/old-client conflict, stale pricing, null upper bound and quote-only unknown price"
+    }
+  ],
   "adminSuite": "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
-  "date": "2026-10-26T20:01:35.788Z",
+  "date": "2026-10-27T00:48:25.460Z",
   "result": [
     {
       "result": "PASS: grants, denied bypass, guest admin denial, zero-price snapshot, replay, changed-payload conflict, negative quantity, visibility, history, revocation; fixtures rolled back"

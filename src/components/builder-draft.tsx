@@ -4,13 +4,25 @@ import Link from "next/link";
 import { privateRequest, RequestError } from "@/lib/client-request";
 import {
   builderPayload,
+  normalizeBuilderDraft,
+  configurationComplete,
+  type BuilderChoice,
   budgetPresets,
   emptyBuilderPayload,
   type BuilderDraft,
   type BuilderPayload,
 } from "@/lib/builder-domain";
-import type { Taxon } from "@/lib/domain";
-const steps = ["Budget", "Gift type", "Occasion and recipient", "Your words"];
+import { money, type Taxon } from "@/lib/domain";
+const steps = [
+  "Budget",
+  "Gift type",
+  "Occasion and recipient",
+  "Your words",
+  "Colours and add-ons",
+  "Photos",
+  "Contact and delivery",
+  "Review",
+];
 export function BuilderDraftEditor({
   categories,
   occasions,
@@ -39,6 +51,44 @@ export function BuilderDraftEditor({
     newId = useRef<string | null>(null),
     heading = useRef<HTMLHeadingElement>(null);
   const snapshot = JSON.stringify({ payload, step });
+  const [choices, setChoices] = useState<BuilderChoice[]>([]),
+    [choiceStatus, setChoiceStatus] = useState("");
+  const selected = choices.find((c) => c.id === payload.productId) ?? null;
+  const lastStep = available ? 8 : 4;
+  useEffect(() => {
+    if (!available || !payload.giftTypeId) {
+      setChoices([]);
+      return;
+    }
+    const controller = new AbortController();
+    setChoices([]);
+    setChoiceStatus("Loading published gift configurations...");
+    fetch(
+      `/api/builder/choices?type=${payload.giftTypeId}${payload.productId ? `&selected=${payload.productId}` : ""}`,
+      {
+        cache: "no-store",
+        signal: controller.signal,
+      },
+    )
+      .then(async (r) => {
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.message);
+        setChoices(data);
+        setChoiceStatus(
+          data.length
+            ? ""
+            : "No published customizable gifts for this type yet.",
+        );
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted) {
+          setChoices([]);
+          setChoiceStatus(e.message);
+        }
+      });
+    return () => controller.abort();
+  }, [available, payload.giftTypeId, payload.productId]);
+
   useEffect(() => {
     if (!available) return;
     let active = true;
@@ -55,7 +105,9 @@ export function BuilderDraftEditor({
             setDrafts((existing) =>
               [
                 ...existing,
-                ...rows.filter((r) => !existing.some((d) => d.id === r.id)),
+                ...rows
+                  .map(normalizeBuilderDraft)
+                  .filter((r) => !existing.some((d) => d.id === r.id)),
               ].slice(0, 10),
             );
         }
@@ -74,8 +126,9 @@ export function BuilderDraftEditor({
     if (!signed || !available || busy || conflict) return;
     const valid = builderPayload.safeParse(payload);
     if (!valid.success) {
+      setFailed(true);
       setStatus(
-        "Check both budget limits before saving. Your edits remain in this tab.",
+        "Check the budget, selected gift and contact fields before saving. Your edits remain in this tab.",
       );
       return;
     }
@@ -88,7 +141,7 @@ export function BuilderDraftEditor({
         action: record ? "save" : "create",
         id: record?.id ?? newId.current,
         expectedVersion: record?.version ?? 0,
-        schemaVersion: 1,
+        schemaVersion: 2,
         step,
         payload: valid.data,
       });
@@ -140,10 +193,14 @@ export function BuilderDraftEditor({
     return () => window.removeEventListener("beforeunload", warn);
   }, [snapshot, payload]);
   function apply(d: BuilderDraft) {
-    setRecord(d);
-    setPayload(d.payload);
-    setStep(d.step);
-    lastSaved.current = JSON.stringify({ payload: d.payload, step: d.step });
+    const normalized = normalizeBuilderDraft(d);
+    setRecord(normalized);
+    setPayload(normalized.payload);
+    setStep(normalized.step);
+    lastSaved.current = JSON.stringify({
+      payload: normalized.payload,
+      step: normalized.step,
+    });
     setFailed(false);
     setConflict(false);
     setConfirmDelete(false);
@@ -175,9 +232,9 @@ export function BuilderDraftEditor({
   return (
     <section aria-label="Custom gift draft editor">
       <p className="notice">
-        Builder development preview: plan and save the first four steps. Photos,
-        add-ons, estimates and quote submission are not available yet. This
-        draft creates no enquiry or order.
+        Builder development preview: plan a gift using published configurations.
+        Saved estimates are provisional. Photo uploads and quote submission are
+        not enabled yet. This draft creates no enquiry or order.
       </p>
       {!available && (
         <p>
@@ -213,7 +270,7 @@ export function BuilderDraftEditor({
       )}
       <nav aria-label="Draft steps">
         <ol className="inline-actions">
-          {steps.map((name, i) => (
+          {steps.slice(0, lastStep).map((name, i) => (
             <li key={name} aria-current={step === i + 1 ? "step" : undefined}>
               {i + 1}. {name}
             </li>
@@ -299,22 +356,84 @@ export function BuilderDraftEditor({
         </fieldset>
       )}
       {step === 2 && (
-        <label className="form-field">
-          Gift type
-          <select
-            value={payload.giftTypeId ?? ""}
-            onChange={(e) =>
-              setPayload((v) => ({ ...v, giftTypeId: e.target.value || null }))
-            }
-          >
-            <option value="">Choose a gift type</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <>
+          <label className="form-field">
+            Gift type
+            <select
+              value={payload.giftTypeId ?? ""}
+              onChange={(e) =>
+                setPayload((v) => ({
+                  ...v,
+                  giftTypeId: e.target.value || null,
+                  productId: null,
+                  pricingVersion: null,
+                  options: [],
+                }))
+              }
+            >
+              <option value="">Choose a gift type</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          {available && (
+            <>
+              <p aria-live="polite">{choiceStatus}</p>
+              <label className="form-field">
+                Base gift
+                <select
+                  value={payload.productId ?? ""}
+                  onChange={(e) => {
+                    const choice = choices.find((c) => c.id === e.target.value);
+                    setPayload((v) => ({
+                      ...v,
+                      productId: choice?.id ?? null,
+                      pricingVersion: choice?.version ?? null,
+                      options: [],
+                      quantity: Math.max(v.quantity, choice?.moq ?? 1),
+                    }));
+                  }}
+                >
+                  <option value="">Choose a published gift</option>
+                  {choices.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name} - MOQ {c.moq}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p>
+                Changing the gift clears incompatible colour/add-on selections.
+                No photos can be uploaded in this increment.
+              </p>
+              {selected && payload.pricingVersion !== selected.version && (
+                <div className="notice">
+                  <p>
+                    This gift configuration changed. Review the current options
+                    and prices.
+                  </p>
+                  <button
+                    type="button"
+                    className="button secondary"
+                    onClick={() =>
+                      setPayload((v) => ({
+                        ...v,
+                        pricingVersion: selected.version,
+                        options: [],
+                        quantity: Math.max(v.quantity, selected.moq),
+                      }))
+                    }
+                  >
+                    Use reviewed current configuration
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </>
       )}
       {step === 3 && (
         <>
@@ -360,18 +479,206 @@ export function BuilderDraftEditor({
             <textarea
               value={payload.message}
               onChange={(e) => {
-                if ([...e.target.value].length <= 500)
+                if (
+                  [...e.target.value].length <=
+                    Math.min(500, selected?.messageLimit ?? 500) ||
+                  [...e.target.value].length < [...payload.message].length
+                )
                   setPayload((v) => ({ ...v, message: e.target.value }));
               }}
             />
           </label>
-          <small>{[...payload.message].length}/500 characters</small>
+          {payload.message.length >
+            Math.min(500, selected?.messageLimit ?? 500) && (
+            <p role="alert">
+              Your saved message exceeds this gift's limit. Shorten it or clear
+              it before saving.
+              <button
+                type="button"
+                className="button secondary"
+                onClick={() => setPayload((v) => ({ ...v, message: "" }))}
+              >
+                Clear incompatible message
+              </button>
+            </p>
+          )}
+          <small>
+            {[...payload.message].length}/
+            {Math.min(500, selected?.messageLimit ?? 500)} characters
+          </small>
           <div className="notice">
             <h3>Illustrative message preview</h3>
             <p>{payload.message || "Your words will appear here."}</p>
             <p>Final handmade layout is confirmed with Memocious.</p>
           </div>
         </>
+      )}
+      {step === 5 && (
+        <>
+          <h3>Options for {selected?.name ?? "your selected gift"}</h3>
+          {selected?.optionGroups.map((g) => (
+            <fieldset key={g.id}>
+              <legend>
+                {g.label} ({g.required ? "required" : "optional"}; up to{" "}
+                {g.maxCount})
+              </legend>
+              {g.values.map((v) => (
+                <label className="check-label" key={v.id}>
+                  <input
+                    type="checkbox"
+                    checked={payload.options.includes(v.id)}
+                    disabled={
+                      !payload.options.includes(v.id) &&
+                      g.values.filter((x) => payload.options.includes(x.id))
+                        .length >= g.maxCount
+                    }
+                    onChange={(e) =>
+                      setPayload((p) => ({
+                        ...p,
+                        options: e.target.checked
+                          ? [...p.options, v.id]
+                          : p.options.filter((id) => id !== v.id),
+                      }))
+                    }
+                  />
+                  {v.label} -{" "}
+                  {v.deltaPaise === 0 ? "included" : `+${money(v.deltaPaise)}`}
+                </label>
+              ))}
+            </fieldset>
+          ))}
+          {selected?.optionGroups.length === 0 && (
+            <p>No colour or add-on choices are configured for this gift.</p>
+          )}
+        </>
+      )}
+      {step === 6 && (
+        <div className="notice">
+          <h3>Private reference photos</h3>
+          <p>
+            Uploads are not enabled in this development increment. No files are
+            collected here.
+          </p>
+          {selected?.requiresPhotos ? (
+            <p>
+              This gift requires an image. Further steps are blocked until the
+              private upload workflow is available.
+            </p>
+          ) : (
+            <p>You can continue planning a draft without files.</p>
+          )}
+        </div>
+      )}
+      {step === 7 && (
+        <>
+          <label className="form-field">
+            Quantity
+            <input
+              type="number"
+              min={selected?.moq ?? 1}
+              max={10000}
+              value={payload.quantity}
+              onChange={(e) =>
+                setPayload((v) => ({ ...v, quantity: Number(e.target.value) }))
+              }
+            />
+          </label>
+          <label className="form-field">
+            Requested date
+            <input
+              type="date"
+              value={payload.requestedDate ?? ""}
+              onChange={(e) =>
+                setPayload((v) => ({
+                  ...v,
+                  requestedDate: e.target.value || null,
+                }))
+              }
+            />
+          </label>
+          <p>
+            Preparation:{" "}
+            {selected?.leadDays === null
+              ? "confirm with Memocious"
+              : `${selected?.leadDays ?? 0} days`}
+            . Requested dates remain subject to owner confirmation.
+          </p>
+          {(
+            [
+              ["name", "Contact name", 120],
+              ["phone", "Phone with country code", 20],
+              ["email", "Email (optional)", 254],
+              ["city", "City", 120],
+              ["pincode", "Pincode", 6],
+            ] as const
+          ).map(([key, label, max]) => (
+            <label key={key} className="form-field">
+              {label}
+              <input
+                value={payload.contact[key]}
+                maxLength={max}
+                onChange={(e) =>
+                  setPayload((v) => ({
+                    ...v,
+                    contact: { ...v.contact, [key]: e.target.value },
+                  }))
+                }
+              />
+            </label>
+          ))}
+        </>
+      )}
+      {step === 8 && (
+        <>
+          <h3>Review your plan</h3>
+          <p>
+            {selected?.name} - quantity {payload.quantity}
+          </p>
+          <p>{payload.message}</p>
+          <p>
+            {payload.contact.name}, {payload.contact.city}{" "}
+            {payload.contact.pincode}; requested {payload.requestedDate}
+          </p>
+          <p>
+            Save this reviewed draft to validate contact, quantity, date and
+            current options. This does not submit an enquiry.
+          </p>
+          <button type="button" className="button" disabled>
+            Quote submission is not enabled yet
+          </button>
+        </>
+      )}
+      {record?.estimate && (
+        <div className="notice">
+          <h3>Last saved estimate</h3>
+          {record.estimate.status === "changed" && (
+            <button
+              type="button"
+              className="button secondary"
+              onClick={() => move(2)}
+            >
+              Review current gift configuration
+            </button>
+          )}
+          {record.estimate.status === "provisional" &&
+          record.estimate.minPaise !== null ? (
+            <p>
+              {record.estimate.maxPaise === null
+                ? `Starting estimate ${money(record.estimate.minPaise)}; no upper estimate supplied.`
+                : `${money(record.estimate.minPaise)} to ${money(record.estimate.maxPaise)}`}
+            </p>
+          ) : (
+            <p>
+              {record.estimate.status === "changed"
+                ? "Pricing changed. Review the gift configuration before saving again."
+                : "An owner quotation is needed; no supported estimate is available."}
+            </p>
+          )}
+          <p>
+            Provisional gift estimate only. Customisation, shipping and final
+            price need owner confirmation. Unsaved changes are not reflected.
+          </p>
+        </div>
       )}
       <div className="inline-actions">
         <button
@@ -386,9 +693,12 @@ export function BuilderDraftEditor({
           type="button"
           className="button secondary"
           disabled={
-            step === 4 ||
+            step === lastStep ||
             (step === 1 && !budgetValid) ||
-            (step === 2 && !payload.giftTypeId)
+            (step === 2 &&
+              (!payload.giftTypeId || (available && !payload.productId))) ||
+            (step === 5 && !configurationComplete(payload, selected)) ||
+            (step === 6 && !!selected?.requiresPhotos)
           }
           onClick={() => move(step + 1)}
         >
