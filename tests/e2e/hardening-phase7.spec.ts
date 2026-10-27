@@ -29,12 +29,13 @@ test("mutation guards reject cross-site requests and JSON lookalike media types"
     "X-CSRF-Token": (await session.json()).csrf,
     "Content-Type": "application/json",
   };
-  for (const rejected of [
+  const rejectedHeaders: Record<string, string>[] = [
     { Origin: "https://attacker.invalid" },
     { Origin: "http://localhost:3001" },
     { "Sec-Fetch-Site": "cross-site" },
     { "X-CSRF-Token": "incorrect" },
-  ]) {
+  ];
+  for (const rejected of rejectedHeaders) {
     const response = await request.post("/api/auth/start", {
       headers: { ...headers, ...rejected },
       data: "{}",

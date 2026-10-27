@@ -106,6 +106,7 @@ test("Product JSON-LD has no invented Offer, preserves a provisional zero and pr
     /private-file|other.example|userId|refreshToken/,
   );
   const product = data.find((x) => x["@type"] === "Product")!;
+  assert.ok(product && "aggregateRating" in product);
   assert.equal("offers" in product, false);
   assert.match(JSON.stringify(product.additionalProperty), /INR 0.00/);
   assert.deepEqual(product.aggregateRating, {
