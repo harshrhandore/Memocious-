@@ -1,3 +1,24 @@
+# Hosted rollout update - 27 October 2026
+
+This update supersedes the earlier statements that migrations were unapplied. Phase 3 is PARTIAL / BLOCKED, not acceptance-complete.
+
+- Applied all seven Phase 2 and four Phase 3 migrations to the existing Supabase project `bpvtdehesnlgwccmrlhz`, in repository order. The migration ledger versions match the version-controlled filenames; no reset or owner/MFA recreation occurred.
+- Configured `PHASE_2_ENABLED=true` and `PHASE_3_ENABLED=true` for the staging site's production context, scoped to builds/functions/runtime. These are prepared configuration values, not proof the current application is running Phase 3.
+- Netlify's published commit is still `77275df4891b4aca446115e3dbfd7c2573f862b9`. The attempted `d94de5b` deploy was skipped with **account credit usage exceeded**. The owner cannot restore paid capacity; no credits were purchased, plan changed, alternative host provisioned or retry loop started. GitHub pushes still update source, but cannot currently publish the new staging app.
+- All four builder SQL suites, the Phase 2 SQL suite and shared grants/history suite passed against actual hosted PostgreSQL. Each fixture transaction rolled back. This is real database evidence with synthetic identities, not actual Auth sign-in, Storage writes or browser integration.
+- Actual public-key HTTP tests passed: public catalogue succeeds; all six private Phase 3 RPCs deny anonymous execution with `42501`; anonymous quarantine upload returns HTTP 403. The repeatable probe is `scripts/test-phase3-hosted-denials.mjs`, requiring the staging SUPABASE_URL and public SUPABASE_PUBLISHABLE_KEY environment variables. It cannot target another project and requires no secret key.
+- Before/after counts match: one owner, one Auth user, one MFA factor, 11 products, one order; zero builder drafts/custom requests/request uploads remain. No Auth test accounts were created. Both private buckets retain 2 MiB limits and MIME restrictions; no private tables lack RLS and no private public-schema RPC is executable by browser roles.
+- Security advisors show informational RLS-without-policy notices on the deliberately private BFF tables; browser grants remain denied. The pre-existing leaked-password-protection warning remains, with [Supabase remediation](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). No permissive policies or credential changes were introduced to bypass checks.
+
+Evidence: `evidence/phase-3-hosted-rollout.json` and `evidence/phase-3-hosted-denials.json`. No secret values, backup files, auth tokens, object paths or private contacts are included.
+
+Still BLOCKED: deployment of the current code; normal customer Auth/captcha/session refresh/logout and A/B/cross-device resume; real successful Storage/decoder/BFF flow and private-cache/timeout behavior; concurrent multi-server/quota races; actual scheduled Phase 3 cleanup execution; real recent-MFA owner quote/conversion UI; physical-phone camera/HEIC/crop/navigation/WhatsApp. Netlify secrets are redacted through the available integration, and the connected Supabase tools do not provision Auth users. Signed-in provider tests were not executed or claimed passed. Once deployment capacity is available, publish current main with the configured flags, confirm the deployed commit and scheduler, then run these positive flows using controlled customer and owner sessions. The expected empty builder choices currently reflect that no existing published product is customizable; owner-approved catalogue setup is also needed for a real builder journey.
+
+Password-reset new-password success/old-password denial remains manual. Both DB AND image-file restore rehearsals remain owner-deferred, required before production and do not block development. Admin appearance/usability redesign remains Phase 5. No production release is claimed.
+
+---
+Earlier local implementation evidence follows.
+
 # Latest increment: submitted custom requests and owner quotation workflow
 
 The eight-step builder now submits an explicitly saved and reviewed schema-2 plan through a customer-authenticated, CSRF-bound, rate-limited and Turnstile-protected adapter. The transaction revalidates current published configuration, options, contact/date/quantity, required sanitized files and policy readiness. It locks current product pricing before calculation, rejects pending files/stale versions and atomically creates one CUS request, immutable snapshot, source-draft link, consent and in-app outbox event. Matching response retries return the existing owned receipt without creating another reference. Submitted drafts cannot be edited or deleted through the builder adapter.

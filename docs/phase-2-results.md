@@ -1,3 +1,5 @@
+> Hosted update, 27 October 2026: all Phase 2 migrations have now been applied to staging and its SQL transaction suite passed on hosted PostgreSQL with rolled-back fixtures. Flags are configured, but Netlify cannot deploy current main because account credits are exhausted. Hosted browser/Auth/Storage acceptance remains blocked. See phase-3-progress.md and evidence/phase-3-hosted-rollout.json; these supersede unapplied-migration statements below.
+
 # Phase 2 implementation and verification - 27 October 2026
 
 ## Status

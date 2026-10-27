@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-27",
+  "project": "bpvtdehesnlgwccmrlhz",
+  "staging": "https://memocious-staging-v2.netlify.app",
+  "status": "PARTIAL_BLOCKED",
+  "migrationFiles": [
+    "20261027100000_memocious_wishlist.sql",
+    "20261027100001_phase2_reviews_accounts.sql",
+    "20261027100002_phase2_enterprise_contact_media.sql",
+    "20261027100003_phase2_paging_and_retention_review.sql",
+    "20261027100004_phase2_catalogue_preview_quotes.sql",
+    "20261027100005_phase2_review_history_privacy.sql",
+    "20261027100006_phase2_public_content_bounds.sql",
+    "20261027110000_phase3_owned_drafts.sql",
+    "20261027110001_phase3_configuration_drafts.sql",
+    "20261027110002_phase3_private_builder_files.sql",
+    "20261027110003_phase3_custom_request_submission.sql"
+  ],
+  "migrationHistory": "MCP-assigned application versions aligned to the original repository migration versions after successful application; SQL and order unchanged.",
+  "configuredFlags": {
+    "PHASE_2_ENABLED": "true",
+    "PHASE_3_ENABLED": "true",
+    "context": "production (the staging site's primary URL)",
+    "currentPhase3DeploymentVerified": false
+  },
+  "deployment": {
+    "publishedCommit": "77275df4891b4aca446115e3dbfd7c2573f862b9",
+    "latestAttemptCommit": "d94de5b8f30d5412de56f666e0c337c1f0d1fdb4",
+    "latestAttemptDeploy": "6ae00f2cc6ef1736c8e8432e",
+    "state": "error",
+    "reason": "Skipped due to account credit usage exceeded",
+    "ownerDecision": "No money to restore capacity; no purchase or plan change performed."
+  },
+  "hostedSqlSuites": [
+    {
+      "suite": "builder-database.sql",
+      "status": "PASS",
+      "scope": "Actual hosted PostgreSQL; synthetic identities and fixture state rolled back. Not real Supabase Auth login, Storage writes or BFF/browser evidence."
+    },
+    {
+      "suite": "builder-configuration.sql",
+      "status": "PASS",
+      "scope": "Actual hosted PostgreSQL; synthetic identities and fixture state rolled back. Not real Supabase Auth login, Storage writes or BFF/browser evidence."
+    },
+    {
+      "suite": "builder-files.sql",
+      "status": "PASS",
+      "scope": "Actual hosted PostgreSQL; synthetic identities and fixture state rolled back. Not real Supabase Auth login, Storage writes or BFF/browser evidence."
+    },
+    {
+      "suite": "builder-submission.sql",
+      "status": "PASS",
+      "scope": "Actual hosted PostgreSQL; synthetic identities and fixture state rolled back. Not real Supabase Auth login, Storage writes or BFF/browser evidence."
+    },
+    {
+      "suite": "phase2-database.sql",
+      "status": "PASS",
+      "scope": "Actual hosted PostgreSQL; synthetic identities and fixture state rolled back. Not real Supabase Auth login, Storage writes or BFF/browser evidence."
+    },
+    {
+      "suite": "database.sql",
+      "status": "PASS",
+      "scope": "Actual hosted PostgreSQL; synthetic identities and fixture state rolled back. Not real Supabase Auth login, Storage writes or BFF/browser evidence."
+    }
+  ],
+  "beforeAndAfter": {
+    "ownerCount": 1,
+    "authUsers": 1,
+    "mfaFactors": 1,
+    "products": 11,
+    "orders": 1,
+    "drafts": 0,
+    "customRequests": 0,
+    "files": 0
+  },
+  "security": {
+    "missingRls": 0,
+    "privateRpcsGrantedToBrowserRoles": 0,
+    "quarantinePublic": false,
+    "sanitizedPublic": false,
+    "maxFileBytes": 2097152,
+    "advisories": [
+      {
+        "name": "rls_enabled_no_policy",
+        "severity": "INFO",
+        "count": 44,
+        "explanation": "Intentional private BFF tables, RLS enabled and browser-role table/RPC grants denied; no permissive policies added."
+      },
+      {
+        "name": "auth_leaked_password_protection",
+        "severity": "WARN",
+        "count": 1,
+        "existingBeforeRollout": true,
+        "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+      }
+    ]
+  },
+  "blocked": [
+    "Current code deployment (Netlify account credits exhausted)",
+    "Normal customer sign-in/captcha, actual A/B/cross-device resume and session refresh/logout",
+    "Real Storage/decoder/BFF success and private cache/timeout checks",
+    "Real multi-server concurrency/quota races",
+    "Actual Phase 3 scheduled cleanup execution",
+    "Owner quote/convert through real recent-MFA UI",
+    "Physical-phone navigation/camera/HEIC/crop/WhatsApp",
+    "Password reset: new password succeeds, old password denied"
+  ],
+  "deferredBeforeProduction": [
+    "Database backup/restore rehearsal",
+    "Image-file backup/restore rehearsal"
+  ],
+  "ownerMfaReset": false,
+  "databaseReset": false,
+  "backupsCreated": false,
+  "productionRelease": false
+}

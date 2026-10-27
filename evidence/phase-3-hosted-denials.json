@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-27T03:03:51.474Z",
+  "project": "bpvtdehesnlgwccmrlhz",
+  "scope": "Actual unauthenticated Supabase HTTP probes, not signed-in customer/provider or hosted BFF coverage",
+  "checks": [
+    {
+      "name": "Public catalogue control request",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous memocious_builder_draft denied",
+      "status": "PASS",
+      "code": "42501"
+    },
+    {
+      "name": "Anonymous memocious_builder_file_begin denied",
+      "status": "PASS",
+      "code": "42501"
+    },
+    {
+      "name": "Anonymous memocious_builder_file denied",
+      "status": "PASS",
+      "code": "42501"
+    },
+    {
+      "name": "Anonymous memocious_builder_submit denied",
+      "status": "PASS",
+      "code": "42501"
+    },
+    {
+      "name": "Anonymous memocious_custom_requests denied",
+      "status": "PASS",
+      "code": "42501"
+    },
+    {
+      "name": "Anonymous memocious_admin_custom denied",
+      "status": "PASS",
+      "code": "42501"
+    },
+    {
+      "name": "Anonymous private quarantine upload denied",
+      "status": "PASS",
+      "httpStatus": 403
+    }
+  ]
+}

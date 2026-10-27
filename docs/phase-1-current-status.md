@@ -8,7 +8,7 @@ Remaining manual checks: password reset followed by new-password success and old
 
 Owner explicitly deferred BOTH database and image-file backup/restore rehearsal. This remains required before production release and does not block Phase 2 development. Studio appearance/usability redesign remains deferred to Phase 5.
 
-Phase 2 local feature implementation and precise verification limits are recorded in phase-2-results.md. Hosted Phase 2 acceptance remains blocked pending migrations/enablement and provider/device tests. No production release is asserted. Phase 3 core local builder/files/submission/customer-receipt/owner-quote implementation is recorded in phase-3-progress.md; its hosted acceptance remains blocked and is not declared complete.
+Phase 2 local feature implementation and precise verification limits are recorded in phase-2-results.md. Hosted Phase 2 acceptance remains blocked pending migrations/enablement and provider/device tests. No production release is asserted. Phase 3 core local builder/files/submission/customer-receipt/owner-quote implementation is recorded in phase-3-progress.md; its migrations are now applied and hosted SQL/anonymous HTTP checks pass. Positive hosted acceptance remains blocked: Netlify skips current-code deployment because account credits are exhausted. This is not declared complete.
 
 ---
 Historical status follows; its outstanding list is superseded by the update above.
