@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { decodeJwt } from "jose";
 import { sealSession, unsealSession, type Keyring } from "./session-crypto";
 import { createClient } from "@supabase/supabase-js";
+import { providerFetch } from "./provider-fetch";
 import { authReady } from "./config";
 import { rpc } from "./server-db";
 import {
@@ -64,13 +65,7 @@ export function identityClient(storage?: {
     process.env.SUPABASE_PUBLISHABLE_KEY!,
     {
       global: {
-        fetch: (input, init) =>
-          fetch(input, {
-            ...init,
-            signal: init?.signal
-              ? AbortSignal.any([init.signal, AbortSignal.timeout(10000)])
-              : AbortSignal.timeout(10000),
-          }),
+        fetch: providerFetch,
       },
       auth: {
         persistSession: !!storage,

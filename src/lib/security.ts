@@ -100,7 +100,8 @@ export async function guardMutation(req: NextRequest, binary = false) {
     throw new HttpError(403, "Request unavailable.");
   if (
     !binary &&
-    !req.headers.get("content-type")?.startsWith("application/json")
+    req.headers.get("content-type")?.split(";", 1)[0].trim().toLowerCase() !==
+      "application/json"
   )
     throw new HttpError(415, "Use a supported request format.");
   const length = Number(req.headers.get("content-length") ?? 0);

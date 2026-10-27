@@ -97,7 +97,15 @@ export function safeReturnPath(input: unknown) {
     !/^\/(account|orders|shop|product|build-a-gift)(\/|\?|$)/.test(p)
   )
     return "/account";
-  return p;
+  // Browsers normalize literal and percent-encoded dot segments before following
+  // a redirect. Validate the destination after that normalization as well.
+  const target = new URL(p, "https://return.invalid");
+  if (
+    target.origin !== "https://return.invalid" ||
+    !/^\/(account|orders|shop|product|build-a-gift)(\/|$)/.test(target.pathname)
+  )
+    return "/account";
+  return target.pathname + target.search + target.hash;
 }
 export function averageRating(ratings: number[]) {
   ratings.forEach((r) => {

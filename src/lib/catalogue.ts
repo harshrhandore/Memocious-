@@ -6,6 +6,7 @@ import previewSettings from "../../data/public-settings.preview.json";
 import { demo, config } from "./config";
 import { requireCustomerSession } from "./session";
 import { serverDb } from "./server-db";
+import { providerFetch } from "./provider-fetch";
 import type { Filters, Product, Taxon } from "./domain";
 export async function getTaxonomy(): Promise<{
   categories: Taxon[];
@@ -23,6 +24,7 @@ export function publicDb() {
     process.env.SUPABASE_URL,
     process.env.SUPABASE_PUBLISHABLE_KEY,
     {
+      global: { fetch: providerFetch },
       auth: {
         persistSession: false,
         autoRefreshToken: false,

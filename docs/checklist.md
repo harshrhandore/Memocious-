@@ -1,5 +1,7 @@
 # Dependency-aware Phase1 checklist
 
+> Historical Phase 1 checklist. Use [current status](phase-1-current-status.md), [requirements](requirements.md) and the [Phase 7 ledger](phase-7-progress.md) for current implemented, unfinished and deferred work. Historical no-owner/no-deploy/unimplemented-recovery rows below are superseded; they are not instructions to recreate setup.
+
 | Work | State |
 |---|---|
 | Isolated repo, pinned stack, CI, preserved specification and later contracts | Implemented; remote CI not run |

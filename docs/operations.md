@@ -1,5 +1,7 @@
 # Owner and operator guide
 
+> Current override - 28 October 2026: the historical setup sections below are superseded by [current operations and incident runbooks](operations-current.md). Staging is memocious-staging-v2, owner/MFA already exist, Phase 2/3 migrations are applied and deployment capacity is exhausted. Do not follow historical zero-owner/bootstrap/project-creation instructions. Both restore rehearsals and outstanding integration/device checks are owner-deferred. No production release is claimed.
+
 ## Current state
 
 Build and run the labelled demo with `npm ci`, `npm run build`, `npm start`. Sample media/products are illustrations, not inventory. Sign-in and enquiries stay disabled in demo. The dedicated managed project has ten private labelled sample drafts and zero published products/owners. The supplied business number and approval of existing policy texts are recorded; verify registration, content rights and operational terms before real customers.

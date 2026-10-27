@@ -2,10 +2,12 @@ import "server-only";
 import { supabaseSecretKey } from "./config";
 import { HttpError } from "./security";
 import { createClient } from "@supabase/supabase-js";
+import { providerFetch } from "./provider-fetch";
 export function serverDb() {
   if (!process.env.SUPABASE_URL || !supabaseSecretKey)
     throw new Error("Service unavailable");
   return createClient(process.env.SUPABASE_URL, supabaseSecretKey, {
+    global: { fetch: providerFetch },
     auth: {
       persistSession: false,
       autoRefreshToken: false,

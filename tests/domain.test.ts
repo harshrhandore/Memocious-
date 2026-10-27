@@ -89,8 +89,14 @@ test("return path cannot cross origins or enter admin", () => {
     "%2F%2Fevil",
     "/%00evil",
     "/%252f%252fevil",
+    "/shop/../../api/admin/workspace",
+    "/product/%2e%2e/%2e%2e/auth/callback",
+    "/shop/.%2e/admin",
+    "/orders/%252e%252e/admin",
   ])
     assert.equal(safeReturnPath(s), "/account");
+  assert.equal(safeReturnPath("/shop/../orders?page=2"), "/orders?page=2");
+  assert.equal(safeReturnPath("/product/a-gift"), "/product/a-gift");
 });
 test("admin limits reject expired idle, stale MFA, wrong audience and revoked role", () => {
   const now = Date.now();

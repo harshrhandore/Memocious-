@@ -1,3 +1,5 @@
+> Phase 7 update (28 October 2026): independent redirect/request/provider-fetch/referrer hardening and Semgrep CI are implemented. See phase-7-progress.md for actual isolated evidence and release blockers. Unbuilt Phase 4-6 features remain unbuilt; postponed hosted/device and DB AND image-file restore checks remain deferred. Phase 8 has no selected integration.
+
 > Phase 6 update (27 October 2026): independent public canonical/social metadata, a static brand share card and conservative published-product structured-data helpers are implemented behind default-off PHASE_6_ENABLED. Staging remains noindex with an empty sitemap. No performance, hosted or integration acceptance is newly claimed; see phase-6-progress.md. Earlier incomplete phases and the owner's test deferral remain unchanged.
 
 > Phase 5 update (27 October 2026): independent Studio navigation and a read-only owner audit foundation are implemented behind default-off PHASE_5_ENABLED. Phase 4 remains incomplete and Phase 3 acceptance remains owner-deferred; the withdrawn local integration-testing proposal is still ignored. See phase-5-progress.md for precise scope, checks and remaining dependencies.
@@ -66,7 +68,7 @@ Source: specification.md v2, 21 October 2026. No phase is declared complete. Evi
 | 17.4 Phase4 | Denied schema contracts | BLOCKED tracking/state/guest claim/export/deletion |
 | 17.5 Phase5 | Independent responsive Studio navigation and owner-only recent-MFA audit viewer with bounded redacted projection | Isolated checks pass for this foundation; staff/CSV/analytics/themes/session/backup work remains unbuilt/dependent; hosted acceptance deferred; see phase-5-progress.md |
 | 17.6 Phase6 | Independent public canonical/social metadata, versioned brand card and conservative structured-data foundation; earlier static-only PWA boundary preserved | PARTIAL; production crawl/performance/cache/PWA acceptance and optional locale/analytics tooling remain unbuilt or deferred; see phase-6-progress.md |
-| 17.7 Phase7 | Hardening/evidence/runbook foundations | BLOCKED all mandatory release items must pass |
+| 17.7 Phase7 | Independent code hardening, dependency/OWASP source scans and current runbooks implemented; see phase-7-progress.md | PARTIAL; release BLOCKED by unbuilt core work and mandatory deferred/external checks |
 | 17.8 Phase8 | Roadmap retained intact | NOT APPLICABLE: no integration selected |
 | 18 Acceptance | Scenario mapping below | No unexecuted check counted as PASS |
 | 19 Handoff | Source, migration/type snapshots, local tests/evidence, live staging and operating guides | Phase 2 feature commits pushed; hosted Phase 2 enablement/acceptance not performed; no production release |
