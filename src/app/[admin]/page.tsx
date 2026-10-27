@@ -1,4 +1,4 @@
-import { phase2Ready, phase3Ready } from "@/lib/config";
+import { phase2Ready, phase3Ready, phase5Ready } from "@/lib/config";
 import { notFound } from "next/navigation";
 import { authReady } from "@/lib/config";
 import { readSession } from "@/lib/session";
@@ -22,12 +22,17 @@ export default async function Admin({
     notFound();
   const s = authReady ? await readSession().catch(() => null) : null;
   return (
-    <div className="container prose">
+    <div
+      className={
+        phase5Ready ? "container prose studio-page" : "container prose"
+      }
+    >
       <span className="eyebrow">MEMOCIOUS STUDIO</span>
       <h1>A little behind the scenes.</h1>
       <AdminPanel
         phase2={phase2Ready}
         phase3={phase3Ready}
+        phase5={phase5Ready}
         available={authReady}
         stage={
           !s || s.audience !== "admin"

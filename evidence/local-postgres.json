@@ -31,8 +31,13 @@
       "result": "PASS: owned order list/detail, A/B/guest/revoked denial, safe notes/options/payment projection, zero versus missing price, bounded latest/older events, product history and no polling activity extension"
     }
   ],
+  "ownerAudit": [
+    {
+      "result": "PASS: owner-only recent-MFA audit, editor/customer/guest/aal1/revoked denial, safe zero/false metadata, unknown fields/session IDs withheld, cursor bounds/snapshot/no overlap, UUID filters and Kolkata date boundaries"
+    }
+  ],
   "adminSuite": "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
-  "date": "2026-10-27T08:03:21.620Z",
+  "date": "2026-10-27T12:05:24.297Z",
   "result": [
     {
       "result": "PASS: grants, denied bypass, guest admin denial, zero-price snapshot, replay, changed-payload conflict, negative quantity, visibility, history, revocation; fixtures rolled back"

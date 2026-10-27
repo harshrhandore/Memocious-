@@ -83,7 +83,9 @@ function Dialog({
     </dialog>
   );
 }
-export function AdminWorkspace() {
+export function AdminWorkspace({
+  embedded = false,
+}: { embedded?: boolean } = {}) {
   const loadSequence = useRef(0);
   const [data, setData] = useState<Workspace | null>(null),
     [page, setPage] = useState(1),
@@ -183,25 +185,29 @@ export function AdminWorkspace() {
         >
           Refresh
         </button>
-        <button
-          type="button"
-          className="button secondary"
-          disabled={busy}
-          onClick={() =>
-            act(async () => {
-              await send("/api/auth/logout", { everywhere: false });
-              window.location.reload();
-            })
-          }
-        >
-          Sign out
-        </button>
+        {!embedded && (
+          <button
+            type="button"
+            className="button secondary"
+            disabled={busy}
+            onClick={() =>
+              act(async () => {
+                await send("/api/auth/logout", { everywhere: false });
+                window.location.reload();
+              })
+            }
+          >
+            Sign out
+          </button>
+        )}
       </nav>
       <p className="notice">
         Drafts and new photographs remain private until you explicitly publish
         them. Deletion and contact settings require owner verification within
-        the last five minutes. Use the authenticator section below to verify
-        again.
+        the last five minutes.{" "}
+        {embedded
+          ? "Open Security to verify again."
+          : "Use the authenticator section below to verify again."}
       </p>
       {status && (
         <p className="notice error my-4" role="alert">

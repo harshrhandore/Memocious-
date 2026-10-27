@@ -5,6 +5,7 @@ import Script from "next/script";
 import type { ProductSummary } from "@/app/[admin]/page";
 import { AdminCustomRequests } from "./admin-custom";
 import { AdminPhase2 } from "./admin-phase2";
+import { AdminStudio } from "./admin-studio";
 import { AdminWorkspace } from "./admin-workspace";
 export function AdminPanel({
   available,
@@ -13,6 +14,7 @@ export function AdminPanel({
   sitekey,
   phase2 = false,
   phase3 = false,
+  phase5 = false,
 }: {
   available: boolean;
   stage: "primary" | "mfa" | "verified";
@@ -20,6 +22,7 @@ export function AdminPanel({
   sitekey: string;
   phase2?: boolean;
   phase3?: boolean;
+  phase5?: boolean;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState("");
@@ -252,6 +255,19 @@ export function AdminPanel({
             recovery procedure. There is no email-only factor reset.
           </p>
         </section>
+      ) : phase5 ? (
+        <AdminStudio
+          phase2={phase2}
+          phase3={phase3}
+          security={
+            <AdminPanel
+              available={available}
+              stage="mfa"
+              products={[]}
+              sitekey={sitekey}
+            />
+          }
+        />
       ) : (
         <>
           <AdminWorkspace />

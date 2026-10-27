@@ -288,6 +288,10 @@ export type Database = {
         Args: { provider_user: string; approved_email_hash: string }
         Returns: undefined
       }
+      memocious_owner_audit: {
+        Args: { sid: string; from_day?: string; to_day?: string; action_prefix?: string; entity_filter?: string; entity_key?: string; request_key?: string; cursor_at?: string; cursor_id?: string; as_of?: string }
+        Returns: Json
+      }
       memocious_phase2_cleanup: {
         Args: { asset?: string; finished?: boolean }
         Returns: Json

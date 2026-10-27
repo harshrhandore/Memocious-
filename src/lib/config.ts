@@ -42,3 +42,6 @@ export const phase3Ready = phase2Ready && authReady && process.env.PHASE_3_ENABL
 
 // Phase 4 stays disabled until its schema and deferred prerequisites are verified.
 export const phase4Ready = phase3Ready && process.env.PHASE_4_ENABLED === "true";
+
+// Independent Phase 5 owner tools; Phase 4-dependent capabilities need separate readiness.
+export const phase5Ready = phase2Ready && authReady && process.env.PHASE_5_ENABLED === "true";

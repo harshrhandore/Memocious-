@@ -2339,3 +2339,29 @@ fieldset.gallery-main {
 .hero-carousel img { width: 100%; height: auto; max-height: 540px; object-fit: contain; border-radius: 18px; }
 .hero-carousel .inline-actions { flex-wrap: wrap; align-items: center; }
 .review-card img { max-width: 100%; object-fit: contain; }
+
+/* Independent Studio workspace navigation. Panels stay mounted to preserve edits. */
+.studio-shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 2rem; margin-block: 2rem; }
+.studio-sidebar { align-self: start; position: sticky; top: 1rem; padding: 1rem; border: 1px solid var(--line, #dfd0c4); border-radius: 16px; background: #fff8f0; }
+.studio-sidebar nav { display: grid; gap: .35rem; margin-block: 1rem; }
+.studio-sidebar nav button { text-align: left; padding: .75rem; border-radius: 10px; background: transparent; border: 1px solid transparent; color: #392c2c; font: inherit; cursor: pointer; }
+.studio-sidebar nav button[aria-pressed="true"] { border-color: #713d52; background: #f4e7e7; font-weight: 700; }
+.studio-main { min-width: 0; }
+.studio-main section[hidden] { display: none !important; }
+.studio-section-header h2 { margin-top: 0; }
+.studio-shortcuts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.studio-shortcut { display: grid; gap: .65rem; text-align: left; padding: 1.3rem; border: 1px solid var(--line, #dfd0c4); border-radius: 14px; background: #fff8f0; color: #392c2c; font: inherit; cursor: pointer; }
+.studio-shortcut strong { font-size: 1.15rem; }
+.studio-shortcut:hover { border-color: #713d52; }
+.audit-entries { list-style: none; margin: 1rem 0; padding: 0; }
+.audit-entries li { border-block-start: 1px solid var(--line, #dfd0c4); padding-block: 1rem; }
+.audit-entries code { overflow-wrap: anywhere; font-size: .85em; }
+.audit-entry-title { display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap; align-items: baseline; }
+.audit-entry-title h3 { margin: 0; }
+@media (max-width: 900px) { .studio-shell { grid-template-columns: minmax(0, 1fr); gap: 1rem; } .studio-sidebar { position: static; } .studio-sidebar nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .studio-shortcuts { grid-template-columns: minmax(0, 1fr); } }
+
+.prose.studio-page { max-width: 1400px; }
+
+.audit-filters { margin-block: 1.5rem; }
+.audit-filters legend { font-weight: 600; margin-bottom: 1rem; }

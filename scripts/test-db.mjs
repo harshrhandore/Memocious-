@@ -12,7 +12,7 @@ if (process.argv.includes("--generate-types")) {
  const {rows}=await db.query(`select p.proname,format_type(p.prorettype,null) as result,
  coalesce((select jsonb_agg(jsonb_build_object('name',p.proargnames[i],'type',format_type(p.proargtypes[i-1],null),'optional',i>p.pronargs-p.pronargdefaults) order by i) from generate_series(1,p.pronargs)i),'[]') as args
  from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname like 'memocious_%' order by p.proname`);
- const ts=(t)=>({text:"string",uuid:"string",boolean:"boolean",integer:"number",bigint:"number",numeric:"number",jsonb:"Json",void:"undefined","uuid[]":"string[]"}[t]??"unknown");
+ const ts=(t)=>({text:"string",uuid:"string",boolean:"boolean",integer:"number",bigint:"number",numeric:"number",jsonb:"Json",date:"string","timestamp with time zone":"string",void:"undefined","uuid[]":"string[]"}[t]??"unknown");
  const functions=rows.map(r=>`      ${r.proname}: {\n        Args: ${r.args.length?`{ ${r.args.map(a=>`${a.name}${a.optional?"?":""}: ${ts(a.type)}`).join("; ")} }`:"never"}\n        Returns: ${ts(r.result)}\n      }`).join("\n");
  const file="src/lib/database.generated.ts";let source=await readFile(file,"utf8");const start=source.indexOf("    Functions: {");const end=source.indexOf("    Enums:",start);
  source=source.slice(0,start)+`    Functions: {\n${functions}\n    }\n`+source.slice(end);
@@ -26,6 +26,7 @@ let builderConfiguration;
 let builderFiles;
 let builderSubmission;
 let ownedOrders;
+let ownerAudit;
 try {
   await db.exec(await readFile("tests/admin-database.sql", "utf8"));
   console.log(JSON.stringify((await db.exec(await readFile("tests/wishlist-database.sql", "utf8"))).at(-1).rows));
@@ -41,6 +42,8 @@ try {
   console.log(JSON.stringify(builderSubmission));
   ownedOrders=(await db.exec(await readFile("tests/order-timeline.sql","utf8"))).at(-1).rows;
   console.log(JSON.stringify(ownedOrders));
+  ownerAudit=(await db.exec(await readFile("tests/owner-audit.sql","utf8"))).at(-1).rows;
+  console.log(JSON.stringify(ownerAudit));
   result = await db.exec(await readFile("tests/database.sql", "utf8"));
 } catch (e) {
   console.error(
@@ -63,6 +66,7 @@ await writeFile(
       builderFiles,
       builderSubmission,
       ownedOrders,
+      ownerAudit,
       adminSuite:
         "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
       date: new Date().toISOString(),
