@@ -1,6 +1,16 @@
+import { phase6Ready, config } from "@/lib/config";
+import { publicPageMetadata } from "@/lib/seo";
 import { demo } from "@/lib/config";
 import Link from "next/link";
-export const metadata = { title: "Our story" };
+export const metadata = phase6Ready
+  ? publicPageMetadata({
+      title: "Our story",
+      description:
+        "Explore the idea behind thoughtful, personalised gifting at Memocious.",
+      path: "/about",
+      origin: config.APP_ORIGIN,
+    })
+  : { title: "Our story" };
 export default function About() {
   return (
     <article className="container prose">

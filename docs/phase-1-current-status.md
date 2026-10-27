@@ -6,9 +6,9 @@ Hosted evidence establishes owner login/MFA, edit persistence, sanitized media u
 
 Remaining manual checks: password reset followed by new-password success and old-password denial; physical-phone navigation and WhatsApp handoff. Do not infer these from ordinary login or browser simulation.
 
-Owner explicitly deferred BOTH database and image-file backup/restore rehearsal. This remains required before production release and does not block Phase 2 development. Studio appearance/usability redesign remains deferred to Phase 5.
+Owner explicitly deferred BOTH database and image-file backup/restore rehearsal. This remains required before production release and does not block Phase 2 development. Studio appearance/usability redesign has begun in Phase 5 with navigation and an owner-audit foundation; remaining editor/queue/dashboard work is incomplete.
 
-Phase 2 local feature implementation and precise verification limits are recorded in phase-2-results.md. Hosted Phase 2 acceptance remains blocked pending migrations/enablement and provider/device tests. No production release is asserted. Phase 3 core local builder/files/submission/customer-receipt/owner-quote implementation is recorded in phase-3-progress.md; its migrations are now applied and hosted SQL/anonymous HTTP checks pass. Positive hosted acceptance remains blocked: Netlify skips current-code deployment because account credits are exhausted. This is not declared complete.
+Phase 2 local feature implementation and precise verification limits are recorded in phase-2-results.md. Phase 2 migrations are applied and hosted SQL checks passed; positive hosted/provider/device acceptance remains deferred, with current-code deployment blocked by exhausted Netlify credits. No production release is asserted. Phase 3 core local builder/files/submission/customer-receipt/owner-quote implementation is recorded in phase-3-progress.md; its migrations are now applied and hosted SQL/anonymous HTTP checks pass. Positive hosted acceptance remains blocked: Netlify skips current-code deployment because account credits are exhausted. This is not declared complete.
 
 ---
 Historical status follows; its outstanding list is superseded by the update above.

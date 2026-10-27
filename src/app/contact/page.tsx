@@ -1,8 +1,18 @@
+import { phase6Ready, config } from "@/lib/config";
+import { publicPageMetadata } from "@/lib/seo";
 import { BusinessInquiry } from "@/components/business-inquiry";
 import { phase2Ready, writesReady } from "@/lib/config";
 import Link from "next/link";
 import { getPublicSettings } from "@/lib/catalogue";
-export const metadata = { title: "A little help" };
+export const metadata = phase6Ready
+  ? publicPageMetadata({
+      title: "A little help",
+      description:
+        "Contact Memocious to discuss gift enquiries and customisation.",
+      path: "/contact",
+      origin: config.APP_ORIGIN,
+    })
+  : { title: "A little help" };
 export default async function Contact() {
   const settings = await getPublicSettings();
   return (

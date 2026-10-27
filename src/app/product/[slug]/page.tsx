@@ -1,15 +1,23 @@
+import { headers } from "next/headers";
 import { Reviews, type PublicReview } from "@/components/reviews";
 import { rpc } from "@/lib/server-db";
 import { Wishlist } from "@/components/wishlist";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct, getProducts, getPublicSettings } from "@/lib/catalogue";
-import { filtersSchema, money } from "@/lib/domain";
+import { productMetadata, productStructuredData } from "@/lib/seo";
+import { filtersSchema, money, jsonLd } from "@/lib/domain";
 import { Gallery } from "@/components/gallery";
 import { Enquiry } from "@/components/enquiry";
 import { ProductCard, SectionHeading } from "@/components/ui";
 import { BrowseGate } from "@/components/browse-gate";
-import { writesReady, demo, phase2Ready } from "@/lib/config";
+import {
+  writesReady,
+  demo,
+  phase2Ready,
+  phase6Ready,
+  config,
+} from "@/lib/config";
 export async function generateMetadata({
   params,
 }: {
@@ -17,6 +25,13 @@ export async function generateMetadata({
 }) {
   await BrowseGate();
   const p = await getProduct((await params).slug);
+  if (phase6Ready && !p)
+    return { title: "Gift not found", robots: { index: false, follow: false } };
+  if (phase6Ready && p)
+    return productMetadata(p, config.APP_ORIGIN, {
+      preview: demo,
+      gated: (await getPublicSettings()).requireLogin,
+    });
   return {
     title: p?.seoTitle || p?.name || "Gift not found",
     description: p?.seoDescription || p?.description,
@@ -43,8 +58,26 @@ export default async function Page({
         distribution: Record<string, number>;
       }>("memocious_reviews", { product_slug: p.slug })
     : null;
+  const structured = phase6Ready
+    ? productStructuredData(p, config.APP_ORIGIN, {
+        preview: demo,
+        gated: settings.requireLogin,
+        ratingsReady: phase2Ready,
+      })
+    : [];
+  const nonce = structured.length
+    ? ((await headers()).get("x-nonce") ?? undefined)
+    : undefined;
   return (
     <>
+      {structured.length > 0 && (
+        <script
+          nonce={nonce}
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: jsonLd escapes markup delimiters and Unicode separators in the projected JSON-LD.
+          dangerouslySetInnerHTML={{ __html: jsonLd(structured) }}
+        />
+      )}
       <div className="container page-header">
         <div className="breadcrumbs">
           <Link href="/">Home</Link>

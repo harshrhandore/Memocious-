@@ -1,5 +1,15 @@
+import { phase6Ready, config } from "@/lib/config";
+import { publicPageMetadata } from "@/lib/seo";
 import { demo } from "@/lib/config";
-export const metadata = { title: "FAQs" };
+export const metadata = phase6Ready
+  ? publicPageMetadata({
+      title: "FAQs",
+      description:
+        "Find answers to common questions about gift enquiries and customisation.",
+      path: "/faq",
+      origin: config.APP_ORIGIN,
+    })
+  : { title: "FAQs" };
 const questions = [
   [
     "How will I order a gift?",

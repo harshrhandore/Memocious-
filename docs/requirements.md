@@ -1,3 +1,5 @@
+> Phase 6 update (27 October 2026): independent public canonical/social metadata, a static brand share card and conservative published-product structured-data helpers are implemented behind default-off PHASE_6_ENABLED. Staging remains noindex with an empty sitemap. No performance, hosted or integration acceptance is newly claimed; see phase-6-progress.md. Earlier incomplete phases and the owner's test deferral remain unchanged.
+
 > Phase 5 update (27 October 2026): independent Studio navigation and a read-only owner audit foundation are implemented behind default-off PHASE_5_ENABLED. Phase 4 remains incomplete and Phase 3 acceptance remains owner-deferred; the withdrawn local integration-testing proposal is still ignored. See phase-5-progress.md for precise scope, checks and remaining dependencies.
 
 > Owner direction (27 October 2026): defer the outstanding Phase 3 integration/hosted/device checks until Netlify capacity is resolved; ignore the withdrawn local integration-testing proposal. Independent Phase 4 development continues behind its own default-off flag. See phase-4-progress.md. Deferred checks remain required before production and are not passed.
@@ -63,7 +65,7 @@ Source: specification.md v2, 21 October 2026. No phase is declared complete. Evi
 | 17.3 Phase3 | Owned drafts plus product-backed options/pricing/contact/review increment, default-off saving | IN PROGRESS: builder files, atomic CUS and custom-request owner workflow remain; hosted acceptance BLOCKED |
 | 17.4 Phase4 | Denied schema contracts | BLOCKED tracking/state/guest claim/export/deletion |
 | 17.5 Phase5 | Independent responsive Studio navigation and owner-only recent-MFA audit viewer with bounded redacted projection | Isolated checks pass for this foundation; staff/CSV/analytics/themes/session/backup work remains unbuilt/dependent; hosted acceptance deferred; see phase-5-progress.md |
-| 17.6 Phase6 | Independent SEO/PWA/cache foundations | PARTIAL; production performance/translation/consent tooling optional and off |
+| 17.6 Phase6 | Independent public canonical/social metadata, versioned brand card and conservative structured-data foundation; earlier static-only PWA boundary preserved | PARTIAL; production crawl/performance/cache/PWA acceptance and optional locale/analytics tooling remain unbuilt or deferred; see phase-6-progress.md |
 | 17.7 Phase7 | Hardening/evidence/runbook foundations | BLOCKED all mandatory release items must pass |
 | 17.8 Phase8 | Roadmap retained intact | NOT APPLICABLE: no integration selected |
 | 18 Acceptance | Scenario mapping below | No unexecuted check counted as PASS |

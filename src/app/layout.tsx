@@ -30,8 +30,19 @@ import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { getPublicSettings } from "@/lib/catalogue";
-import { demo, config } from "@/lib/config";
+import { demo, config, phase6Ready } from "@/lib/config";
+import { publicPageMetadata } from "@/lib/seo";
+const share = phase6Ready
+  ? publicPageMetadata({
+      title: "Thoughtful gifts, made personal",
+      description:
+        "Discover customised gifts, bouquets and hampers for your favourite people and moments.",
+      path: "/",
+      origin: config.APP_ORIGIN,
+    })
+  : null;
 export const metadata: Metadata = {
+  ...(share ? { openGraph: share.openGraph, twitter: share.twitter } : {}),
   metadataBase: new URL(config.APP_ORIGIN),
   title: {
     default: "Memocious — Thoughtful gifts, made personal",

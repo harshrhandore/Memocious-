@@ -45,3 +45,6 @@ export const phase4Ready = phase3Ready && process.env.PHASE_4_ENABLED === "true"
 
 // Independent Phase 5 owner tools; Phase 4-dependent capabilities need separate readiness.
 export const phase5Ready = phase2Ready && authReady && process.env.PHASE_5_ENABLED === "true";
+
+// Independent public metadata foundation; this does not enable production indexing.
+export const phase6Ready = process.env.PHASE_6_ENABLED === "true";

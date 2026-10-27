@@ -16,7 +16,9 @@ export default defineConfig({
     {
       command: "npm run start",
       url: "http://localhost:3000",
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer:
+        !process.env.CI && process.env.PLAYWRIGHT_PHASE6 !== "true",
+      env: { PHASE_6_ENABLED: process.env.PLAYWRIGHT_PHASE6 ?? "false" },
     },
     {
       command: "node scripts/admin-ui-preview.mjs",

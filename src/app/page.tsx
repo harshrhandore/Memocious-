@@ -1,5 +1,5 @@
 import { HeroCarousel } from "@/components/hero-carousel";
-import { phase2Ready, demo } from "@/lib/config";
+import { phase2Ready, demo, phase6Ready, config } from "@/lib/config";
 import { rpc } from "@/lib/server-db";
 import type { Product } from "@/lib/domain";
 import type { PublicReview } from "@/components/reviews";
@@ -26,7 +26,16 @@ import {
 import { getProducts, getTaxonomy } from "@/lib/catalogue";
 import { filtersSchema } from "@/lib/domain";
 import { ProductCard, SectionHeading, TaxonIcon } from "@/components/ui";
-export const metadata = { alternates: { canonical: "/" } };
+import { publicPageMetadata } from "@/lib/seo";
+export const metadata = phase6Ready
+  ? publicPageMetadata({
+      title: "Thoughtful gifts, made personal",
+      description:
+        "Discover customised gifts, bouquets and hampers for your favourite people and moments.",
+      path: "/",
+      origin: config.APP_ORIGIN,
+    })
+  : { alternates: { canonical: "/" } };
 export default async function Home() {
   await BrowseGate();
   const [{ products }, taxa] = await Promise.all([

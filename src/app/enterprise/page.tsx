@@ -1,3 +1,5 @@
+import { phase6Ready, config } from "@/lib/config";
+import { publicPageMetadata } from "@/lib/seo";
 import {
   BusinessInquiry,
   type EnterpriseChoice,
@@ -12,7 +14,15 @@ import {
   GraduationCap,
   Gift,
 } from "lucide-react";
-export const metadata = { title: "Enterprise & bulk gifting" };
+export const metadata = phase6Ready
+  ? publicPageMetadata({
+      title: "Enterprise & bulk gifting",
+      description:
+        "Discuss thoughtful team, event and bulk gifting with Memocious.",
+      path: "/enterprise",
+      origin: config.APP_ORIGIN,
+    })
+  : { title: "Enterprise & bulk gifting" };
 export default async function Enterprise() {
   const products = phase2Ready
     ? await rpc<EnterpriseChoice[]>("memocious_enterprise_choices", {})
