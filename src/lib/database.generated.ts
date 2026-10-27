@@ -184,6 +184,18 @@ export type Database = {
         Args: { sid: string; action?: string; draft_id?: string; expected_version?: number; draft_schema?: number; step_num?: number; fields?: Json }
         Returns: Json
       }
+      memocious_builder_file: {
+        Args: { sid: string; file_id: string; action: string; details?: Json }
+        Returns: Json
+      }
+      memocious_builder_file_begin: {
+        Args: { sid: string; draft: string; expected_version: number; bytes: number; declared_mime: string }
+        Returns: string
+      }
+      memocious_builder_file_cleanup: {
+        Args: { file_id?: string; finished?: boolean; quarantine_only?: boolean }
+        Returns: Json
+      }
       memocious_catalogue: {
         Args: { filters?: Json }
         Returns: Json

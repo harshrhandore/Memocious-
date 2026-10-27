@@ -1,3 +1,4 @@
+import { cleanupBuilderFiles } from "../../src/lib/builder-file-cleanup.mjs";
 import { cleanupPhase2 } from "../../src/lib/phase2-cleanup.mjs";
 import { createClient } from "@supabase/supabase-js";
 import { cleanupMedia } from "../../src/lib/media-cleanup.mjs";
@@ -25,6 +26,9 @@ export default async () => {
     if (phase2.failed) throw new Error("Phase 2 cleanup requires retry");
   }
   if (Netlify.env.get("PHASE_3_ENABLED") === "true" && Netlify.env.get("PHASE_2_ENABLED") === "true") {
+    const files = await cleanupBuilderFiles(db);
+    console.log(JSON.stringify(files));
+    if(files.failed)throw new Error("Builder file cleanup requires retry");
     const draftCleanup = await db.rpc("memocious_builder_cleanup");
     if (draftCleanup.error) throw new Error("Builder draft cleanup requires retry");
     console.log(JSON.stringify(draftCleanup.data));

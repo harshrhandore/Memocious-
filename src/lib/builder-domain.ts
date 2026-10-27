@@ -112,6 +112,13 @@ export type BuilderDraft = {
   expiresAt: string;
   updatedAt: string;
   estimate?: BuilderEstimate;
+  files?: {
+    id: string;
+    status: string;
+    bytes: number;
+    width: number | null;
+    height: number | null;
+  }[];
 };
 export type BuilderChoice = {
   id: string;

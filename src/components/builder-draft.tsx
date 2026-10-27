@@ -1,4 +1,5 @@
 "use client";
+import { BuilderFiles } from "./builder-files";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { privateRequest, RequestError } from "@/lib/client-request";
@@ -51,6 +52,13 @@ export function BuilderDraftEditor({
     newId = useRef<string | null>(null),
     heading = useRef<HTMLHeadingElement>(null);
   const snapshot = JSON.stringify({ payload, step });
+  const [fileBusy, setFileBusy] = useState(false);
+  const activeFiles = (record?.files ?? []).filter(
+    (f) => f.status !== "deleted",
+  );
+  const readyFiles = activeFiles.filter(
+    (f) => f.status === "ready_private",
+  ).length;
   const [choices, setChoices] = useState<BuilderChoice[]>([]),
     [choiceStatus, setChoiceStatus] = useState("");
   const selected = choices.find((c) => c.id === payload.productId) ?? null;
@@ -123,7 +131,7 @@ export function BuilderDraftEditor({
     };
   }, [available]);
   const persist = useCallback(async () => {
-    if (!signed || !available || busy || conflict) return;
+    if (!signed || !available || busy || fileBusy || conflict) return;
     const valid = builderPayload.safeParse(payload);
     if (!valid.success) {
       setFailed(true);
@@ -168,15 +176,22 @@ export function BuilderDraftEditor({
     } finally {
       setBusy(false);
     }
-  }, [signed, available, busy, conflict, payload, step, record]);
+  }, [signed, available, busy, fileBusy, conflict, payload, step, record]);
   useEffect(() => {
-    if (!record || busy || failed || conflict || snapshot === lastSaved.current)
+    if (
+      !record ||
+      busy ||
+      fileBusy ||
+      failed ||
+      conflict ||
+      snapshot === lastSaved.current
+    )
       return;
     const timer = setTimeout(() => {
       void persist();
     }, 2000);
     return () => clearTimeout(timer);
-  }, [record, busy, failed, conflict, snapshot, persist]);
+  }, [record, busy, fileBusy, failed, conflict, snapshot, persist]);
   useEffect(() => {
     const warn = (e: BeforeUnloadEvent) => {
       if (
@@ -233,8 +248,9 @@ export function BuilderDraftEditor({
     <section aria-label="Custom gift draft editor">
       <p className="notice">
         Builder development preview: plan a gift using published configurations.
-        Saved estimates are provisional. Photo uploads and quote submission are
-        not enabled yet. This draft creates no enquiry or order.
+        Saved estimates are provisional. Private reference uploads are available
+        for saved drafts; quote submission is not enabled yet. This draft
+        creates no enquiry or order.
       </p>
       {!available && (
         <p>
@@ -360,6 +376,7 @@ export function BuilderDraftEditor({
           <label className="form-field">
             Gift type
             <select
+              disabled={activeFiles.length > 0 || fileBusy}
               value={payload.giftTypeId ?? ""}
               onChange={(e) =>
                 setPayload((v) => ({
@@ -385,6 +402,7 @@ export function BuilderDraftEditor({
               <label className="form-field">
                 Base gift
                 <select
+                  disabled={activeFiles.length > 0 || fileBusy}
                   value={payload.productId ?? ""}
                   onChange={(e) => {
                     const choice = choices.find((c) => c.id === e.target.value);
@@ -407,7 +425,7 @@ export function BuilderDraftEditor({
               </label>
               <p>
                 Changing the gift clears incompatible colour/add-on selections.
-                No photos can be uploaded in this increment.
+                Remove reference images before changing the gift.
               </p>
               {selected && payload.pricingVersion !== selected.version && (
                 <div className="notice">
@@ -553,21 +571,53 @@ export function BuilderDraftEditor({
         </>
       )}
       {step === 6 && (
-        <div className="notice">
+        <>
           <h3>Private reference photos</h3>
-          <p>
-            Uploads are not enabled in this development increment. No files are
-            collected here.
-          </p>
-          {selected?.requiresPhotos ? (
-            <p>
-              This gift requires an image. Further steps are blocked until the
-              private upload workflow is available.
-            </p>
+          {record && signed ? (
+            <BuilderFiles
+              draft={record}
+              eligible={!busy && !conflict && snapshot === lastSaved.current}
+              onBusy={setFileBusy}
+              onChange={async () => {
+                const latest = normalizeBuilderDraft(
+                  await privateRequest<BuilderDraft>(
+                    `/api/builder/drafts?id=${record.id}`,
+                  ),
+                );
+                if (
+                  JSON.stringify({
+                    payload: builderPayload.parse(latest.payload),
+                    step: latest.step,
+                  }) !==
+                  JSON.stringify({ payload: record.payload, step: record.step })
+                ) {
+                  setConflict(true);
+                  setFailed(true);
+                  setStatus(
+                    "The saved draft changed while processing files. Load the latest version to compare; your edits remain here.",
+                  );
+                  return;
+                }
+                setRecord(latest);
+                setDrafts((rows) => [
+                  latest,
+                  ...rows.filter((d) => d.id !== latest.id),
+                ]);
+              }}
+            />
           ) : (
-            <p>You can continue planning a draft without files.</p>
+            <p>
+              Sign in and save the current draft before adding private images.
+              No file is uploaded from this preview.
+            </p>
           )}
-        </div>
+          {selected?.requiresPhotos && readyFiles === 0 && (
+            <p>
+              This gift requires at least one sanitized, ready reference before
+              continuing.
+            </p>
+          )}
+        </>
       )}
       {step === 7 && (
         <>
@@ -684,7 +734,7 @@ export function BuilderDraftEditor({
         <button
           type="button"
           className="button secondary"
-          disabled={step === 1}
+          disabled={step === 1 || fileBusy}
           onClick={() => move(step - 1)}
         >
           Previous step
@@ -698,7 +748,8 @@ export function BuilderDraftEditor({
             (step === 2 &&
               (!payload.giftTypeId || (available && !payload.productId))) ||
             (step === 5 && !configurationComplete(payload, selected)) ||
-            (step === 6 && !!selected?.requiresPhotos)
+            (step === 6 && !!selected?.requiresPhotos && readyFiles === 0) ||
+            fileBusy
           }
           onClick={() => move(step + 1)}
         >
@@ -709,7 +760,7 @@ export function BuilderDraftEditor({
         <button
           type="button"
           className="button"
-          disabled={busy || conflict}
+          disabled={busy || fileBusy || conflict}
           onClick={() => {
             setFailed(false);
             void persist();
@@ -775,7 +826,7 @@ export function BuilderDraftEditor({
         <button
           type="button"
           className="button secondary"
-          disabled={busy || conflict}
+          disabled={busy || fileBusy || conflict || activeFiles.length > 0}
           onClick={() => {
             setPayload({ ...emptyBuilderPayload });
             setStep(1);

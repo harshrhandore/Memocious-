@@ -23,6 +23,7 @@ let result;
 let phase2Result;
 let builderResult;
 let builderConfiguration;
+let builderFiles;
 try {
   await db.exec(await readFile("tests/admin-database.sql", "utf8"));
   console.log(JSON.stringify((await db.exec(await readFile("tests/wishlist-database.sql", "utf8"))).at(-1).rows));
@@ -32,6 +33,8 @@ try {
   console.log(JSON.stringify(builderResult));
   builderConfiguration=(await db.exec(await readFile("tests/builder-configuration.sql","utf8"))).at(-1).rows;
   console.log(JSON.stringify(builderConfiguration));
+  builderFiles=(await db.exec(await readFile("tests/builder-files.sql","utf8"))).at(-1).rows;
+  console.log(JSON.stringify(builderFiles));
   result = await db.exec(await readFile("tests/database.sql", "utf8"));
 } catch (e) {
   console.error(
@@ -51,6 +54,7 @@ await writeFile(
       phase2Suite:phase2Result,
       builderSuite:builderResult,
       builderConfiguration,
+      builderFiles,
       adminSuite:
         "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
       date: new Date().toISOString(),

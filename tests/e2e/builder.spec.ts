@@ -232,7 +232,9 @@ test("configured builder validates required options and saves a provisional zero
   await page.getByRole("checkbox", { name: /Cream/ }).check();
   await page.getByRole("button", { name: "Next step" }).click();
   await expect(
-    page.getByText("No files are collected here.", { exact: false }),
+    page.getByText(
+      /Sign in and save the current draft before adding private images/,
+    ),
   ).toBeVisible();
   await page.getByRole("button", { name: "Next step" }).click();
   await expect(page.getByLabel("Quantity", { exact: true })).toHaveValue("2");

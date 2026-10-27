@@ -16,8 +16,13 @@
       "result": "PASS: compatible descendant choices, option/quantity price arithmetic, retry, required/duplicate/cross-type/MOQ/date/contact/price-injection denial, schema upgrade/old-client conflict, stale pricing, null upper bound and quote-only unknown price"
     }
   ],
+  "builderFiles": [
+    {
+      "result": "PASS: private builder file ownership, reservation size/type/quota, exact ticket path/reuse, quarantine denial, normalized-output bounds, ready replay, parent conflicts, no publish action, removal revocation, draft cancellation and reconciled cleanup"
+    }
+  ],
   "adminSuite": "PASS: service-role editor/media/publication, quota, option/MOQ/message bounds, stale bulk confirmation, snapshot retention, taxonomy, gate, role and recent-MFA assertions",
-  "date": "2026-10-27T00:48:25.460Z",
+  "date": "2026-10-27T02:17:39.156Z",
   "result": [
     {
       "result": "PASS: grants, denied bypass, guest admin denial, zero-price snapshot, replay, changed-payload conflict, negative quantity, visibility, history, revocation; fixtures rolled back"
