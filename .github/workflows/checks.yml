@@ -32,7 +32,7 @@ jobs:
       - run: python -m pip install semgrep==1.182.1
       - name: Scan application and server jobs with OWASP rules
         run: semgrep scan --config p/owasp-top-ten --metrics off --disable-version-check --strict --error --json-output semgrep.json src netlify
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: semgrep-owasp
